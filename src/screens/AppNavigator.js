@@ -96,7 +96,7 @@ const Navigation = createStackNavigator({
   EditProfile: { screen: EditProfileScreen },
 });
 
-export default class App extends React.Component {
+class AppNavigator extends React.Component {
 
   render() {
     let apiKey = STREAM_API_KEY;
@@ -124,4 +124,4 @@ export default class App extends React.Component {
   }
 }
 
-export default App;
+export default AppNavigator;
