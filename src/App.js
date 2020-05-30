@@ -1,127 +1,59 @@
-//@flow
-import React from 'react';
-import {
-  createStackNavigator,
-  createBottomTabNavigator,
-} from 'react-navigation';
+import React from 'react'
+import { StatusBar } from 'react-native'
 
-import {
-  STREAM_API_KEY,
-  STREAM_API_TOKEN,
-  STREAM_APP_ID,
-} from 'babel-dotenv';
+import { connect } from 'react-redux'
+import { Auth } from './api/services/AuthService'
+import UserService from './api/services/UserService';
 
-import Icon from './components/Icon';
-import HomeScreen from './screens/HomeScreen';
-import SearchScreen from './screens/SearchScreen';
-import NotificationsScreen from './screens/NotificationsScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import EditProfileScreen from './screens/EditProfileScreen';
-import SinglePostScreen from './screens/SinglePostScreen';
-import StatusUpdateScreen from './screens/StatusUpdateScreen';
+import Tabs from './auth/Tabs'
+import Nav from './screens/Nav'
 
-import {
-  Avatar,
-  StreamApp,
-  IconBadge,
-} from 'expo-activity-feed';
-import type { UserResponse } from './types';
+class App extends React.Component {
+  state = {
+    user: {},
+    isLoggedIn: false,
+    isLoading: true
+  }
 
-// $FlowFixMe
-const NotificationsStack = createStackNavigator({
-  Notifications: { screen: NotificationsScreen },
-});
+  async componentDidMount() {
+    StatusBar.setHidden(true)
+    try {
+      const user = await UserService.currentAuthenticatedUser()
+      this.setState({ user, isLoading: false })
+    } catch (err) {
+      this.setState({ isLoading: false })
+    }
+  }
 
-const ProfileStack = createStackNavigator({
-  Profile: { screen: ProfileScreen },
-});
-
-const SearchStack = createStackNavigator({
-  Search: { screen: SearchScreen },
-});
-
-const HomeStack = createStackNavigator({
-  Home: { screen: HomeScreen },
-});
-
-const TabNavigator = createBottomTabNavigator(
-  {
-    Home: HomeStack,
-    Search: SearchStack,
-    Notifications: NotificationsStack,
-    Profile: ProfileStack,
-  },
-  {
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: () => {
-        const { routeName } = navigation.state;
-        if (routeName === 'Home') {
-          return <Icon name="home" />;
-        } else if (routeName === 'Search') {
-          return <Icon name="search" />;
-        } else if (routeName === 'Notifications') {
-          return (
-            <IconBadge showNumber>
-              <Icon name="notifications" />
-            </IconBadge>
-          );
-        } else if (routeName === 'Profile') {
-          return (
-            <Avatar
-              source={(userData: UserResponse) => userData.data.profileImage}
-              size={25}
-              noShadow
-            />
-          );
-        }
-      },
-    }),
-    initialRouteName: 'Home',
-  },
-);
-
-const doNotShowHeaderOption = {
-  navigationOptions: {
-    header: null,
-  },
-};
-
-const Navigation = createStackNavigator({
-  Tabs: {
-    screen: TabNavigator,
-    ...doNotShowHeaderOption,
-  },
-  SinglePost: { screen: SinglePostScreen },
-  NewPost: { screen: StatusUpdateScreen },
-  EditProfile: { screen: EditProfileScreen },
-});
-
-export default class App extends React.Component {
-
-  render() {
-    let apiKey = STREAM_API_KEY;
-    let appId = STREAM_APP_ID;
-    let token = STREAM_API_TOKEN;
+  async componentWillReceiveProps(nextProps) {
+    try {
+      const user = await UserService.fetchUserData()
+      this.setState({ user })
+    } catch (err) {
+      this.setState({ user: {} })
+    }
+  }
   
+  render() {
+    if (this.state.isLoading) return null
+  
+    let loggedIn = false
+    if (this.state.user.username) {
+      loggedIn = true
+    }
+    if (loggedIn) {
+      return (
+        <Nav />
+      )
+    }
     return (
-      <StreamApp
-        apiKey={apiKey}
-        appId={appId}
-        token={token}
-        defaultUserData={{
-          name: 'Batman',
-          url: 'batsignal.com',
-          desc: 'Smart, violent and brutally tough solutions to crime.',
-          profileImage:
-            'https://i.kinja-img.com/gawker-media/image/upload/s--PUQWGzrn--/c_scale,f_auto,fl_progressive,q_80,w_800/yktaqmkm7ninzswgkirs.jpg',
-          coverImage:
-            'https://i0.wp.com/photos.smugmug.com/Portfolio/Full/i-mwrhZK2/0/ea7f1268/X2/GothamCity-X2.jpg?resize=1280%2C743&ssl=1',
-        }}
-      >
-        <Navigation />
-      </StreamApp>
-    );
+      <Tabs />
+    )
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps)(App)
