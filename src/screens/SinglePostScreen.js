@@ -13,7 +13,7 @@ import {
   LikeList,
 } from 'expo-activity-feed';
 
-import RepostList from '../src/components/RepostList';
+import RepostList from '../components/RepostList';
 
 import type { UserResponse } from '../types';
 import type { NavigationScreen } from 'expo-activity-feed';
