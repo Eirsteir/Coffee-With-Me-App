@@ -11,8 +11,8 @@ import {
 } from 'expo-activity-feed';
 import type { UserResponse, ActivityData } from '../types';
 
-import PostIcon from '../images/icons/post.png';
-import ReplyIcon from '../images/icons/reply.png';
+import PostIcon from '../../images/icons/post.png';
+import ReplyIcon from '../../images/icons/reply.png';
 
 import type { NavigationScreen } from 'expo-activity-feed';
 import type { NavigationEventSubscription } from 'react-navigation';

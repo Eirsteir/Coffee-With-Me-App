@@ -5,8 +5,8 @@ import AttachedActivity from './AttachedActivity';
 import { UserBar, humanizeTimestamp } from 'expo-activity-feed';
 import { userOrDefault } from '../utils';
 
-import HeartIcon from '../images/icons/heart.png';
-import RepostIcon from '../images/icons/repost.png';
+import HeartIcon from '../../images/icons/heart.png';
+import RepostIcon from '../../images/icons/repost.png';
 
 import type { NotificationActivities } from '../types';
 

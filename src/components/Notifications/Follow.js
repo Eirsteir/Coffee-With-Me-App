@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 import { Avatar } from 'expo-activity-feed';
-import FollowersIcon from '../../images/icons/followers.png';
+import FollowersIcon from '../../../images/icons/followers.png';
 
 import type { NotificationActivities } from '../../types';
 

@@ -11,14 +11,14 @@ import {
   STREAM_APP_ID,
 } from 'babel-dotenv';
 
-import Icon from './components/Icon';
-import HomeScreen from './screens/HomeScreen';
-import SearchScreen from './screens/SearchScreen';
-import NotificationsScreen from './screens/NotificationsScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import EditProfileScreen from './screens/EditProfileScreen';
-import SinglePostScreen from './screens/SinglePostScreen';
-import StatusUpdateScreen from './screens/StatusUpdateScreen';
+import Icon from '../components/Icon';
+import HomeScreen from './HomeScreen';
+import SearchScreen from './SearchScreen';
+import NotificationsScreen from './NotificationsScreen';
+import ProfileScreen from './ProfileScreen';
+import EditProfileScreen from './EditProfileScreen';
+import SinglePostScreen from './SinglePostScreen';
+import StatusUpdateScreen from './StatusUpdateScreen';
 
 import {
   Avatar,

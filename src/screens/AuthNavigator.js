@@ -11,7 +11,7 @@ const routeConfig = {
 }
 
 
-const StackNavigator = StackNavigator(routeConfig
+const StackNav = StackNavigator(routeConfig
   // , 
   //   {
   //     headerMode: 'none'
@@ -21,9 +21,9 @@ const StackNavigator = StackNavigator(routeConfig
 class AuthNavigator extends React.Component {
   render() {
     return (
-      <StackNavigator />
+      <StackNav />
     )
   }
 }
 
-export default StackNavigator
+export default AuthNavigator
