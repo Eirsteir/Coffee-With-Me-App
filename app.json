@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "sdkVersion": "36.0.0",
+    "name": "CoffeeWithMe",
+    "slug": "coffee-with-me",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "splash": {
+      "image": "./images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "icon": "https://cdn.dribbble.com/users/5912/screenshots/1300524/attachments/181387/io7-isome-icon-P.png"
+  }
+}
