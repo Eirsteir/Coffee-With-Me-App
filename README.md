@@ -21,8 +21,8 @@ A mobile application built using React Native, [Stream.io](https://getstream.io/
 ### 1. Install dependencies
 
 ```
-git clone https://github.com/eirsteir/coffee-with-me-app
-cd coffee-with-me-app
+git clone https://github.com/Eirsteir/Coffee-With-Me-App.git
+cd Coffee-With-Me-App
 npm install
 ```
 
