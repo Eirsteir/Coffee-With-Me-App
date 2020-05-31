@@ -9,6 +9,8 @@ export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
+  const { register } = React.useContext(AuthContext);
+
   return (
     <View style={styles.container}>
 
@@ -40,7 +42,7 @@ export default function RegisterScreen({ navigation }) {
         />
       </View>
       <TouchableOpacity style={styles.signupBtn}>
-        <Text style={styles.signupText} onPress={() => alert('sign button')}>Sign up</Text>
+        <Text style={styles.signupText} onPress={() => register({ email, name, password })}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );

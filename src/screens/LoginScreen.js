@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Dimensions, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
 import Logo from '../components/Logo';
 import { AuthContext } from '../App';
@@ -38,20 +38,9 @@ export default function LoginScreen({ navigation }) {
                 <Text style={styles.loginText} onPress={() => login({ email, password })}>LOGIN</Text>
             </TouchableOpacity>
             <View style={styles.orContainer}>
-                <Text >
-                  <p style={{
-                    width: '100%', 
-                    textAlign: 'center', 
-                    borderBottom: 'solid',
-                    borderWidth: 1,
-                    borderColor: '#d2d2d2',
-                    lineHeight: '0.1em',
-                    margin: '10px 0 20px'}}
-                    ><span style={{
-                      background:'#fff', padding:'0 10px', 
-                      }}
-                    >OR</span></p>
-                </Text>
+              <View style={styles.hrLine} />
+              <Text style={styles.dividerText}>OR</Text>
+              <View style={styles.hrLine} />
             </View>
             <TouchableOpacity>
                 <Text onPress={() => navigation.navigate('Register')}>Don't have an account? Sign up</Text>
@@ -60,6 +49,8 @@ export default function LoginScreen({ navigation }) {
     );
     
 }
+
+const { width } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
     container: {
@@ -97,7 +88,18 @@ const styles = StyleSheet.create({
       color:"white"
     },
     orContainer: {
-      width: '80%',
-      marginTop: 30
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 10,
+    },
+    hrLine: {
+      width: width / 3,
+      backgroundColor: 'black',
+      height: 1,
+    },
+    dividerText: {
+      color: 'black',
+      textAlign: 'center',
+      width: width / 10,
     },
 });

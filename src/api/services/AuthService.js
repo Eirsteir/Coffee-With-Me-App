@@ -18,6 +18,14 @@ class AuthService {
         });
     }
 
+    static register = ({ email, name, password }) => {
+        return AUTH.register(email, name, password)
+            .then((response) => {
+                console.log(response);
+                return this.logIn(response.email, response.password);
+            })
+    }
+
     static isAuthenticated = () => {
         return TOKEN.get(Constants.AUTH_TOKEN)
             .then((data) => {
