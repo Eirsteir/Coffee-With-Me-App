@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Dimensions, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { SocialIcon } from 'react-native-elements';
 
 import Logo from '../components/Logo';
 import { AuthContext } from '../App';
@@ -42,8 +43,25 @@ export default function LoginScreen({ navigation }) {
               <Text style={styles.dividerText}>OR</Text>
               <View style={styles.hrLine} />
             </View>
-            <TouchableOpacity>
-                <Text onPress={() => navigation.navigate('Register')}>Don't have an account? Sign up</Text>
+            <View style={styles.socialContainer}>
+              <SocialIcon
+                title='Sign In With Facebook'
+                button
+                type='facebook'
+                fontWeight='300'
+                style={styles.social}
+              />
+              <SocialIcon
+                title='Sign In With Google'
+                button
+                type='google'
+                fontWeight='300'
+                style={styles.social}
+              />
+            </View>
+            <TouchableOpacity style={styles.signupContainer}>
+              <Text>Don't have an account? </Text>
+              <Text style={styles.signupText} onPress={() => navigation.navigate('Register')}>Sign up</Text>
             </TouchableOpacity>
         </View>
     );
@@ -88,13 +106,14 @@ const styles = StyleSheet.create({
       color:"white"
     },
     orContainer: {
+      width: '80%',
       flexDirection: 'row',
       alignItems: 'center',
-      marginTop: 10,
+      marginTop: 20,
     },
     hrLine: {
-      width: width / 3,
-      backgroundColor: 'black',
+      width: '44%',
+      backgroundColor: '#d3d3d3',
       height: 1,
     },
     dividerText: {
@@ -102,4 +121,24 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       width: width / 10,
     },
+    signupContainer: {
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 100,
+    },
+    signupText: {
+      color: '#0091e1'
+    },
+    socialContainer: {
+      width: '60%',
+      marginTop: 40
+    },
+    social: {
+      borderRadius:5,
+      height: 50,
+      alignItems:"center",
+      justifyContent:"center",    
+    }
 });
