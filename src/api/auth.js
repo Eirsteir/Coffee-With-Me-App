@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default {
     authenticate: (email, password) => {
         const body = {
@@ -5,11 +7,7 @@ export default {
             password: password
         }
 
-        return axios({
-            method: 'POST',
-            url: 'http://localhost:8080/api/auth',
-            body: body
-        });
+        return axios.post('http://localhost:8080/api/auth/login', body);
     },
     getHeaders: (token) => {
         return {

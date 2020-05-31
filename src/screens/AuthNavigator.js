@@ -1,5 +1,5 @@
 import React from 'react'
-import { StackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation'
 
 import LoginScreen from './LoginScreen'
 import SignUpScreen from './SignUpScreen'
@@ -11,7 +11,7 @@ const routeConfig = {
 }
 
 
-const StackNav = StackNavigator(routeConfig
+const StackNavigator = createStackNavigator(routeConfig
   // , 
   //   {
   //     headerMode: 'none'
@@ -21,7 +21,7 @@ const StackNav = StackNavigator(routeConfig
 class AuthNavigator extends React.Component {
   render() {
     return (
-      <StackNav />
+      <StackNavigator />
     )
   }
 }

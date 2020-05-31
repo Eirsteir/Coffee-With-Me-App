@@ -1,13 +1,35 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
+import AuthService from '../api/services/AuthService';
+
 export default class Login extends React.Component {
 
     state = { 
         email: '',
-        password: ''
+        password: '',
+        errorMessage: null,
     }
-    
+
+    handleLogin() {
+      const { email, password } = this.state
+
+      AuthService.logIn(email, password)
+        .then((data) => {
+          if (data) {
+            this.props.navigation.navigate('Home');
+          }
+          return;
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({ errorMessage: err });
+        });
+    }
+
+    onClick = () => {
+
+    }
 
     render(){
     
@@ -29,15 +51,19 @@ export default class Login extends React.Component {
                         placeholderTextColor="white"
                         onChangeText={text => this.setState({password:text})}/>
                 </View>
+
                 <TouchableOpacity>
                     <Text style={styles.forgot}>Forgot Password?</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.loginBtn}>
+                <TouchableOpacity style={styles.loginBtn} onPress={this.handleLogin.bind(this)}>
                     <Text style={styles.loginText}>LOGIN</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.onClick('SignUp')}>
                     <Text>Sign up</Text>
                 </TouchableOpacity>
+                <View>
+                    <Text>Or connect with</Text>
+                </View>
             </View>
         );
     }

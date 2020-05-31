@@ -6,7 +6,9 @@ import { View } from 'react-native'
 class SignUpScreen extends React.Component {
   render() {
     return (
-      <View />
+      <View>
+        <Text>Sign Up</Text>
+      </View>
     )
   }
 }
