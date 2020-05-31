@@ -29,7 +29,7 @@ export default function RegisterScreen({ navigation }) {
         <TextInput
           style={styles.inputText}
           placeholder='Name'
-          onChangeText={name => setEmail(name)}
+          onChangeText={name => setName(name)}
           autoCapitalize='words'
         />
       </View>
