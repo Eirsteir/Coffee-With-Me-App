@@ -2,20 +2,21 @@ import React from 'react'
 import { createStackNavigator } from 'react-navigation'
 
 import LoginScreen from '../screens/LoginScreen'
-import SignUpScreen from '../screens/SignUpScreen'
+import RegisterScreen from '../screens/RegisterScreen'
 
 
 const routeConfig = {
     Login: { screen: LoginScreen },
-    SignUp: { screen: SignUpScreen }
+    Register: { screen: RegisterScreen }
 }
 
+const navigationOptions = {
+  headerTintColor: '#fb5b5a',
+  headerStyle: {  borderBottomColor: 'white' },
+}
 
-const StackNavigator = createStackNavigator(routeConfig
-  // , 
-  //   {
-  //     headerMode: 'none'
-  //   }
+const StackNavigator = createStackNavigator(routeConfig, {
+  navigationOptions: navigationOptions}
 )
 
 class AuthNavigator extends React.Component {

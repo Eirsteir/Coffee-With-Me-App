@@ -25,7 +25,7 @@ class AuthService {
             })
     }
 
-    static logOut = (navigation) => {
+    static logout = (navigation) => {
         TOKEN.remove(Constants.AUTH_TOKEN);
         navigation.reset([NavigationActions.navigate({ routeName: 'Home' })], 0);
         return;

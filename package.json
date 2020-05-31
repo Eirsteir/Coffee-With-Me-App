@@ -12,9 +12,9 @@
     "notification feed"
   ],
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/node": "^7.0.0",
-    "@babel/plugin-proposal-decorators": "^7.7.4",
+    "@babel/core": "^7.10.2",
+    "@babel/node": "^7.10.1",
+    "@babel/plugin-proposal-decorators": "^7.10.1",
     "babel-node": "0.0.1-security",
     "babel-plugin-dotenv": "^0.1.1",
     "babel-preset-expo": "^8.0.0",
@@ -22,12 +22,12 @@
     "eslint": "^5.1.0",
     "eslint-plugin-flowtype": "^2.29.1",
     "eslint-plugin-jest": "^21.17.0",
-    "eslint-plugin-react": "^7.10.0",
+    "eslint-plugin-react": "^7.20.0",
     "flow-bin": "^0.80.0",
-    "flow-copy-source": "^2.0.2",
+    "flow-copy-source": "^2.0.9",
     "jest-expo": "~33.0.0",
     "metro-react-native-babel-preset": "^0.54.1",
-    "prettier": "^1.13.7",
+    "prettier": "^1.19.1",
     "react-native-scripts": "1.14.0",
     "react-test-renderer": "16.3.1"
   },

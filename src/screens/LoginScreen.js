@@ -1,33 +1,26 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
-import AuthService from '../api/services/AuthService';
-import { signIn } from '../App';
+import Logo from '../components/Logo';
 import { AuthContext } from '../App';
 
-export default function Login() {
+export default function LoginScreen({ navigation }) {
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errorMessage, serErrorMessage] = React.useState(null);
     
-    const { signIn } = React.useContext(AuthContext);
+    const { login } = React.useContext(AuthContext);
 
-    const handleLogin = () => {
-      console.log(email, password);
-      
-      signIn({email, password});
-
-    }
-    
     return (
         <View style={styles.container}>
-            <Text style={styles.logo}>Coffee With Me</Text>
+
+            <Logo />
+
             <View style={styles.inputView} >
                 <TextInput  
                     style={styles.inputText}
                     placeholder="Email" 
-                    placeholderTextColor="white"
                     onChangeText={email => setEmail(email)}/>
                 </View>
             <View style={styles.inputView} >
@@ -35,7 +28,6 @@ export default function Login() {
                     secureTextEntry
                     style={styles.inputText}
                     placeholder="Password" 
-                    placeholderTextColor="white"
                     onChangeText={password => setPassword(password)}/>
             </View>
 
@@ -43,14 +35,27 @@ export default function Login() {
                 <Text style={styles.forgot}>Forgot Password?</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.loginBtn}>
-                <Text style={styles.loginText} onPress={() => signIn({ email, password })}>LOGIN</Text>
+                <Text style={styles.loginText} onPress={() => login({ email, password })}>LOGIN</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
-                <Text onPress={() => navigation.navigate('Signup')}>Sign up</Text>
-            </TouchableOpacity>
-            <View>
-                <Text>Or connect with</Text>
+            <View style={styles.orContainer}>
+                <Text >
+                  <p style={{
+                    width: '100%', 
+                    textAlign: 'center', 
+                    borderBottom: 'solid',
+                    borderWidth: 1,
+                    borderColor: '#d2d2d2',
+                    lineHeight: '0.1em',
+                    margin: '10px 0 20px'}}
+                    ><span style={{
+                      background:'#fff', padding:'0 10px', 
+                      }}
+                    >OR</span></p>
+                </Text>
             </View>
+            <TouchableOpacity>
+                <Text onPress={() => navigation.navigate('Register')}>Don't have an account? Sign up</Text>
+            </TouchableOpacity>
         </View>
     );
     
@@ -63,16 +68,10 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
-    logo:{
-      fontWeight:"bold",
-      fontSize:40,
-      color:"#fb5b5a",
-      marginBottom:40
-    },
     inputView:{
       width:"80%",
-      backgroundColor:"#003f5c",
-      borderRadius:25,
+      backgroundColor:"#f5f5f5",
+      borderRadius:5,
       height:50,
       marginBottom:20,
       justifyContent:"center",
@@ -80,7 +79,6 @@ const styles = StyleSheet.create({
     },
     inputText:{
       height:50,
-      color:"white"
     },
     forgot:{
       fontSize:11
@@ -88,7 +86,7 @@ const styles = StyleSheet.create({
     loginBtn:{
       width:"80%",
       backgroundColor:"#fb5b5a",
-      borderRadius:25,
+      borderRadius:5,
       height:50,
       alignItems:"center",
       justifyContent:"center",
@@ -97,5 +95,9 @@ const styles = StyleSheet.create({
     },
     loginText:{
       color:"white"
-    }
-  });
+    },
+    orContainer: {
+      width: '80%',
+      marginTop: 30
+    },
+});
