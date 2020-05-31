@@ -5,7 +5,7 @@ import AuthService from '../api/services/AuthService';
 import { signIn } from '../App';
 import { AuthContext } from '../App';
 
-export default function Login({ authContext, navigation }) {
+export default function Login() {
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -17,20 +17,7 @@ export default function Login({ authContext, navigation }) {
       console.log(email, password);
       
       signIn({email, password});
-    //   AuthService.logIn(email, password)
-    //     .then((data) => {
-    //       console.log(data);
-          
-    //       if (data) {
-    //         console.log(this.props);
-    //         this.props.isAuthenticated = true;
-    //       }
-    //       return;
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //       this.setState({ errorMessage: err });
-    //     });
+
     }
     
     return (
@@ -56,7 +43,7 @@ export default function Login({ authContext, navigation }) {
                 <Text style={styles.forgot}>Forgot Password?</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.loginBtn}>
-                <Text style={styles.loginText} onPress={() => handleLogin()}>LOGIN</Text>
+                <Text style={styles.loginText} onPress={() => signIn({ email, password })}>LOGIN</Text>
             </TouchableOpacity>
             <TouchableOpacity>
                 <Text onPress={() => navigation.navigate('Signup')}>Sign up</Text>
