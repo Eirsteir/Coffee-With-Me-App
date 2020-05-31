@@ -2,71 +2,71 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
 import AuthService from '../api/services/AuthService';
+import { signIn } from '../App';
+import { AuthContext } from '../App';
 
-export default class Login extends React.Component {
+export default function Login({ authContext, navigation }) {
 
-    state = { 
-        email: '',
-        password: '',
-        errorMessage: null,
-    }
-
-    handleLogin() {
-      const { email, password } = this.state
-
-      AuthService.logIn(email, password)
-        .then((data) => {
-          if (data) {
-            this.props.navigation.navigate('Home');
-          }
-          return;
-        })
-        .catch(err => {
-          console.log(err);
-          this.setState({ errorMessage: err });
-        });
-    }
-
-    onClick = () => {
-
-    }
-
-    render(){
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [errorMessage, serErrorMessage] = React.useState(null);
     
-        return (
-            <View style={styles.container}>
-                <Text style={styles.logo}>Coffee With Me</Text>
-                <View style={styles.inputView} >
-                    <TextInput  
-                        style={styles.inputText}
-                        placeholder="Email" 
-                        placeholderTextColor="white"
-                        onChangeText={text => this.setState({email:text})}/>
-                    </View>
-                <View style={styles.inputView} >
-                    <TextInput  
-                        secureTextEntry
-                        style={styles.inputText}
-                        placeholder="Password" 
-                        placeholderTextColor="white"
-                        onChangeText={text => this.setState({password:text})}/>
-                </View>
+    const { signIn } = React.useContext(AuthContext);
 
-                <TouchableOpacity>
-                    <Text style={styles.forgot}>Forgot Password?</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.loginBtn} onPress={this.handleLogin.bind(this)}>
-                    <Text style={styles.loginText}>LOGIN</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.onClick('SignUp')}>
-                    <Text>Sign up</Text>
-                </TouchableOpacity>
-                <View>
-                    <Text>Or connect with</Text>
-                </View>
-            </View>
-        );
+    const handleLogin = () => {
+      console.log(email, password);
+      
+      signIn({email, password});
+    //   AuthService.logIn(email, password)
+    //     .then((data) => {
+    //       console.log(data);
+          
+    //       if (data) {
+    //         console.log(this.props);
+    //         this.props.isAuthenticated = true;
+    //       }
+    //       return;
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //       this.setState({ errorMessage: err });
+    //     });
     }
+    
+    return (
+        <View style={styles.container}>
+            <Text style={styles.logo}>Coffee With Me</Text>
+            <View style={styles.inputView} >
+                <TextInput  
+                    style={styles.inputText}
+                    placeholder="Email" 
+                    placeholderTextColor="white"
+                    onChangeText={email => setEmail(email)}/>
+                </View>
+            <View style={styles.inputView} >
+                <TextInput  
+                    secureTextEntry
+                    style={styles.inputText}
+                    placeholder="Password" 
+                    placeholderTextColor="white"
+                    onChangeText={password => setPassword(password)}/>
+            </View>
+
+            <TouchableOpacity>
+                <Text style={styles.forgot}>Forgot Password?</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.loginBtn}>
+                <Text style={styles.loginText} onPress={() => handleLogin()}>LOGIN</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+                <Text onPress={() => navigation.navigate('Signup')}>Sign up</Text>
+            </TouchableOpacity>
+            <View>
+                <Text>Or connect with</Text>
+            </View>
+        </View>
+    );
+    
 }
 
 const styles = StyleSheet.create({

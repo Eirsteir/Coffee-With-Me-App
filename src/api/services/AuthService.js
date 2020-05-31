@@ -9,9 +9,10 @@ class AuthService {
     static logIn = (email, password) => {
         const response = AUTH.authenticate(email, password);
         
-        return response.then((data) => {
-            if(data && data.authorization) {
-                return TOKEN.set(Constants.AUTH_TOKEN, data.authorization).then((data) => {return data});
+        return response.then((response) => {
+            if(response && response.data.authorization) {
+                const authorization = response.data.authorization;
+                return TOKEN.set(Constants.AUTH_TOKEN, authorization).then(() => {return authorization});
             }
             return null;
         });

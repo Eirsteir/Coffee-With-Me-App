@@ -7,7 +7,7 @@ export default {
             password: password
         }
 
-        return axios.post('http://localhost:8080/api/auth/login', body);
+        return axios.post('http://localhost:8080/api/auth', body);
     },
     getHeaders: (token) => {
         return {
