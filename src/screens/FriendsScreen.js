@@ -7,7 +7,7 @@ import { Avatar, UserCard } from 'expo-activity-feed';
 import GroupCard from '../components/GroupCard';
 import SearchBox from '../components/SearchBox';
 
-class SearchScreen extends React.Component {
+class FriendsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -115,7 +115,7 @@ class SearchScreen extends React.Component {
   }
 
   static navigationOptions = () => ({
-    title: 'DISCOVER',
+    title: 'FRIENDS',
     headerTitleStyle: {
       fontWeight: '500',
       fontSize: 13,
@@ -149,18 +149,7 @@ class SearchScreen extends React.Component {
       <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
         <SearchBox />
 
-        <LargeHeading>Trending Groups</LargeHeading>
-        <HorizontalScrollFeed
-          data={this.state.trendingGroups}
-          renderItem={({ item }) => (
-            <View style={{ marginRight: 6 }}>
-              <GroupCard item={item} />
-            </View>
-          )}
-          keyExtractor={(item) => `item-${item.id}`}
-        />
-
-        <LargeHeading>Interesting Users</LargeHeading>
+        <LargeHeading>Recently added</LargeHeading>
         <HorizontalScrollFeed
           data={this.state.interestingUsers}
           renderItem={({ item }) => (
@@ -170,6 +159,23 @@ class SearchScreen extends React.Component {
           )}
           keyExtractor={(item) => `item-${item.id}`}
         />
+
+          <LargeHeading>Friends</LargeHeading>
+          <FlatList
+            style={{ marginTop: 15 }}
+            data={this.state.users}
+            renderItem={({ item }) => (
+              <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
+                <UserCard
+                  username={'UserName'}
+                  subtitle={'@subtitle'}
+                  user={item}
+                  follow
+                />
+              </View>
+            )}
+            keyExtractor={(item) => `item-${item.id}`}
+          />
 
         <LargeHeading>People you may know</LargeHeading>
         <FlatList
@@ -192,4 +198,4 @@ class SearchScreen extends React.Component {
   }
 }
 
-export default SearchScreen;
+export default FriendsScreen;

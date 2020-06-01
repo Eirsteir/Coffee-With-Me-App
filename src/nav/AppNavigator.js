@@ -8,13 +8,12 @@ import {
 import {
   STREAM_API_KEY,
   STREAM_APP_ID,
+  STREAM_API_TOKEN,
 } from 'babel-dotenv';
 
-import TOKEN from '../api/token';
-import Constants from '../constants/Constants';
 import Icon from '../components/Icon';
 import HomeScreen from '../screens/HomeScreen';
-import SearchScreen from '../screens/SearchScreen';
+import FriendsScreen from '../screens/FriendsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
@@ -37,8 +36,8 @@ const ProfileStack = createStackNavigator({
   Profile: { screen: ProfileScreen },
 });
 
-const SearchStack = createStackNavigator({
-  Search: { screen: SearchScreen },
+const FriendsStack = createStackNavigator({
+  Friends: { screen: FriendsScreen },
 });
 
 const HomeStack = createStackNavigator({
@@ -48,7 +47,7 @@ const HomeStack = createStackNavigator({
 const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeStack,
-    Search: SearchStack,
+    Friends: FriendsStack,
     Notifications: NotificationsStack,
     Profile: ProfileStack,
   },
@@ -58,8 +57,8 @@ const TabNavigator = createBottomTabNavigator(
         const { routeName } = navigation.state;
         if (routeName === 'Home') {
           return <Icon name="home" />;
-        } else if (routeName === 'Search') {
-          return <Icon name="search" />;
+        } else if (routeName === 'Friends') {
+          return <Icon name="friends" />;
         } else if (routeName === 'Notifications') {
           return (
             <IconBadge showNumber>
@@ -102,15 +101,13 @@ class AppNavigator extends React.Component {
   render() {
     let apiKey = STREAM_API_KEY;
     let appId = STREAM_APP_ID;
-    
-    console.log(this.props);
-    
+    let token = STREAM_API_TOKEN;   
 
     return (
       <StreamApp
         apiKey={apiKey}
         appId={appId}
-        token={this.props.token}
+        token={token} // this.props.token
         defaultUserData={{
           name: 'Batman',
           url: 'batsignal.com',
