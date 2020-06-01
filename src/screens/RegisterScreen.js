@@ -37,10 +37,8 @@ export default function RegisterScreen({ navigation }) {
 
     register({ email, name, password }).then(data => {
       setSuccessSnackbarIsVisible(true);
-    }).catch(err => {
-      console.log(err);
-      
-      setErrorMessage(err);
+    }).catch(err => {    
+      console.log(err); 
       setUnsuccessfulSnackbarIsVisible(true);
     })
   }
@@ -53,34 +51,29 @@ export default function RegisterScreen({ navigation }) {
       <Logo />
 
       <Text style={styles.title}>Create an account</Text>
-      {/* <View style={styles.inputView} > */}
-        <TextField
-          placeholder='Email'
-          onChangeText={email => setEmail(email.trim())}
-          onBlur={() => setEmailError(validate('email', email))}
-          autoCompleteType='email'
-          autoCapitalize='none'
-          error={emailError}
-        />
-      {/* </View> */}
-      {/* <View style={styles.inputView} > */}
-        <TextField
-          placeholder='Name'
-          onChangeText={name => setName(name.trim())}
-          onBlur={() => setNameError(validate('name', name))}
-          autoCapitalize='words'
-          error={nameError}
-        />
-      {/* </View> */}
-      {/* <View style={styles.inputView} > */}
-        <TextField
-          placeholder='Password'
-          onChangeText={password => setPassword(password.trim())}
-          onBlur={() => setPasswordError(validate('password', password))}
-          secureTextEntry
-          error={passwordError}
-        />
-      {/* </View> */}
+
+      <TextField
+        placeholder='Email'
+        onChangeText={email => setEmail(email.trim())}
+        onBlur={() => setEmailError(validate('email', email))}
+        autoCompleteType='email'
+        autoCapitalize='none'
+        error={emailError}
+      />
+      <TextField
+        placeholder='Name'
+        onChangeText={name => setName(name.trim())}
+        onBlur={() => setNameError(validate('name', name))}
+        autoCapitalize='words'
+        error={nameError}
+      />
+      <TextField
+        placeholder='Password'
+        onChangeText={password => setPassword(password.trim())}
+        onBlur={() => setPasswordError(validate('password', password))}
+        secureTextEntry
+        error={passwordError}
+      />
 
       <TouchableOpacity style={styles.signupBtn}>
         <Text style={styles.signupText} onPress={() => handleRegister({ email, name, password })}>Sign up</Text>
@@ -100,18 +93,6 @@ const styles = StyleSheet.create({
   title: {
       fontSize: 20,
       marginBottom: 20
-  },
-  inputView: {
-    width:"80%",
-    backgroundColor:"#f5f5f5",
-    borderRadius:5,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
-    padding:20
-  },
-  inputText:{
-    height:50,
   },
   forgot:{
     fontSize:11
