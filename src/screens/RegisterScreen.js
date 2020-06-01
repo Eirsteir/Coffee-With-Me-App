@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import SnackBar from 'react-native-snackbar-component'
 
 import Logo from '../components/Logo';
+import TextField from '../components/TextField';
 import { AuthContext } from '../App';
+import validate from '../helpers/validation_wrapper';
+
 
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -11,12 +14,27 @@ export default function RegisterScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [successSnackbarIsVisible, setSuccessSnackbarIsVisible] = useState(false);
   const [unsuccessfulSnackbarIsVisible, setUnsuccessfulSnackbarIsVisible] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-
+  const [emailError, setEmailError] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  
   const { register } = React.useContext(AuthContext);
 
 
   const handleRegister = ({ email, name, password }) => {
+
+    const emailError = validate('email', email);
+    const nameError = validate('name', name);
+    const passwordError = validate('password', password);
+
+    setEmailError(emailError);
+    setNameError(nameError);
+    setPasswordError(passwordError);
+
+    if (emailError || nameError || passwordError) {
+      return;
+    }
+
     register({ email, name, password }).then(data => {
       setSuccessSnackbarIsVisible(true);
     }).catch(err => {
@@ -25,16 +43,6 @@ export default function RegisterScreen({ navigation }) {
       setErrorMessage(err);
       setUnsuccessfulSnackbarIsVisible(true);
     })
-  }
-
-  const inputViewStyles = () => {
-    console.log('input view styles')
-
-    if (errorMessage == null) {
-      return styles.inputView;
-    }
-    console.log('error input view styles')
-    return [styles.errorStyles, styles.inputView];
   }
   
   return (
@@ -45,33 +53,35 @@ export default function RegisterScreen({ navigation }) {
       <Logo />
 
       <Text style={styles.title}>Create an account</Text>
-      <View style={inputViewStyles()} >
-        <TextInput
-          style={styles.inputText}
+      {/* <View style={styles.inputView} > */}
+        <TextField
           placeholder='Email'
-          onChangeText={email => setEmail(email)}
+          onChangeText={email => setEmail(email.trim())}
+          onBlur={() => setEmailError(validate('email', email))}
+          autoCompleteType='email'
           autoCapitalize='none'
+          error={emailError}
         />
-        {error && <Text>{error.email}</Text>}
-      </View>
-      <View style={inputViewStyles()} >
-        <TextInput
-          style={styles.inputText}
+      {/* </View> */}
+      {/* <View style={styles.inputView} > */}
+        <TextField
           placeholder='Name'
-          onChangeText={name => setName(name)}
+          onChangeText={name => setName(name.trim())}
+          onBlur={() => setNameError(validate('name', name))}
           autoCapitalize='words'
+          error={nameError}
         />
-        {error && <Text>{error.name}</Text>}
-      </View>
-      <View style={inputViewStyles()} >
-        <TextInput
-          style={styles.inputText}
+      {/* </View> */}
+      {/* <View style={styles.inputView} > */}
+        <TextField
           placeholder='Password'
-          onChangeText={password => setPassword(password)}
+          onChangeText={password => setPassword(password.trim())}
+          onBlur={() => setPasswordError(validate('password', password))}
           secureTextEntry
+          error={passwordError}
         />
-        {error && <Text>{error.password}</Text>}
-      </View>
+      {/* </View> */}
+
       <TouchableOpacity style={styles.signupBtn}>
         <Text style={styles.signupText} onPress={() => handleRegister({ email, name, password })}>Sign up</Text>
       </TouchableOpacity>
@@ -79,10 +89,6 @@ export default function RegisterScreen({ navigation }) {
   );
 }
 
-
-const genericInputViewStyles = () => {
-  return
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -104,14 +110,8 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     padding:20
   },
-  errorInputView: {
-    borderColor: '#cc0000'
-  },
   inputText:{
     height:50,
-  },
-  inputErrorText: {
-    color: '#cc0000'
   },
   forgot:{
     fontSize:11
