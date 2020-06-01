@@ -5,7 +5,7 @@ import SnackBar from 'react-native-snackbar-component'
 import Logo from '../components/Logo';
 import TextField from '../components/TextField';
 import { AuthContext } from '../App';
-import validate from '../helpers/validation_wrapper';
+import validate from '../validation/validation_wrapper';
 
 
 export default function RegisterScreen({ navigation }) {

@@ -51,7 +51,8 @@ class ProfileHeaderInner extends React.Component<PropsInner, State> {
       this.props.userData || {};
 
     coverImage ? StatusBar.setBarStyle('light-content', true) : null;
-
+    console.log(coverImage);
+    
     return (
       <SafeAreaView style={[styles.profileHeader]}>
         {coverImage ? <CoverImage source={coverImage} /> : null}
