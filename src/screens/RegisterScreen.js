@@ -17,20 +17,16 @@ export default function RegisterScreen({ navigation }) {
 
   const handleRegister = ({ email, name, password }) => {
     register({ email, name, password }).then(data => {
-      console.log(data);
-      // successful snackbar
       setSuccessSnackbarIsVisible(true);
     }).catch(err => {
-      // unsuccessful snackbar
-      console.log(err);
       setUnsuccessfulSnackbarIsVisible(true);
     })
   }
   
   return (
     <View style={styles.container}>
-      <SnackBar visible={successSnackbarIsVisible} textMessage="Successfully registered account" actionHandler={() => { navigation.navigate("Login")}} actionText="Login"/>
-      <SnackBar visible={unsuccessfulSnackbarIsVisible} textMessage="Unable to register account" actionHandler={() => { setUnsuccessfulSnackbarIsVisible(false) }} actionText="Dismiss"/>
+      <SnackBar visible={successSnackbarIsVisible} backgroundColor='#4BCA81' accentColor='#f5f5f5' textMessage="Successfully registered account" actionHandler={() => { navigation.navigate("Login")}} actionText="Login"/>
+      <SnackBar visible={unsuccessfulSnackbarIsVisible} backgroundColor='#cc0000' accentColor='#f5f5f5'	textMessage="Unable to register account. Try again later" actionHandler={() => { setUnsuccessfulSnackbarIsVisible(false) }} actionText="Dismiss"/>
 
       <Logo />
 
