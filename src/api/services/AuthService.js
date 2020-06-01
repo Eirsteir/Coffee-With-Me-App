@@ -1,7 +1,9 @@
+import NavigationActions from "react-navigation/src/NavigationActions";
+
 import AUTH from '../auth';
 import TOKEN from '../token';
 import Constants from '../../constants/Constants';
-import NavigationActions from "react-navigation/src/NavigationActions";
+import handleResponse from '../httpHelpers';
 
 
 class AuthService {
@@ -20,10 +22,7 @@ class AuthService {
 
     static register = ({ email, name, password }) => {
         return AUTH.register(email, name, password)
-            .then((response) => {
-                console.log(response);
-                return this.logIn(response.email, response.password);
-            })
+            .then(handleResponse);
     }
 
     static isAuthenticated = () => {

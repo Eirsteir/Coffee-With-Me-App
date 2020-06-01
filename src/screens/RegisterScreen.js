@@ -11,6 +11,19 @@ export default function RegisterScreen({ navigation }) {
 
   const { register } = React.useContext(AuthContext);
 
+
+  const handleRegister = ({ email, name, password }) => {
+    register({ email, name, password }).then(data => {
+      console.log(data);
+      // successful snackbar
+
+    }).catch(err => {
+      // unsuccessful snackbar
+      console.log(err);
+      
+    })
+  }
+
   return (
     <View style={styles.container}>
 
@@ -42,7 +55,7 @@ export default function RegisterScreen({ navigation }) {
         />
       </View>
       <TouchableOpacity style={styles.signupBtn}>
-        <Text style={styles.signupText} onPress={() => register({ email, name, password })}>Sign up</Text>
+        <Text style={styles.signupText} onPress={() => handleRegister({ email, name, password })}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );
