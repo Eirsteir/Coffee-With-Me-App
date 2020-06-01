@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Dimensions, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { SocialIcon } from 'react-native-elements';
+import SnackBar from 'react-native-snackbar-component'
 
 import Logo from '../components/Logo';
 import { AuthContext } from '../App';
 
 export default function LoginScreen({ navigation }) {
 
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [errorMessage, serErrorMessage] = React.useState(null);
-    
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [errorSnackBarIsVisible, setErrorSnackBarIsVisible] = useState(false);
+
     const { login } = React.useContext(AuthContext);
+
+    const handleLogin = ({ email, password }) => {
+      login({ email, password }).catch((err) => {
+        console.log(err);
+        if (err.status >= 500) {
+          setErrorSnackBarIsVisible(true);
+          return;
+        }
+        setErrorMessage('Wrong email or password');
+      })
+    }
 
     return (
         <View style={styles.container}>
+          <SnackBar visible={errorSnackBarIsVisible} backgroundColor='#cc0000' accentColor='#f5f5f5'	textMessage="Unable to log in. Please try again later" actionHandler={() => { setErrorSnackBarIsVisible(false) }} actionText="Dismiss"/>
 
             <Logo />
 
@@ -32,11 +46,13 @@ export default function LoginScreen({ navigation }) {
                     onChangeText={password => setPassword(password)}/>
             </View>
 
+            {!!errorMessage &&  <Text style={styles.errorText}>{errorMessage}</Text>}
+
             <TouchableOpacity>
                 <Text style={styles.forgot}>Forgot Password?</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.loginBtn}>
-                <Text style={styles.loginText} onPress={() => login({ email, password })}>LOGIN</Text>
+                <Text style={styles.loginText} onPress={() => handleLogin({ email, password })}>LOGIN</Text>
             </TouchableOpacity>
             <View style={styles.orContainer}>
               <View style={styles.hrLine} />
@@ -140,5 +156,10 @@ const styles = StyleSheet.create({
       height: 50,
       alignItems:"center",
       justifyContent:"center",    
+    },
+    errorText: {
+        marginTop: -15,
+        marginBottom: 10,
+        color: '#cc0000'
     }
 });
