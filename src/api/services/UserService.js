@@ -15,7 +15,7 @@ class UserService {
         return axios({
             method: 'POST',
             url: 'http://localhost:8080/api/auth',
-            headers: AUTH.getHeaders(token);
+            headers: AUTH.getHeaders(token)
         });
     }
 
