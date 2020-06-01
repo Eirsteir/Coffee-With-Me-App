@@ -11,6 +11,7 @@ export default function RegisterScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [successSnackbarIsVisible, setSuccessSnackbarIsVisible] = useState(false);
   const [unsuccessfulSnackbarIsVisible, setUnsuccessfulSnackbarIsVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const { register } = React.useContext(AuthContext);
 
@@ -19,8 +20,21 @@ export default function RegisterScreen({ navigation }) {
     register({ email, name, password }).then(data => {
       setSuccessSnackbarIsVisible(true);
     }).catch(err => {
+      console.log(err);
+      
+      setErrorMessage(err);
       setUnsuccessfulSnackbarIsVisible(true);
     })
+  }
+
+  const inputViewStyles = () => {
+    console.log('input view styles')
+
+    if (errorMessage == null) {
+      return styles.inputView;
+    }
+    console.log('error input view styles')
+    return [styles.errorStyles, styles.inputView];
   }
   
   return (
@@ -31,35 +45,43 @@ export default function RegisterScreen({ navigation }) {
       <Logo />
 
       <Text style={styles.title}>Create an account</Text>
-      <View style={styles.inputView} >
+      <View style={inputViewStyles()} >
         <TextInput
           style={styles.inputText}
           placeholder='Email'
           onChangeText={email => setEmail(email)}
           autoCapitalize='none'
         />
+        {error && <Text>{error.email}</Text>}
       </View>
-      <View style={styles.inputView} >
+      <View style={inputViewStyles()} >
         <TextInput
           style={styles.inputText}
           placeholder='Name'
           onChangeText={name => setName(name)}
           autoCapitalize='words'
         />
+        {error && <Text>{error.name}</Text>}
       </View>
-      <View style={styles.inputView} >
+      <View style={inputViewStyles()} >
         <TextInput
           style={styles.inputText}
           placeholder='Password'
           onChangeText={password => setPassword(password)}
           secureTextEntry
         />
+        {error && <Text>{error.password}</Text>}
       </View>
       <TouchableOpacity style={styles.signupBtn}>
         <Text style={styles.signupText} onPress={() => handleRegister({ email, name, password })}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );
+}
+
+
+const genericInputViewStyles = () => {
+  return
 }
 
 const styles = StyleSheet.create({
@@ -73,7 +95,7 @@ const styles = StyleSheet.create({
       fontSize: 20,
       marginBottom: 20
   },
-  inputView:{
+  inputView: {
     width:"80%",
     backgroundColor:"#f5f5f5",
     borderRadius:5,
@@ -82,8 +104,14 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     padding:20
   },
+  errorInputView: {
+    borderColor: '#cc0000'
+  },
   inputText:{
     height:50,
+  },
+  inputErrorText: {
+    color: '#cc0000'
   },
   forgot:{
     fontSize:11
