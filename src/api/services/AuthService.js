@@ -8,13 +8,14 @@ import handleResponse from '../httpHelpers';
 
 class AuthService {
 
-    static logIn = (email, password) => {
+    static login = ({email, password}) => {
         const response = AUTH.authenticate(email, password);
         
         return response.then((response) => {
-            if(response && response.data.authorization) {
-                const authorization = response.data.authorization;
-                return TOKEN.set(Constants.AUTH_TOKEN, authorization).then(() => {return authorization});
+            
+            if(response && response.data) {
+                const token = response.data;
+                return TOKEN.set(Constants.AUTH_TOKEN, token).then(() => {return token});
             }
             return null;
         });

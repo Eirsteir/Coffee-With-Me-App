@@ -71,21 +71,15 @@ export default function App({ navigation }) {
   const authContext = React.useMemo(
     () => ({
       login: async data => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
+        const token = await AuthService.login(data).then((token) => { return token });
+        console.log(token);
 
-        dispatch({ type: 'LOGIN', token: 'dummy-auth-token' });
+        dispatch({ type: 'LOGIN', token: token });
       },
       logout: () => dispatch({ type: 'LOG_OUT' }),
       register: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
+
         return await AuthService.register(data, navigation);
-        // dispatch({ type: 'LOGIN', token: 'dummy-auth-token' });
       },
     }),
     []

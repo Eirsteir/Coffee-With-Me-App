@@ -75,8 +75,8 @@ export default function RegisterScreen({ navigation }) {
         error={passwordError}
       />
 
-      <TouchableOpacity style={styles.signupBtn}>
-        <Text style={styles.signupText} onPress={() => handleRegister({ email, name, password })}>Sign up</Text>
+      <TouchableOpacity style={styles.signupBtn} onPress={() => handleRegister({ email, name, password })}>
+        <Text style={styles.signupText}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );

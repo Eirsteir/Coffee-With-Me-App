@@ -9,7 +9,7 @@ export default {
             password: password
         }
 
-        return axios.post(AUTH_URL, data);
+        return axios.post(AUTH_URL + '/login', data);
     },
     register: (email, name, password) => {
         const data = {
