@@ -18,7 +18,7 @@ import RepostList from '../components/RepostList';
 import type { UserResponse } from '../types';
 import type { NavigationScreen } from 'expo-activity-feed';
 
-import ReplyIcon from '../images/icons/reply.png';
+import ReplyIcon from '../../images/icons/reply.png';
 
 type Props = {|
   navigation: NavigationScreen,

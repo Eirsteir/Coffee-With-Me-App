@@ -12,7 +12,7 @@ class StatusUpdateScreen extends React.Component {
       >
         <Image
           style={{ width: 24, height: 24 }}
-          source={require('../images/icons/close.png')}
+          source={require('../../images/icons/close.png')}
         />
       </TouchableOpacity>
     ),

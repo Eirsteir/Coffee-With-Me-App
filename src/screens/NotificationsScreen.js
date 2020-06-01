@@ -6,9 +6,9 @@ import Notification from '../components/Notification';
 import Follow from '../components/Notifications/Follow';
 import { NotificationFeed } from 'expo-activity-feed';
 
-import CategoriesIcon from '../images/icons/categories.png';
-import PostIcon from '../images/icons/post.png';
-import ReplyIcon from '../images/icons/reply.png';
+import CategoriesIcon from '../../images/icons/categories.png';
+import PostIcon from '../../images/icons/post.png';
+import ReplyIcon from '../../images/icons/reply.png';
 
 import { Activity, LikeButton, ReactionIcon } from 'expo-activity-feed';
 
