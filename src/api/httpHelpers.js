@@ -1,16 +1,20 @@
-export function handleResponse(response) {
-    return response.then(data => {
+export default function handleResponse(response) {
+   
+    console.log(response);
 
-        if (!response.ok) {
-            if (response.status === 401) {
-                logout();
-                this.props.history.push("/");
-            }
+    if (isValidStatus(response.status)) {
+        return response;
+    }
 
-            const error = (data && data.message) || response.status;
-            return Promise.reject(error);
-        }
+    if (response.status === 401) {
+        // logout();
+        // this.props.history.push("/");
+    }
 
-        return data;
-    });
+    const error = (response && response.message) || response.statusText;
+    return Promise.reject(error);
+}
+
+function isValidStatus(status) {
+    return status >= 200 && status < 300;
 }

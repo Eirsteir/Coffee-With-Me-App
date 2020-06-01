@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import SnackBar from 'react-native-snackbar-component'
 
 import Logo from '../components/Logo';
 import { AuthContext } from '../App';
@@ -8,6 +9,8 @@ export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [successSnackbarIsVisible, setSuccessSnackbarIsVisible] = useState(false);
+  const [unsuccessfulSnackbarIsVisible, setUnsuccessfulSnackbarIsVisible] = useState(false);
 
   const { register } = React.useContext(AuthContext);
 
@@ -16,16 +19,18 @@ export default function RegisterScreen({ navigation }) {
     register({ email, name, password }).then(data => {
       console.log(data);
       // successful snackbar
-
+      setSuccessSnackbarIsVisible(true);
     }).catch(err => {
       // unsuccessful snackbar
       console.log(err);
-      
+      setUnsuccessfulSnackbarIsVisible(true);
     })
   }
-
+  
   return (
     <View style={styles.container}>
+      <SnackBar visible={successSnackbarIsVisible} textMessage="Successfully registered account" actionHandler={() => { navigation.navigate("Login")}} actionText="Login"/>
+      <SnackBar visible={unsuccessfulSnackbarIsVisible} textMessage="Unable to register account" actionHandler={() => { setUnsuccessfulSnackbarIsVisible(false) }} actionText="Dismiss"/>
 
       <Logo />
 

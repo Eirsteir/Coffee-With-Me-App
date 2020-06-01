@@ -20,7 +20,7 @@ class AuthService {
         });
     }
 
-    static register = ({ email, name, password }) => {
+    static register = async ({ email, name, password }) => {
         return AUTH.register(email, name, password)
             .then(handleResponse);
     }

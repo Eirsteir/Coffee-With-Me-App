@@ -84,8 +84,7 @@ export default function App({ navigation }) {
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-        return AuthService.register(data)
-          .then((data) => { return data });
+        return await AuthService.register(data);
         // dispatch({ type: 'LOGIN', token: 'dummy-auth-token' });
       },
     }),
