@@ -1,4 +1,6 @@
-export default function handleResponse(response) {
+import AuthService from './services/AuthService';
+
+export default function handleResponse(response, navigation) {
    
     console.log(response);
 
@@ -7,8 +9,8 @@ export default function handleResponse(response) {
     }
 
     if (response.status === 401) {
-        // logout();
-        // this.props.history.push("/");
+        AuthService.logout();
+        navigation.navigate('Login');
     }
 
     const error = (response && response.message) || response.statusText;
