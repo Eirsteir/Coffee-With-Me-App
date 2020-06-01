@@ -73,7 +73,7 @@ export default function App({ navigation }) {
       login: async data => {
         const token = await AuthService.login(data).then((token) => { return token });
         dispatch({ type: 'LOGIN', token: token });
-      },
+      }, 
       logout: () => dispatch({ type: 'LOG_OUT' }),
       register: async data => {
         return await AuthService.register(data, navigation);
@@ -87,7 +87,7 @@ export default function App({ navigation }) {
         {state.userToken == null ? (
           <AuthNavigator />
         ) : (
-          <AppNavigator/>
+          <AppNavigator token={state.userToken} />
         )}
     </AuthContext.Provider>
   );

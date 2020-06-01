@@ -7,10 +7,11 @@ import {
 
 import {
   STREAM_API_KEY,
-  STREAM_API_TOKEN,
   STREAM_APP_ID,
 } from 'babel-dotenv';
 
+import TOKEN from '../api/token';
+import Constants from '../constants/Constants';
 import Icon from '../components/Icon';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
@@ -101,13 +102,15 @@ class AppNavigator extends React.Component {
   render() {
     let apiKey = STREAM_API_KEY;
     let appId = STREAM_APP_ID;
-    let token = STREAM_API_TOKEN;
-  
+    
+    console.log(this.props);
+    
+
     return (
       <StreamApp
         apiKey={apiKey}
         appId={appId}
-        token={token}
+        token={this.props.token}
         defaultUserData={{
           name: 'Batman',
           url: 'batsignal.com',
