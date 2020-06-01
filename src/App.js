@@ -1,127 +1,103 @@
-//@flow
-import React from 'react';
-import {
-  createStackNavigator,
-  createBottomTabNavigator,
-} from 'react-navigation';
+import * as React from 'react';
 
-import {
-  STREAM_API_KEY,
-  STREAM_API_TOKEN,
-  STREAM_APP_ID,
-} from 'babel-dotenv';
+import TOKEN from './api/token';
+import AuthService from './api/services/AuthService';
+import Constants from './constants/Constants';
+import AuthNavigator from './nav/AuthNavigator';
+import AppNavigator from './nav/AppNavigator';
 
-import Icon from './components/Icon';
-import HomeScreen from './screens/HomeScreen';
-import SearchScreen from './screens/SearchScreen';
-import NotificationsScreen from './screens/NotificationsScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import EditProfileScreen from './screens/EditProfileScreen';
-import SinglePostScreen from './screens/SinglePostScreen';
-import StatusUpdateScreen from './screens/StatusUpdateScreen';
+export const AuthContext = React.createContext();
 
-import {
-  Avatar,
-  StreamApp,
-  IconBadge,
-} from 'expo-activity-feed';
-import type { UserResponse } from './types';
-
-// $FlowFixMe
-const NotificationsStack = createStackNavigator({
-  Notifications: { screen: NotificationsScreen },
-});
-
-const ProfileStack = createStackNavigator({
-  Profile: { screen: ProfileScreen },
-});
-
-const SearchStack = createStackNavigator({
-  Search: { screen: SearchScreen },
-});
-
-const HomeStack = createStackNavigator({
-  Home: { screen: HomeScreen },
-});
-
-const TabNavigator = createBottomTabNavigator(
-  {
-    Home: HomeStack,
-    Search: SearchStack,
-    Notifications: NotificationsStack,
-    Profile: ProfileStack,
-  },
-  {
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: () => {
-        const { routeName } = navigation.state;
-        if (routeName === 'Home') {
-          return <Icon name="home" />;
-        } else if (routeName === 'Search') {
-          return <Icon name="search" />;
-        } else if (routeName === 'Notifications') {
-          return (
-            <IconBadge showNumber>
-              <Icon name="notifications" />
-            </IconBadge>
-          );
-        } else if (routeName === 'Profile') {
-          return (
-            <Avatar
-              source={(userData: UserResponse) => userData.data.profileImage}
-              size={25}
-              noShadow
-            />
-          );
-        }
-      },
-    }),
-    initialRouteName: 'Home',
-  },
-);
-
-const doNotShowHeaderOption = {
-  navigationOptions: {
-    header: null,
-  },
-};
-
-const Navigation = createStackNavigator({
-  Tabs: {
-    screen: TabNavigator,
-    ...doNotShowHeaderOption,
-  },
-  SinglePost: { screen: SinglePostScreen },
-  NewPost: { screen: StatusUpdateScreen },
-  EditProfile: { screen: EditProfileScreen },
-});
-
-export default class App extends React.Component {
-
-  render() {
-    let apiKey = STREAM_API_KEY;
-    let appId = STREAM_APP_ID;
-    let token = STREAM_API_TOKEN;
-  
-    return (
-      <StreamApp
-        apiKey={apiKey}
-        appId={appId}
-        token={token}
-        defaultUserData={{
-          name: 'Batman',
-          url: 'batsignal.com',
-          desc: 'Smart, violent and brutally tough solutions to crime.',
-          profileImage:
-            'https://i.kinja-img.com/gawker-media/image/upload/s--PUQWGzrn--/c_scale,f_auto,fl_progressive,q_80,w_800/yktaqmkm7ninzswgkirs.jpg',
-          coverImage:
-            'https://i0.wp.com/photos.smugmug.com/Portfolio/Full/i-mwrhZK2/0/ea7f1268/X2/GothamCity-X2.jpg?resize=1280%2C743&ssl=1',
-        }}
-      >
-        <Navigation />
-      </StreamApp>
-    );
-  }
+function SplashScreen() {
+  return (
+    <View>
+      <Text>Loading...</Text>
+    </View>
+  );
 }
 
-export default App;
+export default function App({ navigation }) {
+  const [state, dispatch] = React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'RESTORE_TOKEN':
+          return {
+            ...prevState,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case 'LOGIN':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+          };
+        case 'LOG_OUT':
+          return {
+            ...prevState,
+            isSignout: true,
+            userToken: null,
+          };
+      }
+    },
+    {
+      isLoading: true,
+      isLogout: false,
+      userToken: null,
+    }
+  );
+
+  React.useEffect(() => {
+    // Fetch the token from storage then navigate to our appropriate place
+    const bootstrapAsync = async () => {
+      let userToken;
+
+      try {
+        userToken = await TOKEN.get(Constants.AUTH_TOKEN); 
+      } catch (e) {
+        // Restoring token failed
+      }
+
+      // After restoring token, we may need to validate it in production apps
+
+      // This will switch to the App screen or Auth screen and this loading
+      // screen will be unmounted and thrown away.
+      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+    };
+
+    bootstrapAsync();
+  }, []);
+
+  const authContext = React.useMemo(
+    () => ({
+      login: async data => {
+        // In a production app, we need to send some data (usually username, password) to server and get a token
+        // We will also need to handle errors if sign in failed
+        // After getting token, we need to persist the token using `AsyncStorage`
+        // In the example, we'll use a dummy token
+
+        dispatch({ type: 'LOGIN', token: 'dummy-auth-token' });
+      },
+      logout: () => dispatch({ type: 'LOG_OUT' }),
+      register: async data => {
+        // In a production app, we need to send user data to server and get a token
+        // We will also need to handle errors if sign up failed
+        // After getting token, we need to persist the token using `AsyncStorage`
+        // In the example, we'll use a dummy token
+        return await AuthService.register(data, navigation);
+        // dispatch({ type: 'LOGIN', token: 'dummy-auth-token' });
+      },
+    }),
+    []
+  );
+
+  return (
+    <AuthContext.Provider value={authContext}>
+        {state.userToken == null ? (
+          <AuthNavigator />
+        ) : (
+          <AppNavigator/>
+        )}
+    </AuthContext.Provider>
+  );
+}

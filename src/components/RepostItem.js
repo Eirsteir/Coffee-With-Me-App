@@ -4,8 +4,8 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Avatar, humanizeTimestamp } from 'expo-activity-feed';
 
-import HeartIconOutline from '../images/icons/heart-outline.png';
-import RepostIcon from '../images/icons/repost.png';
+import HeartIconOutline from '../../images/icons/heart-outline.png';
+import RepostIcon from '../../images/icons/repost.png';
 
 import type { Repost } from '../types';
 
