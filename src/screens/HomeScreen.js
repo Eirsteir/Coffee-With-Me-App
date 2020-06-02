@@ -66,12 +66,20 @@ class HomeScreen extends React.Component<Props> {
 
   render() {
 
-    let data = [{
-      value: 'Banana', label: 'Label'
+    let capusData = [{
+      value: 'Banana', label: 'Gløshaugen'
     }, {
       value: 'Mango', label: 'Label'
     }, {
       value: 'Pear', label: 'Label'
+    }];
+
+    let scheduleData = [{
+      value: 'Banana', label: 'In 5 minutes'
+    }, {
+      value: 'Mango', label: 'In 10 minutes'
+    }, {
+      value: 'Pear', label: 'In 15 minutes'
     }];
 
     return (
@@ -79,27 +87,30 @@ class HomeScreen extends React.Component<Props> {
     
           <Text style={styles.title}>Invite your friends on a coffee break</Text>
           <Text>You deserve it</Text>
+
           <Dropdown
             label='Campus'
             data={data}
             rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
             containerStyle={styles.dropdownContainer}
-
+            inputContainerStyle={styles.inputContainerStyle}
+            dropdownOffset={{ 'top': 5, 'left': 0 }}
+            pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
           />
           <Dropdown
             label='Schedule to'
             data={data}
             rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
             containerStyle={styles.dropdownContainer}
+            inputContainerStyle={styles.inputContainerStyle}
+            dropdownOffset={{ 'top': 5, 'left': 0 }}
+            pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
           />
 
           <TouchableOpacity style={styles.inviteBtn} >
             <Text style={styles.inviteText}>INVITE</Text>
           </TouchableOpacity>
-          {/* Universitys campuses dropdown */}
-          {/* Schedule to in minutes */}
-          {/* INVITE */}
-
+        
         </View>
     );
   }
@@ -113,10 +124,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
   },
   dropdownContainer: {
     width: 30 + '%',
+  },
+  inputContainerStyle: {
+    backgroundColor: '#fb5b5a',
+    // height: 10,
+    // padding: 20,
+    borderRadius: 5,
   },
   inviteBtn:{
     width:"80%",
