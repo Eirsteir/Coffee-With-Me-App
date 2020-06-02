@@ -17,7 +17,8 @@ export default function LoginScreen({ navigation }) {
 
     const handleLogin = ({ email, password }) => {
       login({ email, password }, navigation).catch((err) => {
-
+        console.log("ERROR: ");
+        console.log(err);
         if (err.response.status == 401) {
           setErrorMessage('Wrong email or password');
           return;

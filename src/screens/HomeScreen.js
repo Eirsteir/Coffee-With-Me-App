@@ -1,6 +1,14 @@
 // @flow
 import React from 'react';
-import { StatusBar, Image, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { 
+  StatusBar, 
+  Image, 
+  Text, 
+  TouchableOpacity,
+  View, 
+  StyleSheet,
+} from 'react-native';
+import { Dropdown } from 'react-native-material-dropdown';
 
 import { Avatar } from 'expo-activity-feed';
 import type { UserResponse, ActivityData } from '../types';
@@ -57,9 +65,37 @@ class HomeScreen extends React.Component<Props> {
   };
 
   render() {
+
+    let data = [{
+      value: 'Banana', label: 'Label'
+    }, {
+      value: 'Mango', label: 'Label'
+    }, {
+      value: 'Pear', label: 'Label'
+    }];
+
     return (
         <View style={styles.container}>
-          
+    
+          <Text style={styles.title}>Invite your friends on a coffee break</Text>
+          <Text>You deserve it</Text>
+          <Dropdown
+            label='Campus'
+            data={data}
+            rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
+            containerStyle={styles.dropdownContainer}
+
+          />
+          <Dropdown
+            label='Schedule to'
+            data={data}
+            rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
+            containerStyle={styles.dropdownContainer}
+          />
+
+          <TouchableOpacity style={styles.inviteBtn} >
+            <Text style={styles.inviteText}>INVITE</Text>
+          </TouchableOpacity>
           {/* Universitys campuses dropdown */}
           {/* Schedule to in minutes */}
           {/* INVITE */}
@@ -75,6 +111,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+  },
+  dropdownContainer: {
+    width: 30 + '%',
+  },
+  inviteBtn:{
+    width:"80%",
+    backgroundColor:"#fb5b5a",
+    borderRadius:5,
+    height:50,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:40,
+    marginBottom:10
+  },
+  inviteText:{
+    color:"white",
+    fontSize: 15,
   },
 });
 

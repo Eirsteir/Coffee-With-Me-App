@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import Constant from '../constants/Constants';
 
-const AUTH_URL = 'http://localhost:8080/api/auth';
+const AUTH_URL = 'http://d0650856ce40.ngrok.io/api/auth';
 
 export default {
     authenticate: (email, password) => {
@@ -11,6 +11,8 @@ export default {
             password: password
         }
 
+        console.log(AUTH_URL);
+        
         return axios.post(AUTH_URL + '/login', data);
     },
     register: (email, name, password) => {

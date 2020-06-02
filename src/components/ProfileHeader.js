@@ -40,7 +40,7 @@ class ProfileHeaderInner extends React.Component {
   }
 
   render() {
-    let { name, nickname, friendsCount, } = this.state.user;
+    let { name, nickname, friendsCount } = this.state.user;
     let profileImage = null;
     
     StatusBar.setBarStyle('light-content', true);
@@ -54,7 +54,7 @@ class ProfileHeaderInner extends React.Component {
             <Text style={styles.userName}>{name}</Text>
             <Text style={styles.userNickname}>{nickname}</Text>
           </View>
-          <Avatar source={profileImage} size={150} />
+          <Avatar source={profileImage} size={150} noShadow />
         </View>
 
         <View style={styles.statSection}>
@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 39,
-    // fontWeight: '600',
     color: 'white',
   },
   userUrl: {
