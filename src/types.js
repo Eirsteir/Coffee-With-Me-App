@@ -17,7 +17,6 @@ export type UserData = {
   url?: string,
   desc?: string,
   profileImage?: string,
-  coverImage?: string,
 };
 
 export type CloudClient = StreamCloudClient<UserData>;

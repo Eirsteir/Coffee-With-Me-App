@@ -5,6 +5,8 @@ import { StatusBar, Image, TouchableOpacity, View, StyleSheet } from 'react-nati
 import { Avatar } from 'expo-activity-feed';
 import type { UserResponse, ActivityData } from '../types';
 
+import PostIcon from '../../images/icons/post.png';
+
 import type { NavigationScreen } from 'expo-activity-feed';
 import type { NavigationEventSubscription } from 'react-navigation';
 

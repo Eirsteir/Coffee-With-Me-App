@@ -46,12 +46,10 @@ class ProfileHeaderInner extends React.Component<PropsInner, State> {
   }
 
   render() {
-    let { following_count, followers_count } = this.state.user;
-    let { name, url, desc, profileImage, coverImage } =
-      this.props.userData || {};
+    let { following_count, } = this.state.user;
+    let { name, desc, profileImage, coverImage } = this.props.userData || {};
 
     coverImage ? StatusBar.setBarStyle('light-content', true) : null;
-    console.log(coverImage);
     
     return (
       <SafeAreaView style={[styles.profileHeader]}>
@@ -60,15 +58,13 @@ class ProfileHeaderInner extends React.Component<PropsInner, State> {
         <View style={[styles.mainSection]}>
           <View style={styles.userDetails}>
             <Text style={styles.userName}>{name}</Text>
-            <Text style={styles.userUrl}>{url}</Text>
             <Text style={styles.userDesc}>{desc}</Text>
           </View>
           <Avatar source={profileImage} size={150} />
         </View>
 
         <View style={styles.statSection}>
-          <Count num={following_count}>Followers</Count>
-          <Count num={followers_count}>Following</Count>
+          <Count num={following_count}>Friends</Count>
         </View>
       </SafeAreaView>
     );

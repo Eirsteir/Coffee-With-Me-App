@@ -56,7 +56,7 @@ const TabNavigator = createBottomTabNavigator(
       tabBarIcon: () => {
         const { routeName } = navigation.state;
         if (routeName === 'Home') {
-          return <Icon name="home" />;
+          return <Icon name="home" />; // todo: coffee cup icon
         } else if (routeName === 'Friends') {
           return <Icon name="friends" />;
         } else if (routeName === 'Notifications') {
@@ -107,15 +107,15 @@ class AppNavigator extends React.Component {
       <StreamApp
         apiKey={apiKey}
         appId={appId}
-        token={token} // this.props.token
+        token={this.props.token} 
         defaultUserData={{
-          name: 'Batman',
-          url: 'batsignal.com',
-          desc: 'Smart, violent and brutally tough solutions to crime.',
+          name: '',
+          url: '',
+          desc: '',
           profileImage:
-            'https://i.kinja-img.com/gawker-media/image/upload/s--PUQWGzrn--/c_scale,f_auto,fl_progressive,q_80,w_800/yktaqmkm7ninzswgkirs.jpg',
+            '',
           coverImage:
-            'https://i0.wp.com/photos.smugmug.com/Portfolio/Full/i-mwrhZK2/0/ea7f1268/X2/GothamCity-X2.jpg?resize=1280%2C743&ssl=1',
+            '',
         }}
       >
         <Navigation />
