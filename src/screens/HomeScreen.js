@@ -1,18 +1,9 @@
 // @flow
 import React from 'react';
-import { StatusBar, Image, TouchableOpacity, View } from 'react-native';
+import { StatusBar, Image, TouchableOpacity, View, StyleSheet } from 'react-native';
 
-import {
-  Avatar,
-  FlatFeed,
-  Activity,
-  LikeButton,
-  ReactionIcon,
-} from 'expo-activity-feed';
+import { Avatar } from 'expo-activity-feed';
 import type { UserResponse, ActivityData } from '../types';
-
-import PostIcon from '../../images/icons/post.png';
-import ReplyIcon from '../../images/icons/reply.png';
 
 import type { NavigationScreen } from 'expo-activity-feed';
 import type { NavigationEventSubscription } from 'react-navigation';
@@ -43,7 +34,7 @@ class HomeScreen extends React.Component<Props> {
     ),
     headerRight: (
       <TouchableOpacity
-        onPress={() => navigation.navigate('NewPost')}
+        onPress={() => navigation.navigate('NewPost')}  // todo: what here?
         style={{ paddingRight: 15 }}
       >
         <Image source={PostIcon} style={{ width: 23, height: 23 }} />
@@ -65,38 +56,24 @@ class HomeScreen extends React.Component<Props> {
 
   render() {
     return (
-      <FlatFeed
-        feedGroup="timeline"
-        options={{
-          limit: 10,
-        }}
-        notify
-        navigation={this.props.navigation}
-        Activity={(props) => (
-          <TouchableOpacity
-            onPress={() => this._onPressActivity(props.activity)}
-          >
-            <Activity
-              {...props}
-              Footer={
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <LikeButton {...props} />
+        <View style={styles.container}>
+          
+          {/* Universitys campuses dropdown */}
+          {/* Schedule to in minutes */}
+          {/* INVITE */}
 
-                  <ReactionIcon
-                    icon={ReplyIcon}
-                    labelSingle="comment"
-                    labelPlural="comments"
-                    counts={props.activity.reaction_counts}
-                    kind="comment"
-                  />
-                </View>
-              }
-            />
-          </TouchableOpacity>
-        )}
-      />
+        </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default HomeScreen;
