@@ -16,13 +16,13 @@ export default function LoginScreen({ navigation }) {
     const { login } = React.useContext(AuthContext);
 
     const handleLogin = ({ email, password }) => {
-      login({ email, password }).catch((err) => {
-        console.log(err);
-        if (err.status >= 500) {
-          setErrorSnackBarIsVisible(true);
+      login({ email, password }, navigation).catch((err) => {
+
+        if (err.response.status == 401) {
+          setErrorMessage('Wrong email or password');
           return;
         }
-        setErrorMessage('Wrong email or password');
+        setErrorSnackBarIsVisible(true);
       })
     }
 

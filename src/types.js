@@ -14,8 +14,7 @@ import type { AppCtx } from 'expo-activity-feed';
 
 export type UserData = {
   name: string,
-  url?: string,
-  desc?: string,
+  nickname?: string,
   profileImage?: string,
 };
 

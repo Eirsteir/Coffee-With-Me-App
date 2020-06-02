@@ -1,16 +1,14 @@
 import AuthService from './services/AuthService';
 
-export default function handleResponse(response, navigation) {
-   
-    console.log(response);
+export default function handleResponse(response, navigation=null) {
+    console.log('response: ' + response);
 
     if (isValidStatus(response.status)) {
         return response;
     }
 
     if (response.status === 401) {
-        AuthService.logout();
-        navigation.navigate('Login');
+        AuthService.logout(navigation);
     }
 
     const error = (response && response.message) || response.statusText;

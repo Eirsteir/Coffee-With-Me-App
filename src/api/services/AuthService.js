@@ -8,7 +8,7 @@ import handleResponse from '../httpHelpers';
 
 class AuthService {
 
-    static login = ({email, password}) => {
+    static login = async ({email, password}, navigation) => {
         const response = AUTH.authenticate(email, password);
         
         return response.then((response) => {

@@ -112,10 +112,7 @@ class AppNavigator extends React.Component {
           name: '',
           url: '',
           desc: '',
-          profileImage:
-            '',
-          coverImage:
-            '',
+          profileImage: ''
         }}
       >
         <Navigation />

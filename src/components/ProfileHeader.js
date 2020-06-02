@@ -1,70 +1,59 @@
 // @flow
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
-import { StreamApp } from 'expo-activity-feed';
 import Count from './Count';
 import { Avatar } from 'expo-activity-feed';
-import CoverImage from './CoverImage';
-import type { FollowCounts } from 'getstream';
-import type { AppCtx } from 'expo-activity-feed';
-import type { UserData } from '../types';
+
+import UserContext from '../context/UserContext';
 
 type Props = {};
 
 export default function ProfileHeader(props: Props) {
+  const userContext = useContext(UserContext); 
+
   return (
-    <StreamApp.Consumer>
-      {(appCtx) => <ProfileHeaderInner {...props} {...appCtx} />}
-    </StreamApp.Consumer>
+    <ProfileHeaderInner {...props} {...userContext} />
   );
 }
 
-type PropsInner = Props & AppCtx<UserData>;
 
-type State = {
-  user: FollowCounts,
-};
-
-class ProfileHeaderInner extends React.Component<PropsInner, State> {
-  constructor(props: PropsInner) {
+class ProfileHeaderInner extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       user: {
-        following_count: 0,
-        followers_count: 0,
+        friends_count: 0
       },
     };
   }
 
   async componentDidMount() {
-    let data = await this.props.user.profile();
-    this.props.changedUserData();
+    let data = await this.props.profile();
+    console.log(data);
+    
     this.setState({ user: data });
   }
 
   render() {
-    let { following_count, } = this.state.user;
-    let { name, desc, profileImage, coverImage } = this.props.userData || {};
-
-    coverImage ? StatusBar.setBarStyle('light-content', true) : null;
+    let { friends_count, } = this.state.user;
+    let { name, nickname, profileImage } = this.props.getUser() || {};
     
     return (
       <SafeAreaView style={[styles.profileHeader]}>
-        {coverImage ? <CoverImage source={coverImage} /> : null}
 
         <View style={[styles.mainSection]}>
           <View style={styles.userDetails}>
             <Text style={styles.userName}>{name}</Text>
-            <Text style={styles.userDesc}>{desc}</Text>
+            <Text style={styles.userNickname}>{nickname}</Text>
           </View>
           <Avatar source={profileImage} size={150} />
         </View>
 
         <View style={styles.statSection}>
-          <Count num={following_count}>Friends</Count>
+          <Count num={friends_count}>Friends</Count>
         </View>
       </SafeAreaView>
     );
@@ -109,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#364047',
   },
-  userDesc: {
+  userNickname: {
     fontSize: 14,
     fontWeight: '500',
     color: '#364047',

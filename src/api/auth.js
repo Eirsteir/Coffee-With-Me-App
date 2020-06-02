@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import Constant from '../constants/Constants';
+
 const AUTH_URL = 'http://localhost:8080/api/auth';
 
 export default {
@@ -22,7 +24,7 @@ export default {
     },
     getHeaders: (token) => {
         return {
-            'Authorization': token
+            'Authorization': Constant.JWT_PREFIX + token
         }
     }
 }

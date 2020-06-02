@@ -5,6 +5,7 @@ import AuthService from './api/services/AuthService';
 import Constants from './constants/Constants';
 import AuthNavigator from './nav/AuthNavigator';
 import AppNavigator from './nav/AppNavigator';
+import UserController from './context/UserContext';
 
 export const AuthContext = React.createContext();
 
@@ -87,7 +88,9 @@ export default function App({ navigation }) {
         {state.userToken == null ? (
           <AuthNavigator />
         ) : (
-          <AppNavigator token={state.userToken} />
+          <UserController>
+            <AppNavigator token={state.userToken} />
+          </UserController>
         )}
     </AuthContext.Provider>
   );
