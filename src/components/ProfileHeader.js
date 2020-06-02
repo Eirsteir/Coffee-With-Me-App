@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-
   mainSection: {
     width: 100 + '%',
     height: 150,
@@ -96,8 +95,8 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 39,
-    fontWeight: '600',
-    color: '#364047',
+    // fontWeight: '600',
+    color: 'white',
   },
   userUrl: {
     fontSize: 12,
