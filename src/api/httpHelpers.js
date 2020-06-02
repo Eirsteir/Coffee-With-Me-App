@@ -1,7 +1,6 @@
 import AuthService from './services/AuthService';
 
 export default function handleResponse(response, navigation=null) {
-    console.log('response: ' + response);
 
     if (isValidStatus(response.status)) {
         return response;
