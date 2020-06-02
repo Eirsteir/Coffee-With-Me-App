@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import Count from './Count';
@@ -14,7 +14,7 @@ type Props = {};
 
 export default function ProfileHeader(props: Props) {
   
-  const { profile } = useContext(UserContext);
+  const { profile } = useContext(UserContext);  
   return (
     <ProfileHeaderInner profile={profile} {...props} />
   );
@@ -43,8 +43,11 @@ class ProfileHeaderInner extends React.Component {
     let { name, nickname, friendsCount, } = this.state.user;
     let profileImage = null;
     
+    StatusBar.setBarStyle('light-content', true);
+
     return (
       <SafeAreaView style={[styles.profileHeader]}>
+        <CoverImage />
 
         <View style={[styles.mainSection]}>
           <View style={styles.userDetails}>

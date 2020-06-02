@@ -1,27 +1,23 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
+import Granim from 'react-granim'
 
-const CoverImage = ({ source, size }) => {
+
+const gradients = [
+  ['#9C27B0', '#FF4081'], 
+  ['#7B1FA2', '#F8BBD0'], 
+  ['#FF5252', '#607D8B'], 
+  ['#FF5722', '#FFA000'],
+];
+ 
+const CoverImage = () => {
+  console.log(gradients);
 
   return (
-    <View style={[styles.profileCover, { height: size ? size : 200 }]}>
-      <Image
-        style={[styles.profileCoverImage, { height: size ? size : 200 }]}
-        source={{ uri: source }}
-      />
-      <LinearGradient
-        colors={[
-          'rgba(0,0,0,1)',
-          'rgba(0,0,0,0.0)',
-          'rgba(255,255,255,0.0)',
-          'rgba(255,255,255,0.2)',
-          'rgba(255,255,255,0.5)',
-          'rgba(255,255,255,0.8)',
-          'rgba(255,255,255,1)',
-        ]}
-        style={[styles.profileCoverGradient, { height: size ? size : 200 }]}
-      />
+    <View style={styles.profileCover}>
+      <View style={styles.profileCoverImage}>
+        <Granim id='granim' states={{ 'default-state': {gradients: gradients }}}></Granim>
+      </View>
     </View>
   );
 };
@@ -38,10 +34,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   profileCoverImage: {
-    height: 200,
+    height: 210,
     width: 100 + '%',
     position: 'absolute',
   },
 });
+
 
 export default CoverImage;
