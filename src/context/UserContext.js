@@ -4,7 +4,13 @@ import PropTypes from 'prop-types';
 
 import UserService from '../api/services/UserService';
 
-export const UserContext = React.createContext();
+const initialState = {
+    user: {},
+}
+
+const initialContext = [{ ...initialState }, () => {}]
+
+export const UserContext = React.createContext(initialContext);
 
 export default function UserController(props) {
     const [state, dispatch] = React.useReducer(
@@ -25,7 +31,7 @@ export default function UserController(props) {
         },
         {
           isLoading: true,
-          user: null,
+          user: {},
         }
       );
 
@@ -40,23 +46,19 @@ export default function UserController(props) {
 
       const userContext = React.useMemo(
         () => ({
-          fetchUser: async () => {
-            const userData = await UserService.fetchUserData();
-            console.log(userData);
-            
-            dispatch({ type: 'GET', user: userData });
-          }, 
-          profile: async () => {
-            // fetch friends count
-            console.log("profile()");
-          },
-          update: async data => {
-            const userData = await UserService.updateUser(data);
-            dispatch({ type: 'EDIT', userData });
-          },
-        }),
-        []
-      );
+            profile: async () => { return state.user; },
+            fetchUser: async () => {
+                const userData = await UserService.fetchUserData();
+                
+                dispatch({ type: 'GET', user: userData });
+            }, 
+            update: async data => {
+                const userData = await UserService.updateUser(data);
+                dispatch({ type: 'EDIT', userData });
+            },
+            }),
+            [state]
+        );
 
   return (<UserContext.Provider value={userContext}>
             {props.children}

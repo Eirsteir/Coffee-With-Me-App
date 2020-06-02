@@ -10,7 +10,7 @@ class UserService {
 
     static fetchUserData = async () => {
         return TOKEN.get(Constants.AUTH_TOKEN).then((token) => {
-            return UserService._doFetchUserData(token).then((userData) => {return userData});
+            return UserService._doFetchUserData(token).then((response) => {return response.data});
         });
     }
 

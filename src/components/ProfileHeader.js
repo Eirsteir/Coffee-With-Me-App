@@ -1,21 +1,22 @@
 // @flow
 
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import Count from './Count';
 import { Avatar } from 'expo-activity-feed';
+import CoverImage from './CoverImage';
 
-import UserContext from '../context/UserContext';
+import { UserContext } from '../context/UserContext';
 
 type Props = {};
 
 export default function ProfileHeader(props: Props) {
-  const userContext = useContext(UserContext); 
-
+  
+  const { profile } = useContext(UserContext);
   return (
-    <ProfileHeaderInner {...props} {...userContext} />
+    <ProfileHeaderInner profile={profile} {...props} />
   );
 }
 
@@ -25,21 +26,22 @@ class ProfileHeaderInner extends React.Component {
     super(props);
     this.state = {
       user: {
-        friends_count: 0
+        name: '',
+        nickname: '',
+        friendsCount: 0
       },
     };
   }
 
   async componentDidMount() {
     let data = await this.props.profile();
-    console.log(data);
     
     this.setState({ user: data });
   }
 
   render() {
-    let { friends_count, } = this.state.user;
-    let { name, nickname, profileImage } = this.props.getUser() || {};
+    let { name, nickname, friendsCount, } = this.state.user;
+    let profileImage = null;
     
     return (
       <SafeAreaView style={[styles.profileHeader]}>
@@ -53,7 +55,7 @@ class ProfileHeaderInner extends React.Component {
         </View>
 
         <View style={styles.statSection}>
-          <Count num={friends_count}>Friends</Count>
+          <Count num={friendsCount}>Friends</Count>
         </View>
       </SafeAreaView>
     );
