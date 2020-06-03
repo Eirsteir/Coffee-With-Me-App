@@ -3,11 +3,13 @@
 import React from 'react';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import CoverImage from './CoverImage';
 import { Avatar, UploadImage } from 'expo-activity-feed';
-import FormField from './FormField';
 import { StreamApp } from 'expo-activity-feed';
-import type { UserData, StreamAppCtx } from '../types';
+
+import { UserContext } from '../context/UserContext';
+import FormField from './FormField';
+import CoverImage from './CoverImage';
+import type { UserData } from '../types';
 
 type Props = {|
   registerSave: (saveFunc: () => any) => void,
@@ -15,20 +17,23 @@ type Props = {|
 
 export default function EditProfileForm(props: Props) {
   return (
-    <StreamApp.Consumer>
-      {(appCtx) => <EditProfileFormInner {...props} {...appCtx} />}
-    </StreamApp.Consumer>
+    <UserContext.Consumer>
+      {(userCtx) => <EditProfileFormInner {...props} {...userCtx} />}
+    </UserContext.Consumer>
   );
 }
 
-type PropsInner = {| ...Props, ...StreamAppCtx |};
+type PropsInner = {| ...Props, ...UserContext |};
 
 type State = UserData;
 
 class EditProfileFormInner extends React.Component<PropsInner, State> {
   constructor(props: PropsInner) {
     super(props);
-    this.state = { ...props.user.data };
+    console.log(props);
+    this.state = { ...props.profile() };
+    console.log(props.profile());
+    
   }
 
   componentDidMount() {

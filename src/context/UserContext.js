@@ -45,7 +45,7 @@ export default function UserController(props) {
 
       const userContext = React.useMemo(
         () => ({
-            profile: async () => { return state.user; },
+            profile: () => { return state.user; },
             fetchUser: async () => {
                 const userData = await UserService.fetchUserData();
                 

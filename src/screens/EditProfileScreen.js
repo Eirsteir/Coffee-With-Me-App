@@ -18,11 +18,13 @@ export default class EditProfileScreen extends React.Component<Props> {
     // TODO @Jaap: Probably Text is not the correct component here, probably
     // also good to go back to the profile page after pressing save
     headerRight: (
-      <TouchableOpacity onPress={navigation.getParam('saveFunc')}>
-        <Text>Save</Text>
+      <TouchableOpacity 
+        style={{ paddingRight: 15 }}
+        onPress={navigation.getParam('saveFunc')}
+      >
+        <Text style={{ color: '#fb5b5a', fontSize: 17 }}>Save</Text>
       </TouchableOpacity>
     ),
-    headerLeft: <BackButton pressed={() => navigation.goBack()} blue />,
     headerStyle: {
       paddingLeft: 15,
       paddingRight: 15,
@@ -30,7 +32,9 @@ export default class EditProfileScreen extends React.Component<Props> {
     headerTitleStyle: {
       fontWeight: '500',
       fontSize: 13,
+      color: '#000'
     },
+    headerTintColor: '#fb5b5a',
   });
 
   componentDidMount() {
