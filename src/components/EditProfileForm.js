@@ -38,11 +38,9 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
 
   componentDidMount() {
     this.props.registerSave(async () => {
-      return await this.props.update(this.state.nickname, this.state.university.id)
-        .then(() => this.props.successCallback())
-        .catch(error => {
-          this.props.errorCallback(error);
-        });
+      return await this.props.update({ nickname: this.state.nickname, universityId: this.state.university.id })
+        .then(this.props.successCallback)
+        .catch(this.props.errorCallback);
     });
   }
 

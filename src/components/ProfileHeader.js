@@ -40,6 +40,12 @@ class ProfileHeaderInner extends React.Component {
     this.setState({ user: data });
   }
 
+  async componentDidUpdate() {
+    let data = await this.props.profile();
+    
+    this.setState({ user: data });
+  }
+
   render() {
     let { name, nickname, friendsCount, university } = this.state.user;
     let profileImage = null;
