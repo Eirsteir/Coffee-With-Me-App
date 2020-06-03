@@ -1,7 +1,7 @@
 import React from 'react';
 import SnackBar from 'react-native-snackbar-component'
 
-export function ErrorSnackbar({ props }) {
+export function ErrorSnackbar(props) {
     return (
         <SnackBar
             backgroundColor='#cc0000' 
@@ -11,7 +11,7 @@ export function ErrorSnackbar({ props }) {
     )
 }
 
-export function SuccessSnackbar({ props }) {
+export function SuccessSnackbar(props) {
     return (
         <SnackBar
             backgroundColor='#4BCA81' 
