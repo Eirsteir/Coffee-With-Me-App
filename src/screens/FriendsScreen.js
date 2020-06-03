@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StatusBar, Image, ScrollView, FlatList, Text } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
 
+import AddFriendsHeader from '../components/AddFriendsHeader';
 import LargeHeading from '../components/LargeHeading';
 import HorizontalScrollFeed from '../components/HorizontalScrollFeed';
 import FriendCard from '../components/FriendCard';
@@ -111,12 +112,7 @@ class FriendsScreen extends React.Component {
       </View>
     ),
     headerRight: (
-      <View style={{ paddingRight: 15 }}>
-        <Image
-          source={require('../../images/icons/add-friends.png')}
-          style={{ width: 23, height: 23 }}
-        />
-      </View>
+      <AddFriendsHeader />
     ),
   });
 
