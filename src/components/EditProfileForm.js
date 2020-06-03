@@ -3,8 +3,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Avatar, UploadImage } from 'expo-activity-feed';
-import { StreamApp } from 'expo-activity-feed';
+import { Avatar } from 'expo-activity-feed';
 
 import { UserContext } from '../context/UserContext';
 import FormField from './FormField';
@@ -30,14 +29,16 @@ type State = UserData;
 class EditProfileFormInner extends React.Component<PropsInner, State> {
   constructor(props: PropsInner) {
     super(props);
-    this.state = { ...props.profile() };    
-    console.log(this.props);
-    
+    let profile = props.profile();
+    this.state = { 
+      nickname: profile.nickname,
+      university: profile.university
+    };        
   }
 
   componentDidMount() {
     this.props.registerSave(async () => {
-      return await this.props.update(this.state)
+      return await this.props.update(this.state.nickname, this.state.university.id)
         .then(() => this.props.successCallback())
         .catch(error => {
           this.props.errorCallback(error);
@@ -81,17 +82,12 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
         </View>
         <View style={{ padding: 15 }}>
           <FormField
-            value={this.state.name}
-            label={'Name'}
-            onChangeText={(text) => this.setState({ name: text })}
-          />
-          <FormField
             value={this.state.nickname}
             label={'Nickname'}
             onChangeText={(text) => this.setState({ nickname: text })}
           />
           <FormField
-            value={this.state.desc}
+            value={this.state.university.name}
             label={'University'}
             onChangeText={(text) => this.setState({ university: text })}
             multiline

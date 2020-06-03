@@ -63,14 +63,10 @@ export default class EditProfileScreen extends React.Component<Props> {
             this.props.navigation.setParams({ saveFunc });
           }}
           successCallback={() => {
-            console.log('SUCCESS');
             this.setState({ successSnackbarIsVisible: true })
           }}
           errorCallback={(error) => {
-            console.log('ERROR');
-            console.log(error);
             this.setState({ errorSnackbarIsVisible: true })
-
             this.props.navigation.setParams({ error });
           }}
         />

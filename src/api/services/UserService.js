@@ -23,7 +23,7 @@ class UserService {
     }
 
     static updateUser = async ({ userData, callback=null }) => {
-        return await TOKEN.get(Constants.accessToken).then((token) => {
+        return await TOKEN.get(Constants.accessToken).then( async (token) => {
             return UserService._doUpdateUser(token, userData)
                 .then((response) => { 
                     !callback || callback(response.isError === true, response.data);
