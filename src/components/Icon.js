@@ -19,8 +19,8 @@ const Icon = ({ name }) => {
   } else if (name === 'friends') {
     return (
       <Image
-        source={require('../../images/icons/friends2.png')}
-        style={{ width: 25, height: 25 }}
+        source={require('../../images/icons/friends.png')}
+        style={{ width: 35, height: 35 }}
       />
     );
   }

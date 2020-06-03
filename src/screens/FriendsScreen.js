@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, StatusBar, Image, ScrollView, FlatList, Text } from 'react-native';
+import { Avatar } from 'expo-activity-feed';
 
 import LargeHeading from '../components/LargeHeading';
 import HorizontalScrollFeed from '../components/HorizontalScrollFeed';
-import { Avatar, UserCard } from 'expo-activity-feed';
+import FriendCard from '../components/FriendCard';
+import UserCard from '../components/UserCard';
 import SearchBox from '../components/SearchBox';
 
 class FriendsScreen extends React.Component {
@@ -147,17 +149,17 @@ class FriendsScreen extends React.Component {
             data={this.state.users}
             renderItem={({ item }) => (
               <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
-                <UserCard
+                <FriendCard
                   username={'UserName'}
                   subtitle={'@subtitle'}
                   user={item}
-                  follow
                 />
               </View>
             )}
             keyExtractor={(item) => `item-${item.id}`}
           />
 
+        {/* TODO: users at same uni */}
         <LargeHeading>People you may know</LargeHeading>
         <FlatList
           style={{ marginTop: 15 }}
@@ -168,7 +170,6 @@ class FriendsScreen extends React.Component {
                 username={'UserName'}
                 subtitle={'@subtitle'}
                 user={item}
-                follow
               />
             </View>
           )}
