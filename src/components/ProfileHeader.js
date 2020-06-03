@@ -3,11 +3,11 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
+import { Avatar } from 'expo-activity-feed';
 
 import Count from './Count';
-import { Avatar } from 'expo-activity-feed';
 import CoverImage from './CoverImage';
-
+import Button from '../components/Button';
 import { UserContext } from '../context/UserContext';
 
 type Props = {};
@@ -61,6 +61,9 @@ class ProfileHeaderInner extends React.Component {
 
         <View style={styles.statSection}>
           <Count num={friendsCount}>{`Friend${friendsCount <= 1 ? '' : 's'}`}</Count>
+          <Button pressed={() => this.props.navigate('EditProfile')}>
+            Edit Profile
+          </Button>
         </View>
       </SafeAreaView>
     );
@@ -116,5 +119,6 @@ const styles = StyleSheet.create({
     paddingLeft: margin * 2,
     paddingRight: margin,
     flexDirection: 'row',
+    justifyContent: 'space-evenly'
   },
 });

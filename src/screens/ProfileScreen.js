@@ -3,7 +3,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView, StatusBar, View, Text } from 'react-native';
 import ProfileHeader from '../components/ProfileHeader';
-import Button from '../components/Button';
 
 import type { NavigationScreen } from 'expo-activity-feed';
 import type { NavigationEventSubscription } from 'react-navigation';
@@ -19,11 +18,6 @@ export default class ProfileScreen extends React.Component<Props> {
       backgroundColor: 'transparent',
       borderBottomColor: 'transparent',
     },
-    headerRight: (
-      <Button pressed={() => navigation.navigate('EditProfile')}>
-        Edit Profile
-      </Button>
-    ),
     headerTransparent: true,
     headerBackTitle: null,
   });
@@ -36,8 +30,8 @@ export default class ProfileScreen extends React.Component<Props> {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <ProfileHeader />
+      <View style={{ height: 100 + '%', backgroundColor: '#fff'}}>
+        <ProfileHeader navigate={this.props.navigation.navigate}/>
         <View style={styles.container} >
           <Text>HISTORY</Text>
         </View>
