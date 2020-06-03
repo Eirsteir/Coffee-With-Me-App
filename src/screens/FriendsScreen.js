@@ -97,7 +97,7 @@ class FriendsScreen extends React.Component {
     };
   }
 
-  static navigationOptions = () => ({
+  static navigationOptions = ({ navigation }) => ({
     title: 'FRIENDS',
     headerTitleStyle: {
       fontWeight: '500',
@@ -111,9 +111,9 @@ class FriendsScreen extends React.Component {
         />
       </View>
     ),
-    headerRight: (
-      <AddFriendsHeader />
-    ),
+    headerRight:(
+        <AddFriendsHeader navigation={navigation} />
+      ),
   });
 
   componentDidMount() {

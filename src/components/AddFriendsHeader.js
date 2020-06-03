@@ -1,13 +1,16 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { TouchableOpacity, Image } from 'react-native';
 
-export default function AddFriendsHeader() {
+export default function AddFriendsHeader({ navigation }) {
     return (
-    <View style={{ paddingRight: 15 }}>
-        <Image
-          source={require('../../images/icons/add-friends.png')}
-          style={{ width: 23, height: 23 }}
-        />
-      </View>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('NewPost')}  
+            style={{ paddingRight: 15 }}
+        >
+            <Image
+                source={require('../../images/icons/add-friends.png')}
+                style={{ width: 23, height: 23 }}
+            />
+        </TouchableOpacity>
     )
 }

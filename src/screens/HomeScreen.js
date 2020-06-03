@@ -13,7 +13,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 import { Avatar } from 'expo-activity-feed';
 import type { UserResponse, ActivityData } from '../types';
 
-import PostIcon from '../../images/icons/post.png';
+import AddFriendsHeader from '../components/AddFriendsHeader';
 
 import type { NavigationScreen } from 'expo-activity-feed';
 import type { NavigationEventSubscription } from 'react-navigation';
@@ -43,12 +43,7 @@ class HomeScreen extends React.Component<Props> {
       </TouchableOpacity>
     ),
     headerRight: (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('NewPost')}  // todo: what here?
-        style={{ paddingRight: 15 }}
-      >
-        <Image source={PostIcon} style={{ width: 23, height: 23 }} />
-      </TouchableOpacity>
+      <AddFriendsHeader navigation={navigation} /> 
     ),
   });
 
