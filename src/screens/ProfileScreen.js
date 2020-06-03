@@ -32,7 +32,7 @@ export default class ProfileScreen extends React.Component<Props> {
     return (
       <View style={{ height: 100 + '%', backgroundColor: '#fff'}}>
         <ProfileHeader navigate={this.props.navigation.navigate}/>
-        <View style={styles.container} >
+        <View style={styles.historyContainer} >
           <Text>HISTORY</Text>
         </View>
       </View>
@@ -41,10 +41,13 @@ export default class ProfileScreen extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  historyContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: 'white',
+    borderWidth: .2,
+    borderColor: '#d3d3d3',
+    paddingTop: 10,
+    marginTop: 20,
   }
 })
