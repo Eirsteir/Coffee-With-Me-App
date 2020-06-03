@@ -22,8 +22,8 @@ class UserService {
         });
     }
 
-    static updateUser = async ({ userId, userData, callback=null }) => {
-        return await TOKEN.get(Values.accessToken).then((token) => {
+    static updateUser = async ({ userData, callback=null }) => {
+        return await TOKEN.get(Constants.accessToken).then((token) => {
             return UserService._doUpdateUser(token, userData)
                 .then((response) => { 
                     !callback || callback(response.isError === true, response.data);

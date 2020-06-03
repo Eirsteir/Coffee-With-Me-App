@@ -15,20 +15,19 @@ export default class EditProfileScreen extends React.Component<Props> {
 
   static navigationOptions = ({ navigation }: Props) => ({
     title: 'EDIT PROFILE',
-    // TODO @Jaap: Probably Text is not the correct component here, probably
-    // also good to go back to the profile page after pressing save
     headerRight: (
       <TouchableOpacity 
         style={{ paddingRight: 15 }}
-        onPress={navigation.getParam('saveFunc')}
+        onPress={() => {
+          console.log(navigation);
+          
+          navigation.getParam('saveFunc')();
+          navigation.goBack();
+        }}
       >
         <Text style={{ color: '#fb5b5a', fontSize: 17 }}>Save</Text>
       </TouchableOpacity>
     ),
-    headerStyle: {
-      paddingLeft: 15,
-      paddingRight: 15,
-    },
     headerTitleStyle: {
       fontWeight: '500',
       fontSize: 13,

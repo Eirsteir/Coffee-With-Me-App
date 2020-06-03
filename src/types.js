@@ -16,6 +16,7 @@ export type UserData = {
   name: string,
   nickname?: string,
   profileImage?: string,
+  university?: string,
 };
 
 export type CloudClient = StreamCloudClient<UserData>;

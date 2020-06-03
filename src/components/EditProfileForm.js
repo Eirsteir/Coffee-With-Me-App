@@ -30,16 +30,15 @@ type State = UserData;
 class EditProfileFormInner extends React.Component<PropsInner, State> {
   constructor(props: PropsInner) {
     super(props);
-    console.log(props);
-    this.state = { ...props.profile() };
-    console.log(props.profile());
+    this.state = { ...props.profile() };    
+    console.log(this.props);
     
   }
 
   componentDidMount() {
     this.props.registerSave(async () => {
-      await this.props.user.update(this.state);
-      this.props.changedUserData();
+      return await this.props.update(this.state);
+      // this.props.changedUserData();
     });
   }
 
@@ -50,7 +49,7 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
   render() {
     return (
       <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#ffffff' }}>
-        <CoverImage source={this.state.coverImage} size={150} />
+        <CoverImage />
         <View
           style={{
             flexDirection: 'row',
@@ -73,8 +72,8 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
               size={100}
               editButton
               onUploadButtonPress={this._onUploadButtonPress}
+              noShadow
             />
-            <UploadImage onUploadButtonPress={this._onUploadButtonPress} />
           </View>
         </View>
         <View style={{ padding: 15 }}>
@@ -84,14 +83,14 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
             onChangeText={(text) => this.setState({ name: text })}
           />
           <FormField
-            value={this.state.url}
-            label={'Website'}
-            onChangeText={(text) => this.setState({ url: text })}
+            value={this.state.nickname}
+            label={'Nickname'}
+            onChangeText={(text) => this.setState({ nickname: text })}
           />
           <FormField
             value={this.state.desc}
-            label={'Description'}
-            onChangeText={(text) => this.setState({ desc: text })}
+            label={'University'}
+            onChangeText={(text) => this.setState({ university: text })}
             multiline
           />
         </View>
