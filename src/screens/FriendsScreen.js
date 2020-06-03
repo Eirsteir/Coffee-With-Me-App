@@ -131,7 +131,7 @@ class FriendsScreen extends React.Component {
     headerRight: (
       <View style={{ paddingRight: 15 }}>
         <Image
-          source={require('../../images/icons/post.png')}
+          source={require('../../images/icons/add-friends.png')}
           style={{ width: 23, height: 23 }}
         />
       </View>
