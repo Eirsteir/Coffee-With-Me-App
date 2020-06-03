@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, StatusBar, Image, ScrollView, FlatList } from 'react-native';
+import { View, StatusBar, Image, ScrollView, FlatList, Text } from 'react-native';
 
 import LargeHeading from '../components/LargeHeading';
 import HorizontalScrollFeed from '../components/HorizontalScrollFeed';
 import { Avatar, UserCard } from 'expo-activity-feed';
-import GroupCard from '../components/GroupCard';
 import SearchBox from '../components/SearchBox';
 
 class FriendsScreen extends React.Component {
@@ -15,57 +14,38 @@ class FriendsScreen extends React.Component {
         {
           id: 1235,
           user_image: 'https://randomuser.me/api/portraits/women/65.jpg',
+          user_name: 'Jane Doe',
         },
         {
           id: 2345,
           user_image: 'https://randomuser.me/api/portraits/men/24.jpg',
+          user_name: 'John Doe',
         },
         {
           id: 3456,
           user_image: 'https://randomuser.me/api/portraits/women/45.jpg',
+          user_name: 'Jane Doe',
         },
         {
           id: 4567,
           user_image: 'https://randomuser.me/api/portraits/men/45.jpg',
+          user_name: 'John Doe',
         },
         {
           id: 6789,
           user_image: 'https://randomuser.me/api/portraits/women/23.jpg',
+          user_name: 'Jane Doe',
         },
         {
           id: 7890,
           user_image: 'https://randomuser.me/api/portraits/men/67.jpg',
+          user_name: 'John Doe',
         },
         {
           id: 2456,
           user_image: 'https://randomuser.me/api/portraits/women/12.jpg',
+          user_name: 'Jane Doe',
         },
-      ],
-      trendingGroups: [
-        {
-          id: 1234,
-          name: 'Beer',
-          image:
-            'https://cdn.britannica.com/700x450/72/186972-049-26ACDCBE.jpg',
-          icon: '',
-        },
-        {
-          id: 2345,
-          name: 'Arcade',
-          image: 'http://www.thebasementarcade.com/gameroom/0516/1.jpg',
-          icon: '',
-        },
-        {
-          id: 3456,
-          name: 'Nature',
-          image:
-            'https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&h=350',
-          icon: '',
-        },
-        { id: 4567, image: '', icon: '' },
-        { id: 6789, image: '', icon: '' },
-        { id: 7890, image: '', icon: '' },
-        { id: 8909, image: '', icon: '' },
       ],
       users: [
         {
@@ -153,8 +133,9 @@ class FriendsScreen extends React.Component {
         <HorizontalScrollFeed
           data={this.state.interestingUsers}
           renderItem={({ item }) => (
-            <View style={{ marginRight: 6 }}>
+            <View style={{ marginRight: 6, flex: 1, alignItems: 'center' }}>
               <Avatar size={60} noShadow source={item.user_image} />
+              <Text style={{ color: '#d2d2d2' }}>{item.user_name.split(" ")[0]}</Text>
             </View>
           )}
           keyExtractor={(item) => `item-${item.id}`}
