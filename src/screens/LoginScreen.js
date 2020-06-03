@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Dimensions, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { SocialIcon } from 'react-native-elements';
-import SnackBar from 'react-native-snackbar-component'
+import { ErrorSnackbar } from '../components/Snackbar';
 
 import Logo from '../components/Logo';
 import { AuthContext } from '../App';
@@ -11,7 +11,7 @@ export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [errorSnackBarIsVisible, setErrorSnackBarIsVisible] = useState(false);
+    const [errorSnackbarIsVisible, setErrorSnackbarIsVisible] = useState(false);
 
     const { login } = React.useContext(AuthContext);
 
@@ -23,13 +23,17 @@ export default function LoginScreen({ navigation }) {
           setErrorMessage('Wrong email or password');
           return;
         }
-        setErrorSnackBarIsVisible(true);
+        setErrorSnackbarIsVisible(true);
       })
     }
 
     return (
         <View style={styles.container}>
-          <SnackBar visible={errorSnackBarIsVisible} backgroundColor='#cc0000' accentColor='#f5f5f5'	textMessage="Unable to log in. Please try again later" actionHandler={() => { setErrorSnackBarIsVisible(false) }} actionText="Dismiss"/>
+          <ErrorSnackbar 
+            visible={errorSnackbarIsVisible} 
+            textMessage="Unable to log in. Please try again later" 
+            actionHandler={() => { setErrorSnackbarIsVisible(false) }} 
+            actionText="Dismiss"/>
 
             <Logo />
 
