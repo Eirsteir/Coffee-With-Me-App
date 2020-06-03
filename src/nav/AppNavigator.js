@@ -8,7 +8,6 @@ import {
 import {
   STREAM_API_KEY,
   STREAM_APP_ID,
-  STREAM_API_TOKEN,
 } from 'babel-dotenv';
 
 import Icon from '../components/Icon';
@@ -18,7 +17,7 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import SinglePostScreen from '../screens/SinglePostScreen';
-import StatusUpdateScreen from '../screens/StatusUpdateScreen';
+import AddFriendsScreen from '../screens/AddFriendsScreen';
 
 import {
   Avatar,
@@ -92,7 +91,7 @@ const Navigation = createStackNavigator({
     ...doNotShowHeaderOption,
   },
   SinglePost: { screen: SinglePostScreen },
-  NewPost: { screen: StatusUpdateScreen },
+  AddFriends: { screen: AddFriendsScreen },
   EditProfile: { screen: EditProfileScreen },
 });
 
@@ -101,7 +100,6 @@ class AppNavigator extends React.Component {
   render() {
     let apiKey = STREAM_API_KEY;
     let appId = STREAM_APP_ID;
-    let token = STREAM_API_TOKEN;   
 
     return (
       <StreamApp

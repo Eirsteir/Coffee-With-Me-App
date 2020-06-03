@@ -4,7 +4,7 @@ import { TouchableOpacity, Image } from 'react-native';
 export default function AddFriendsHeader({ navigation }) {
     return (
         <TouchableOpacity
-            onPress={() => navigation.navigate('NewPost')}  
+            onPress={() => navigation.navigate('AddFriends')}  
             style={{ paddingRight: 15 }}
         >
             <Image
