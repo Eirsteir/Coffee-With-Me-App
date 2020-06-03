@@ -66,46 +66,36 @@ class HomeScreen extends React.Component<Props> {
 
   render() {
 
-    let capusData = [{
-      value: 'Banana', label: 'Gløshaugen'
-    }, {
-      value: 'Mango', label: 'Label'
-    }, {
-      value: 'Pear', label: 'Label'
-    }];
-
-    let scheduleData = [{
-      value: 'Banana', label: 'In 5 minutes'
-    }, {
-      value: 'Mango', label: 'In 10 minutes'
-    }, {
-      value: 'Pear', label: 'In 15 minutes'
-    }];
-
     return (
         <View style={styles.container}>
     
           <Text style={styles.title}>Invite your friends on a coffee break</Text>
           <Text>You deserve it</Text>
 
-          <Dropdown
-            label='Campus'
-            data={data}
-            rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
-            containerStyle={styles.dropdownContainer}
-            inputContainerStyle={styles.inputContainerStyle}
-            dropdownOffset={{ 'top': 5, 'left': 0 }}
-            pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
-          />
-          <Dropdown
-            label='Schedule to'
-            data={data}
-            rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
-            containerStyle={styles.dropdownContainer}
-            inputContainerStyle={styles.inputContainerStyle}
-            dropdownOffset={{ 'top': 5, 'left': 0 }}
-            pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
-          />
+          <View style={styles.dropdownView}>
+            <Dropdown
+              label='SELECT CAMPUS'
+              data={campusData}
+              rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
+              containerStyle={styles.dropdownContainer}
+              inputContainerStyle={styles.inputContainerStyle}
+              dropdownOffset={{ 'top': 5, 'left': 0 }}
+              pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
+              baseColor='#f5f5f5'
+              fontSize={13}
+            />
+            <Dropdown
+              label='SCHEDULE TO'
+              data={scheduleData}
+              rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
+              containerStyle={styles.dropdownContainer}
+              inputContainerStyle={styles.inputContainerStyle}
+              dropdownOffset={{ 'top': 5, 'left': 0 }}
+              pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
+              baseColor='#f5f5f5'
+              fontSize={13}
+            />
+          </View>
 
           <TouchableOpacity style={styles.inviteBtn} >
             <Text style={styles.inviteText}>INVITE</Text>
@@ -124,16 +114,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 25,
+    fontSize: 20,
+  },
+  dropdownView: {
+    marginTop: 20,
+    width: 40 + '%',
   },
   dropdownContainer: {
-    width: 30 + '%',
+    width: 100 + '%',
   },
   inputContainerStyle: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#fb5b5a',
-    // height: 10,
-    // padding: 20,
+    width: 100 + '%',
+    paddingTop: 10,
+    paddingBottom: 10,
     borderRadius: 5,
+    fontSize: 10,
   },
   inviteBtn:{
     width:"80%",
@@ -142,13 +141,29 @@ const styles = StyleSheet.create({
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:40,
+    marginTop:30,
     marginBottom:10
   },
   inviteText:{
     color:"white",
-    fontSize: 15,
+    fontSize: 18,
   },
 });
 
 export default HomeScreen;
+
+let campusData = [{
+  value: 'Banana', label: 'Gløshaugen'
+}, {
+  value: 'Mango', label: 'Label'
+}, {
+  value: 'Pear', label: 'Label'
+}];
+
+let scheduleData = [{
+  value: 'Banana', label: 'In 5 minutes'
+}, {
+  value: 'Mango', label: 'In 10 minutes'
+}, {
+  value: 'Pear', label: 'In 15 minutes'
+}];
