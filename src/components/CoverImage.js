@@ -3,12 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import Granim from 'react-granim'
 
 // lys lilla,  lilla, blå, mørk, rust, rødrosa, lilla
-const gradients = [
-  ['#FF4081', '#9C27B0'], 
-  ['#7B1FA2', '#2d73b9'], 
-  ['#607D8B', '#ab3c42'], 
+const gradients = [ 
   ['#FF5252', '#b82f53'], 
   ['#FF5722', '#FFA000'],
+  ['#FF4081', '#9C27B0'], 
+  ['#7B1FA2', '#2d73b9'], 
+  ['#607D8B', '#ab3c42'],
 ];
 
 const CoverImage = () => {
