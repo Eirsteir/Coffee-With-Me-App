@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Avatar } from 'expo-activity-feed';
 
 import { UserContext } from '../context/UserContext';
+import UniversityService from '../api/services/UniversityService';
 import FormField from './FormField';
 import CoverImage from './CoverImage';
 import type { UserData } from '../types';
@@ -54,11 +55,13 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
     let profile = props.profile();
     this.state = { 
       nickname: profile.nickname,
-      university: profile.university
+      university: profile.university,
+      universitiesData: null,
     };        
   }
 
   componentDidMount() {
+    this.loadUniversities();
     this.props.registerSave(async () => {
       return await this.props.update({ nickname: this.state.nickname, universityId: this.state.university.id })
         .then(this.props.successCallback)
@@ -68,6 +71,13 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
 
   _onUploadButtonPress() {
     console.log('onUploadButtonPress');
+  }
+
+  loadUniversities = () => {
+    return UniversityService.fetchUniversities(false)
+      .then(async (universitiesData) => {
+        this.setState({ universitiesData })
+      });
   }
 
   render() {
@@ -116,7 +126,7 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
             label='University'
             defaultValue={this.state.university.name}
             onPressCallback={(item) => this.setState({ university: item })}
-            data={universityData}
+            data={this.state.universitiesData}
           /> 
         </View>
       </KeyboardAwareScrollView>

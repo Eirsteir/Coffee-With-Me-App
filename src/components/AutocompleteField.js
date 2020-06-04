@@ -41,7 +41,6 @@ class AutocompleteField extends React.Component {
       let { query } = this.state;
       const { label, defaultValue } = this.props;  
       const data = this._filterData(this.state.query);
-      console.log(this.state.query);
       
       return (
         <ScrollView style={{
