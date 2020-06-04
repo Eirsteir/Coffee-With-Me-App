@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import USER from '../user';
 import TOKEN from '../token';
 import Constants from '../../constants/Constants';

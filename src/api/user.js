@@ -1,5 +1,5 @@
 import axios from 'axios';
-import AUTH from './auth';
+import { getHeaders } from './httpHelpers';
 
 const API_SOCIAL_URL = 'http://localhost:8080/api/social';
 
@@ -8,14 +8,14 @@ export default {
         return axios({
             method: 'GET',
             url: API_SOCIAL_URL + '/me',
-            headers: AUTH.getHeaders(token)
+            headers: getHeaders(token)
         });
     },
     update: async (token, userData) => {
         return axios({
             method: 'PUT',
             url: API_SOCIAL_URL + '/me',
-            headers: AUTH.getHeaders(token),
+            headers: getHeaders(token),
             data: userData
         });
     }
