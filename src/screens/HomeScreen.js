@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     borderRadius: 5,
-    fontSize: 10,
   },
   inviteBtn:{
     width:"80%",

@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { StyleSheet, ScrollView, StatusBar, View, Text } from 'react-native';
+import { StyleSheet, StatusBar, View, Text } from 'react-native';
 import ProfileHeader from '../components/ProfileHeader';
 
 import type { NavigationScreen } from 'expo-activity-feed';
