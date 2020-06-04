@@ -9,6 +9,8 @@ import { UserContext } from '../context/UserContext';
 import FormField from './FormField';
 import CoverImage from './CoverImage';
 import type { UserData } from '../types';
+import Autocomplete from '../components/Autocomplete';
+
 
 type Props = {|
   registerSave: (saveFunc: () => any) => void,
@@ -25,6 +27,25 @@ export default function EditProfileForm(props: Props) {
 type PropsInner = {| ...Props, ...UserContext |};
 
 type State = UserData;
+
+const universityData = [
+  {
+    id: 1,
+    name: 'NTNU', 
+  },
+  {
+    id: 2,
+    name: 'NHH',
+  },
+  {
+    id: 3,
+    name: 'Handelshøyskolen BI'
+  },
+  {
+    id: 4,
+    name: 'OsloMet'
+  }
+]
 
 class EditProfileFormInner extends React.Component<PropsInner, State> {
   constructor(props: PropsInner) {
@@ -90,6 +111,9 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
             onChangeText={(text) => this.setState({ university: text })}
             multiline
           />
+          <Autocomplete 
+            data={universityData}
+          /> 
         </View>
       </KeyboardAwareScrollView>
     );
