@@ -9,7 +9,7 @@ import { UserContext } from '../context/UserContext';
 import FormField from './FormField';
 import CoverImage from './CoverImage';
 import type { UserData } from '../types';
-import Autocomplete from '../components/Autocomplete';
+import AutocompleteField from '../components/AutocompleteField';
 
 
 type Props = {|
@@ -111,7 +111,7 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
             onChangeText={(text) => this.setState({ university: text })}
             multiline
           />
-          <Autocomplete 
+          <AutocompleteField 
             data={universityData}
           /> 
         </View>

@@ -1,10 +1,14 @@
 import React from 'react';
+import { TouchableOpacity, Text } from 'react-native';
+import Autocomplete from 'react-native-autocomplete-input';
 
-class Autocomplete extends React.Component {
+class AutocompleteField extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = { query: '' };
+        console.log(this.props);
+        
     }
 
 
@@ -37,4 +41,4 @@ class Autocomplete extends React.Component {
     }
 }
 
-export default Autocomplete;
+export default AutocompleteField;
