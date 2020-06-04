@@ -48,6 +48,7 @@ const universityData = [
 ]
 
 class EditProfileFormInner extends React.Component<PropsInner, State> {
+  
   constructor(props: PropsInner) {
     super(props);
     let profile = props.profile();

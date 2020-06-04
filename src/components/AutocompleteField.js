@@ -25,6 +25,7 @@ class AutocompleteField extends React.Component {
     render() {
         const { query } = this.state;
         const data = this._filterData(query);
+
         return (
           <Autocomplete
             data={data}
@@ -33,7 +34,7 @@ class AutocompleteField extends React.Component {
             autoCapitalize='none'
             renderItem={({ item, i }) => (
               <TouchableOpacity onPress={() => this.setState({ query: item })}>
-                <Text>{item}</Text>
+                <Text>{item.name}</Text>
               </TouchableOpacity>
             )}
           />
