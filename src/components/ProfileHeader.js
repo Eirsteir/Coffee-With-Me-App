@@ -54,7 +54,7 @@ class ProfileHeaderInner extends React.Component {
       <SafeAreaView style={[styles.profileHeader]}>
         <CoverImage />
 
-        <View style={[styles.mainSection]}>
+        <View style={styles.mainSection}>
           <View style={styles.userDetails}>
             <Text style={styles.userName}>{name}</Text>
             <Text style={styles.userNickname}>{nickname}</Text>

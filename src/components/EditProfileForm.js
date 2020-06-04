@@ -48,7 +48,7 @@ const universityData = [
 ]
 
 class EditProfileFormInner extends React.Component<PropsInner, State> {
-  
+
   constructor(props: PropsInner) {
     super(props);
     let profile = props.profile();
@@ -72,7 +72,7 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
 
   render() {
     return (
-      <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#ffffff' }}>
+      <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#ffffff' }} keyboardShouldPersistTaps='always'>
         <CoverImage />
         <View
           style={{
@@ -113,6 +113,9 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
             multiline
           />
           <AutocompleteField 
+            label='University'
+            defaultValue={this.state.university.name}
+            onPressCallback={(item) => this.setState({ university: item })}
             data={universityData}
           /> 
         </View>
