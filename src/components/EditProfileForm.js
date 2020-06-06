@@ -29,25 +29,6 @@ type PropsInner = {| ...Props, ...UserContext |};
 
 type State = UserData;
 
-const universityData = [
-  {
-    id: 1,
-    name: 'NTNU', 
-  },
-  {
-    id: 2,
-    name: 'NHH',
-  },
-  {
-    id: 3,
-    name: 'Handelshøyskolen BI'
-  },
-  {
-    id: 4,
-    name: 'OsloMet'
-  }
-]
-
 class EditProfileFormInner extends React.Component<PropsInner, State> {
 
   constructor(props: PropsInner) {
@@ -56,7 +37,7 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
     this.state = { 
       nickname: profile.nickname,
       university: profile.university,
-      universitiesData: null,
+      universitiesData: [],
     };        
   }
 

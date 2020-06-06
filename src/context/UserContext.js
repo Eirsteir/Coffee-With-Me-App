@@ -52,9 +52,8 @@ export default function UserController(props) {
                 dispatch({ type: 'GET', user: userData });
             }, 
             update: async data => {
-                console.log(data);
                 const userData = await UserService.updateUser(data);
-                dispatch({ type: 'EDIT', userData });
+                dispatch({ type: 'EDIT', user: userData });
             },
             }),
             [state]
