@@ -10,9 +10,7 @@ class AutocompleteField extends React.Component {
           query: '',
           hideResults: false,
           autocompleteUpdateableKey: Math.random(),
-        };
-        console.log(this.props);
-        
+        };        
     }
 
 
@@ -39,7 +37,7 @@ class AutocompleteField extends React.Component {
 
     render() {
       let { query } = this.state;
-      const { label, defaultValue } = this.props;  
+      const { label, placeholder } = this.props;  
       const data = this._filterData(this.state.query);
       
       return (
@@ -55,7 +53,8 @@ class AutocompleteField extends React.Component {
           <Autocomplete
             data={data}
             key={this.state.autocompleteUpdateableKey}
-            defaultValue={ query === '' ? defaultValue : query }
+            value={query}
+            placeholder={placeholder}
             style={styles.autocomplete}
             onChangeText={text => this.setState({ query: text })}
             autoCapitalize='none'

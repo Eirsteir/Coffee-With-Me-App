@@ -112,19 +112,13 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
         </View>
         <View style={{ padding: 15 }}>
           <FormField
-            value={this.state.nickname}
+            placeholder={this.state.nickname}
             label={'Nickname'}
             onChangeText={(text) => this.setState({ nickname: text })}
           />
-          <FormField
-            value={this.state.university.name}
-            label={'University'}
-            onChangeText={(text) => this.setState({ university: text })}
-            multiline
-          />
           <AutocompleteField 
             label='University'
-            defaultValue={this.state.university.name}
+            placeholder={this.state.university.name}
             onPressCallback={(item) => this.setState({ university: item })}
             data={this.state.universitiesData}
           /> 
