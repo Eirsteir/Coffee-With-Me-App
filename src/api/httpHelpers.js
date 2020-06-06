@@ -1,16 +1,14 @@
 import AuthService from './services/AuthService';
+import Constants from '../constants/Constants';
 
-export default function handleResponse(response, navigation) {
-   
-    console.log(response);
+export function handleResponse(response, navigation=null) {
 
     if (isValidStatus(response.status)) {
         return response;
     }
 
     if (response.status === 401) {
-        AuthService.logout();
-        navigation.navigate('Login');
+        AuthService.logout(navigation);
     }
 
     const error = (response && response.message) || response.statusText;
@@ -19,4 +17,10 @@ export default function handleResponse(response, navigation) {
 
 function isValidStatus(status) {
     return status >= 200 && status < 300;
+}
+
+export function getHeaders(token) {
+    return {
+        'Authorization': Constants.JWT_PREFIX + token
+    }
 }

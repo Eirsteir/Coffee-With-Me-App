@@ -1,73 +1,73 @@
 // @flow
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-
-import { StreamApp } from 'expo-activity-feed';
-import Count from './Count';
 import { Avatar } from 'expo-activity-feed';
+
+import Count from './Count';
 import CoverImage from './CoverImage';
-import type { FollowCounts } from 'getstream';
-import type { AppCtx } from 'expo-activity-feed';
-import type { UserData } from '../types';
+import Button from '../components/Button';
+import { UserContext } from '../context/UserContext';
 
 type Props = {};
 
 export default function ProfileHeader(props: Props) {
+  
+  const { profile } = useContext(UserContext);  
   return (
-    <StreamApp.Consumer>
-      {(appCtx) => <ProfileHeaderInner {...props} {...appCtx} />}
-    </StreamApp.Consumer>
+    <ProfileHeaderInner profile={profile} {...props} />
   );
 }
 
-type PropsInner = Props & AppCtx<UserData>;
 
-type State = {
-  user: FollowCounts,
-};
-
-class ProfileHeaderInner extends React.Component<PropsInner, State> {
-  constructor(props: PropsInner) {
+class ProfileHeaderInner extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       user: {
-        following_count: 0,
-        followers_count: 0,
+        name: '',
+        nickname: '',
+        friendsCount: 0,
+        university: {},
       },
     };
   }
 
   async componentDidMount() {
-    let data = await this.props.user.profile();
-    this.props.changedUserData();
+    let data = await this.props.profile();
+    
     this.setState({ user: data });
   }
 
-  render() {
-    let { following_count, followers_count } = this.state.user;
-    let { name, url, desc, profileImage, coverImage } =
-      this.props.userData || {};
+  async componentDidUpdate() {
+    await this.props.profile();
+  }
 
-    coverImage ? StatusBar.setBarStyle('light-content', true) : null;
+  render() {
+    let { name, nickname, friendsCount, university } = this.state.user;
+    let profileImage = null;
+    
+    StatusBar.setBarStyle('light-content', true);
 
     return (
       <SafeAreaView style={[styles.profileHeader]}>
-        {coverImage ? <CoverImage source={coverImage} /> : null}
+        <CoverImage />
 
-        <View style={[styles.mainSection]}>
+        <View style={styles.mainSection}>
           <View style={styles.userDetails}>
             <Text style={styles.userName}>{name}</Text>
-            <Text style={styles.userUrl}>{url}</Text>
-            <Text style={styles.userDesc}>{desc}</Text>
+            <Text style={styles.userNickname}>{nickname}</Text>
+            <Text style={styles.userUniversity}>{university.name}</Text>
           </View>
-          <Avatar source={profileImage} size={150} />
+          <Avatar source={profileImage} size={150} noShadow />
         </View>
 
         <View style={styles.statSection}>
-          <Count num={following_count}>Followers</Count>
-          <Count num={followers_count}>Following</Count>
+          <Count num={friendsCount}>{`Friend${friendsCount <= 1 ? '' : 's'}`}</Count>
+          <Button pressed={() => this.props.navigate('EditProfile')}>
+            Edit Profile
+          </Button>
         </View>
       </SafeAreaView>
     );
@@ -88,11 +88,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-
   mainSection: {
     width: 100 + '%',
     height: 150,
-    marginTop: 90,
+    marginTop: 130,
     marginBottom: 30,
     paddingRight: 20,
     paddingLeft: 20,
@@ -105,23 +104,25 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 39,
-    fontWeight: '600',
-    color: '#364047',
+    color: 'white',
   },
-  userUrl: {
-    fontSize: 12,
-    color: '#364047',
-  },
-  userDesc: {
+  userNickname: {
     fontSize: 14,
     fontWeight: '500',
     color: '#364047',
     lineHeight: 19,
+    paddingLeft: 3,
     marginTop: 7,
+  },
+  userUniversity: {
+    fontSize: 18,
+    paddingTop:10,
+    paddingLeft: 3,
   },
   statSection: {
     paddingLeft: margin * 2,
     paddingRight: margin,
     flexDirection: 'row',
+    justifyContent: 'space-evenly'
   },
 });

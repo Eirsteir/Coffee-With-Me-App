@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import SnackBar from 'react-native-snackbar-component'
 
 import Logo from '../components/Logo';
 import TextField from '../components/TextField';
+import { SuccessSnackbar, ErrorSnackbar } from '../components/Snackbar';
 import { AuthContext } from '../App';
-import validate from '../helpers/validation_wrapper';
+import validate from '../validation/validation_wrapper';
 
 
 export default function RegisterScreen({ navigation }) {
@@ -13,7 +13,7 @@ export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [successSnackbarIsVisible, setSuccessSnackbarIsVisible] = useState(false);
-  const [unsuccessfulSnackbarIsVisible, setUnsuccessfulSnackbarIsVisible] = useState(false);
+  const [errorSnackbarIsVisible, setErrorSnackbarIsVisible] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [nameError, setNameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -39,14 +39,22 @@ export default function RegisterScreen({ navigation }) {
       setSuccessSnackbarIsVisible(true);
     }).catch(err => {    
       console.log(err); 
-      setUnsuccessfulSnackbarIsVisible(true);
+      setErrorSnackbarIsVisible(true);
     })
   }
   
   return (
     <View style={styles.container}>
-      <SnackBar visible={successSnackbarIsVisible} backgroundColor='#4BCA81' accentColor='#f5f5f5' textMessage="Successfully registered account" actionHandler={() => { navigation.navigate("Login")}} actionText="Login"/>
-      <SnackBar visible={unsuccessfulSnackbarIsVisible} backgroundColor='#cc0000' accentColor='#f5f5f5'	textMessage="Unable to register account. Try again later" actionHandler={() => { setUnsuccessfulSnackbarIsVisible(false) }} actionText="Dismiss"/>
+      <SuccessSnackbar 
+        visible={successSnackbarIsVisible} 
+        textMessage="Successfully registered account" 
+        actionHandler={() => { navigation.navigate("Login")}} 
+        actionText="Login"/>
+      <ErrorSnackbar 
+        visible={errorSnackbarIsVisible} 	
+        textMessage="Unable to register account. Try again later" 
+        actionHandler={() => { setErrorSnackbarIsVisible(false) }} 
+        actionText="Dismiss"/>
 
       <Logo />
 

@@ -3,12 +3,12 @@ import NavigationActions from "react-navigation/src/NavigationActions";
 import AUTH from '../auth';
 import TOKEN from '../token';
 import Constants from '../../constants/Constants';
-import handleResponse from '../httpHelpers';
+import { handleResponse } from '../httpHelpers';
 
 
 class AuthService {
 
-    static login = ({email, password}) => {
+    static login = async ({email, password}, navigation) => {
         const response = AUTH.authenticate(email, password);
         
         return response.then((response) => {
