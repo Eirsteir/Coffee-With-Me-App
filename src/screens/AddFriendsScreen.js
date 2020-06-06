@@ -45,7 +45,7 @@ class AddFriendsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <SearchBox />
+        <SearchBox objectType={'users'} />
 
         <LargeHeading>Add Friends</LargeHeading>
         <FlatList
