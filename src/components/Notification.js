@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import AttachedActivity from './AttachedActivity';
 import { UserBar, humanizeTimestamp } from 'expo-activity-feed';
-import { userOrDefault } from '../utils';
 
+import { userOrDefault } from '../utils';
+import AttachedActivity from './AttachedActivity';
 import HeartIcon from '../../images/icons/heart.png';
 import RepostIcon from '../../images/icons/repost.png';
 

@@ -2,18 +2,19 @@
 import React from 'react';
 import { StatusBar, Image, View } from 'react-native';
 
+import { NotificationFeed } from 'expo-activity-feed';
+import { Activity, LikeButton, ReactionIcon } from 'expo-activity-feed';
+import type { NavigationScreen } from 'expo-activity-feed';
+import type { NavigationEventSubscription } from 'react-navigation';
+
 import Notification from '../components/Notification';
 import Follow from '../components/Notifications/Follow';
-import { NotificationFeed } from 'expo-activity-feed';
+import AddFriendsHeader from '../components/AddFriendsHeader';
 
 import CategoriesIcon from '../../images/icons/categories.png';
 import PostIcon from '../../images/icons/post.png';
 import ReplyIcon from '../../images/icons/reply.png';
 
-import { Activity, LikeButton, ReactionIcon } from 'expo-activity-feed';
-
-import type { NavigationScreen } from 'expo-activity-feed';
-import type { NavigationEventSubscription } from 'react-navigation';
 
 type Props = {|
   navigation: NavigationScreen,
@@ -22,7 +23,7 @@ type Props = {|
 export default class NotificationScreen extends React.Component<Props> {
   _navListener: NavigationEventSubscription;
 
-  static navigationOptions = () => ({
+  static navigationOptions = ({ navigation }: Props) => ({
     title: 'NOTIFICATIONS',
     headerLeft: (
       <View style={{ paddingLeft: 15 }}>
@@ -30,9 +31,7 @@ export default class NotificationScreen extends React.Component<Props> {
       </View>
     ),
     headerRight: (
-      <View style={{ paddingRight: 15 }}>
-        <Image source={PostIcon} style={{ width: 23, height: 23 }} />
-      </View>
+      <AddFriendsHeader navigation={navigation} /> 
     ),
     headerTitleStyle: {
       fontWeight: '500',

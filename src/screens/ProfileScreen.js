@@ -1,10 +1,9 @@
 // @flow
 
 import React from 'react';
-import { ScrollView, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar, View, Text } from 'react-native';
 import ProfileHeader from '../components/ProfileHeader';
-import Button from '../components/Button';
-import { FlatFeed } from 'expo-activity-feed';
+
 import type { NavigationScreen } from 'expo-activity-feed';
 import type { NavigationEventSubscription } from 'react-navigation';
 
@@ -19,11 +18,6 @@ export default class ProfileScreen extends React.Component<Props> {
       backgroundColor: 'transparent',
       borderBottomColor: 'transparent',
     },
-    headerRight: (
-      <Button pressed={() => navigation.navigate('EditProfile')}>
-        Edit Profile
-      </Button>
-    ),
     headerTransparent: true,
     headerBackTitle: null,
   });
@@ -36,10 +30,24 @@ export default class ProfileScreen extends React.Component<Props> {
 
   render() {
     return (
-      <ScrollView style={{ flex: 1 }}>
-        <ProfileHeader />
-        <FlatFeed feedGroup="user" />
-      </ScrollView>
+      <View style={{ height: 100 + '%', backgroundColor: '#fff'}}>
+        <ProfileHeader navigate={this.props.navigation.navigate}/>
+        <View style={styles.historyContainer} >
+          <Text>HISTORY</Text>
+        </View>
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  historyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderWidth: .2,
+    borderColor: '#d3d3d3',
+    paddingTop: 10,
+    marginTop: 20,
+  }
+})

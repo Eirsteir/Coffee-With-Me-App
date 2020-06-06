@@ -3,11 +3,15 @@
 import React from 'react';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import CoverImage from './CoverImage';
-import { Avatar, UploadImage } from 'expo-activity-feed';
+import { Avatar } from 'expo-activity-feed';
+
+import { UserContext } from '../context/UserContext';
+import UniversityService from '../api/services/UniversityService';
 import FormField from './FormField';
-import { StreamApp } from 'expo-activity-feed';
-import type { UserData, StreamAppCtx } from '../types';
+import CoverImage from './CoverImage';
+import type { UserData } from '../types';
+import AutocompleteField from '../components/AutocompleteField';
+
 
 type Props = {|
   registerSave: (saveFunc: () => any) => void,
@@ -15,26 +19,34 @@ type Props = {|
 
 export default function EditProfileForm(props: Props) {
   return (
-    <StreamApp.Consumer>
-      {(appCtx) => <EditProfileFormInner {...props} {...appCtx} />}
-    </StreamApp.Consumer>
+    <UserContext.Consumer>
+      {(userCtx) => <EditProfileFormInner {...props} {...userCtx} />}
+    </UserContext.Consumer>
   );
 }
 
-type PropsInner = {| ...Props, ...StreamAppCtx |};
+type PropsInner = {| ...Props, ...UserContext |};
 
 type State = UserData;
 
 class EditProfileFormInner extends React.Component<PropsInner, State> {
+
   constructor(props: PropsInner) {
     super(props);
-    this.state = { ...props.user.data };
+    let profile = props.profile();
+    this.state = { 
+      nickname: profile.nickname,
+      university: profile.university,
+      universitiesData: [],
+    };        
   }
 
   componentDidMount() {
+    this.loadUniversities();
     this.props.registerSave(async () => {
-      await this.props.user.update(this.state);
-      this.props.changedUserData();
+      return await this.props.update({ nickname: this.state.nickname, universityId: this.state.university.id })
+        .then(this.props.successCallback)
+        .catch(this.props.errorCallback);
     });
   }
 
@@ -42,10 +54,17 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
     console.log('onUploadButtonPress');
   }
 
+  loadUniversities = () => {
+    return UniversityService.fetchUniversities(false)
+      .then(async (universitiesData) => {
+        this.setState({ universitiesData })
+      });
+  }
+
   render() {
     return (
-      <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#ffffff' }}>
-        <CoverImage source={this.state.coverImage} size={150} />
+      <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#ffffff' }} keyboardShouldPersistTaps='always'>
+        <CoverImage />
         <View
           style={{
             flexDirection: 'row',
@@ -68,27 +87,22 @@ class EditProfileFormInner extends React.Component<PropsInner, State> {
               size={100}
               editButton
               onUploadButtonPress={this._onUploadButtonPress}
+              noShadow
             />
-            <UploadImage onUploadButtonPress={this._onUploadButtonPress} />
           </View>
         </View>
         <View style={{ padding: 15 }}>
           <FormField
-            value={this.state.name}
-            label={'Name'}
-            onChangeText={(text) => this.setState({ name: text })}
+            placeholder={this.state.nickname}
+            label={'Nickname'}
+            onChangeText={(text) => this.setState({ nickname: text })}
           />
-          <FormField
-            value={this.state.url}
-            label={'Website'}
-            onChangeText={(text) => this.setState({ url: text })}
-          />
-          <FormField
-            value={this.state.desc}
-            label={'Description'}
-            onChangeText={(text) => this.setState({ desc: text })}
-            multiline
-          />
+          <AutocompleteField 
+            label='University'
+            placeholder={this.state.university.name}
+            onPressCallback={(item) => this.setState({ university: item })}
+            data={this.state.universitiesData}
+          /> 
         </View>
       </KeyboardAwareScrollView>
     );

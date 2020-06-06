@@ -5,6 +5,7 @@ import AuthService from './api/services/AuthService';
 import Constants from './constants/Constants';
 import AuthNavigator from './nav/AuthNavigator';
 import AppNavigator from './nav/AppNavigator';
+import UserController from './context/UserContext';
 
 export const AuthContext = React.createContext();
 
@@ -72,13 +73,10 @@ export default function App({ navigation }) {
     () => ({
       login: async data => {
         const token = await AuthService.login(data).then((token) => { return token });
-        console.log(token);
-
         dispatch({ type: 'LOGIN', token: token });
-      },
+      }, 
       logout: () => dispatch({ type: 'LOG_OUT' }),
       register: async data => {
-
         return await AuthService.register(data, navigation);
       },
     }),
@@ -90,7 +88,9 @@ export default function App({ navigation }) {
         {state.userToken == null ? (
           <AuthNavigator />
         ) : (
-          <AppNavigator/>
+          <UserController>
+            <AppNavigator token={state.userToken} />
+          </UserController>
         )}
     </AuthContext.Provider>
   );
