@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StatusBar, Image, ScrollView, FlatList, Text } from 'react-native';
+import { View, StatusBar, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, Text } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
 
 import AddFriendsHeader from '../components/AddFriendsHeader';
@@ -127,6 +127,10 @@ class FriendsScreen extends React.Component {
       <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
         <SearchBox objectType={'friends'} />
 
+        <TouchableOpacity style={styles.button} onPress={this.props.navigation.navigate('FriendRequests')}>
+          <LargeHeading>Friend requests</LargeHeading>
+        </TouchableOpacity>
+
         <LargeHeading>Recently added</LargeHeading>
         <HorizontalScrollFeed
           data={this.state.interestingUsers}
@@ -175,5 +179,21 @@ class FriendsScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
+    width: 30 + '%',
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#f5f5f5',
+    paddingBottom: 15,
+    marginLeft: 15,
+    marginTop: 10,
+  }
+});
 
 export default FriendsScreen;
