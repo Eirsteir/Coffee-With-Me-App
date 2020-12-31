@@ -8,6 +8,7 @@ import HorizontalScrollFeed from '../components/HorizontalScrollFeed';
 import FriendCard from '../components/FriendCard';
 import UserCard from '../components/UserCard';
 import SearchBox from '../components/SearchBox';
+import UserService from '../api/services/UserService';
 
 class FriendsScreen extends React.Component {
   constructor(props) {
@@ -117,11 +118,22 @@ class FriendsScreen extends React.Component {
   });
 
   componentDidMount() {
+    this.loadFriends();
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('dark-content');
     });
   }
 
+  loadFriends = () => {
+    this.setState({ isLoading: true });
+    UserService.getFriends()
+      .then(friends => {
+        this.setState({ friends: friends, isLoading: false });
+      })
+      .catch(console.log);
+  }
+
+  // todo: onRefresh
   render() {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -146,7 +158,7 @@ class FriendsScreen extends React.Component {
           <LargeHeading>Friends</LargeHeading>
           <FlatList
             style={{ marginTop: 15 }}
-            data={this.state.users}
+            data={this.state.friends}
             renderItem={({ item }) => (
               <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                 <FriendCard
