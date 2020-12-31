@@ -5,6 +5,9 @@ import {
   createBottomTabNavigator,
 } from 'react-navigation';
 
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+
 import {
   STREAM_API_KEY,
   STREAM_APP_ID,
@@ -113,7 +116,9 @@ class AppNavigator extends React.Component {
           profileImage: ''
         }}
       >
-        <Navigation />
+        <ApplicationProvider {...eva} theme={eva.light}>
+          <Navigation />
+        </ApplicationProvider>
       </StreamApp>
     );
   }
