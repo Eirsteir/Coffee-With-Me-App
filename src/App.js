@@ -1,5 +1,8 @@
 import * as React from 'react';
 
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+
 import TOKEN from './api/token';
 import AuthService from './api/services/AuthService';
 import Constants from './constants/Constants';
@@ -84,14 +87,16 @@ export default function App({ navigation }) {
   );
 
   return (
-    <AuthContext.Provider value={authContext}>
-        {state.userToken == null ? (
-          <AuthNavigator />
-        ) : (
-          <UserController>
-            <AppNavigator token={state.userToken} />
-          </UserController>
-        )}
-    </AuthContext.Provider>
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <AuthContext.Provider value={authContext}>
+          {state.userToken == null ? (
+            <AuthNavigator />
+          ) : (
+            <UserController>
+              <AppNavigator token={state.userToken} />
+            </UserController>
+          )}
+      </AuthContext.Provider>
+    </ApplicationProvider>
   );
 }

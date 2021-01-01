@@ -20,6 +20,12 @@ class UserService {
         });
     }
 
+    static getFriends = async () => {
+        return TOKEN.get(Constants.AUTH_TOKEN).then(token => {
+            return USER.fetchFriends(token).then(response => { return response.data });
+        });
+    }
+
 }
 
 export default UserService;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StatusBar, Image, ScrollView, FlatList, Text } from 'react-native';
+import { View, StatusBar, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, Text } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
 
 import AddFriendsHeader from '../components/AddFriendsHeader';
@@ -8,6 +8,7 @@ import HorizontalScrollFeed from '../components/HorizontalScrollFeed';
 import FriendCard from '../components/FriendCard';
 import UserCard from '../components/UserCard';
 import SearchBox from '../components/SearchBox';
+import UserService from '../api/services/UserService';
 
 class FriendsScreen extends React.Component {
   constructor(props) {
@@ -117,15 +118,30 @@ class FriendsScreen extends React.Component {
   });
 
   componentDidMount() {
+    this.loadFriends();
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('dark-content');
     });
   }
 
+  loadFriends = () => {
+    this.setState({ isLoading: true });
+    UserService.getFriends()
+      .then(friends => {
+        this.setState({ friends: friends, isLoading: false });
+      })
+      .catch(console.log);
+  }
+
+  // todo: onRefresh
   render() {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <SearchBox />
+        <SearchBox objectType={'friends'} />
+
+        <TouchableOpacity style={styles.button} onPress={this.props.navigation.navigate('FriendRequests')}>
+          <LargeHeading>Friend requests</LargeHeading>
+        </TouchableOpacity>
 
         <LargeHeading>Recently added</LargeHeading>
         <HorizontalScrollFeed
@@ -142,7 +158,7 @@ class FriendsScreen extends React.Component {
           <LargeHeading>Friends</LargeHeading>
           <FlatList
             style={{ marginTop: 15 }}
-            data={this.state.users}
+            data={this.state.friends}
             renderItem={({ item }) => (
               <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                 <FriendCard
@@ -175,5 +191,21 @@ class FriendsScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
+    width: 30 + '%',
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#f5f5f5',
+    paddingBottom: 15,
+    marginLeft: 15,
+    marginTop: 10,
+  }
+});
 
 export default FriendsScreen;

@@ -18,5 +18,8 @@ export default {
             headers: getHeaders(token),
             data: userData
         });
-    }
+    },
+    fetchFriends: async token => {
+        return axios.get(API_SOCIAL_URL + '/friends', { headers: getHeaders(token) });
+    },
 }

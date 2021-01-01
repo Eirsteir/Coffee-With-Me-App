@@ -24,6 +24,7 @@ class SearchBox extends React.Component {
 
   render() {
     let { fadeAnim } = this.state;
+    const { objectType } = this.props;
 
     return (
       <View style={styles.searchbox}>
@@ -32,7 +33,7 @@ class SearchBox extends React.Component {
             source={require('../../images/icons/ios-search.png')}
             style={{ width: 14, height: 14, top: 4 }}
           />{' '}
-          Search
+          Search {objectType}
         </Animated.Text>
         <TextInput
           onFocus={this._fadeOutPlaceholder}
