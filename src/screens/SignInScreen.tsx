@@ -1,7 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Button, Input, Layout, StyleService, Text, Divider, useStyleSheet } from '@ui-kitten/components';
-import { EyeIcon, EyeOffIcon, PersonIcon, FacebookIcon, GoogleIcon } from '../components/extra/icons';
+import { View, TouchableWithoutFeedback } from 'react-native';
+import { Button, Input, Layout, Icon, StyleService, Text, Divider, useStyleSheet } from '@ui-kitten/components';
+import { PersonIcon, FacebookIcon, GoogleIcon } from '../components/extra/icons';
 import { KeyboardAvoidingView } from '../components/extra/3rd-party';
 
 export default ({ navigation }): React.ReactElement => {
@@ -24,6 +24,12 @@ export default ({ navigation }): React.ReactElement => {
     setPasswordVisible(!passwordVisible);
   };
 
+  const renderEyeIcon = (props) => (
+    <TouchableWithoutFeedback onPress={onPasswordIconPress}>
+      <Icon {...props} name={!passwordVisible ? 'eye' : 'eye-off'}/>
+    </TouchableWithoutFeedback>
+  );
+  
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -37,18 +43,17 @@ export default ({ navigation }): React.ReactElement => {
         level='1'>
         <Input
           placeholder='Email'
-          icon={PersonIcon}
+          accessoryRight={PersonIcon}
           value={email}
           onChangeText={setEmail}
         />
         <Input
           style={styles.passwordInput}
           placeholder='Password'
-          icon={passwordVisible ? EyeIcon : EyeOffIcon}
+          accessoryRight={renderEyeIcon}
           value={password}
           secureTextEntry={!passwordVisible}
           onChangeText={setPassword}
-          onIconPress={onPasswordIconPress}
         />
         <View style={styles.forgotPasswordContainer}>
           <Button
@@ -83,12 +88,12 @@ export default ({ navigation }): React.ReactElement => {
             <Button
               appearance='ghost'
               size='giant'
-              icon={GoogleIcon}
+              accessoryRight={GoogleIcon}
             />
             <Button
               appearance='ghost'
               size='giant'
-              icon={FacebookIcon}
+              accessoryRight={FacebookIcon}
             />
           </View>
         </View>

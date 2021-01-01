@@ -3,15 +3,15 @@ import { createStackNavigator } from 'react-navigation'
 
 import SignInScreen from '../screens/SignInScreen'
 import SignUp from '../screens/SignUpScreen'
-
+import ForgotPassword from '../screens/ForgotPasswordScreen'
 
 const routeConfig = {
     Login: { screen: SignInScreen },
-    Register: { screen: SignUp }
+    Register: { screen: SignUp },
+    ForgotPassword: { screen: ForgotPassword },
 }
 
 const navigationOptions = {
-  headerTintColor: '#fb5b5a',
   headerStyle: {  borderBottomColor: 'white' },
 }
 

@@ -18,6 +18,10 @@ export const PersonIcon = (style: ImageStyle): IconElement => (
   <Icon {...style} name='person'/>
 );
 
+export const LockIcon = (style: ImageStyle): IconElement => (
+  <Icon {...style} name='lock-outline'/>
+);
+
 export const FacebookIcon = (style: ImageStyle): IconElement => (
     <Icon {...style} name='facebook'/>
   );

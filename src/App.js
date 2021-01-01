@@ -1,7 +1,8 @@
 import * as React from 'react';
 
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry, Text } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 import TOKEN from './api/token';
 import AuthService from './api/services/AuthService';
@@ -87,6 +88,8 @@ export default function App({ navigation }) {
   );
 
   return (
+    <>
+    <IconRegistry icons={EvaIconsPack} />
     <ApplicationProvider {...eva} theme={eva.light}>
       <AuthContext.Provider value={authContext}>
           {state.userToken == null ? (
@@ -98,5 +101,6 @@ export default function App({ navigation }) {
           )}
       </AuthContext.Provider>
     </ApplicationProvider>
+    </>
   );
 }
