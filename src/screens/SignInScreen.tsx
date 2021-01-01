@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Button, Input, Layout, StyleService, Text, Divider, useStyleSheet } from '@ui-kitten/components';
-import { EyeIcon, EyeOffIcon, PersonIcon, FacebookIcon, GoogleIcon } from './extra/icons';
-import { KeyboardAvoidingView } from './extra/3rd-party';
+import { EyeIcon, EyeOffIcon, PersonIcon, FacebookIcon, GoogleIcon } from '../components/extra/icons';
+import { KeyboardAvoidingView } from '../components/extra/3rd-party';
 
 export default ({ navigation }): React.ReactElement => {
 
@@ -13,7 +13,7 @@ export default ({ navigation }): React.ReactElement => {
   const styles = useStyleSheet(themedStyles);
 
   const onSignUpButtonPress = (): void => {
-    navigation && navigation.navigate('SignUp2');
+    navigation && navigation.navigate('Register');
   };
 
   const onForgotPasswordButtonPress = (): void => {
@@ -28,15 +28,8 @@ export default ({ navigation }): React.ReactElement => {
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.headerContainer}>
         <Text
-          category='h1'
-          status='control'>
-          Hello
-        </Text>
-        <Text
-          style={styles.signInLabel}
-          category='s1'
-          status='control'>
-          Sign in to your account
+          category='h1'>
+          Break
         </Text>
       </View>
       <Layout
@@ -61,7 +54,7 @@ export default ({ navigation }): React.ReactElement => {
           <Button
             style={styles.forgotPasswordButton}
             appearance='ghost'
-            status='basic'
+            status='primary'
             onPress={onForgotPasswordButtonPress}>
             Forgot your password?
           </Button>
@@ -69,7 +62,7 @@ export default ({ navigation }): React.ReactElement => {
       </Layout>
       <Button
         style={styles.signInButton}
-        size='giant'>
+        size='small'>
         SIGN IN
       </Button>
       <View style={styles.orContainer}>
@@ -81,23 +74,23 @@ export default ({ navigation }): React.ReactElement => {
         </Text>
         <Divider style={styles.divider}/>
       </View>
-      <View style={styles.socialAuthButtonsContainer}>
-          <Button
-            appearance='ghost'
-            size='giant'
-            status='basic'
-            icon={GoogleIcon}
-          >
-            Sign in with Facebook
-          </Button>
-          <Button
-            appearance='ghost'
-            size='giant'
-            status='basic'
-            icon={FacebookIcon}
-            >
-            Sign in with Google
-          </Button>
+      <View style={styles.socialAuthContainer}>
+          <Text
+            style={styles.socialAuthHintText}>
+            Sign in with a social account
+          </Text>
+          <View style={styles.socialAuthButtonsContainer}>
+            <Button
+              appearance='ghost'
+              size='giant'
+              icon={GoogleIcon}
+            />
+            <Button
+              appearance='ghost'
+              size='giant'
+              icon={FacebookIcon}
+            />
+          </View>
         </View>
       <Button
         style={styles.signUpButton}
@@ -118,11 +111,8 @@ const themedStyles = StyleService.create({
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 216,
-    backgroundColor: 'color-primary-default',
   },
   formContainer: {
-    flex: 1,
-    paddingTop: 32,
     paddingHorizontal: 16,
   },
   signInLabel: {
@@ -157,8 +147,15 @@ const themedStyles = StyleService.create({
   orLabel: {
     marginHorizontal: 8,
   },
+  socialAuthContainer: {
+    marginTop: 48,
+  },
   socialAuthButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  socialAuthHintText: {
+    alignSelf: 'center',
+    marginBottom: 16,
   },
 });

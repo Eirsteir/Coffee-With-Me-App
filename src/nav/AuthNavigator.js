@@ -1,13 +1,13 @@
 import React from 'react'
 import { createStackNavigator } from 'react-navigation'
 
-import LoginScreen from '../screens/sign-in/SignIn'
-import RegisterScreen from '../screens/RegisterScreen'
+import SignInScreen from '../screens/SignInScreen'
+import SignUp from '../screens/SignUpScreen'
 
 
 const routeConfig = {
-    Login: { screen: LoginScreen },
-    Register: { screen: RegisterScreen }
+    Login: { screen: SignInScreen },
+    Register: { screen: SignUp }
 }
 
 const navigationOptions = {
