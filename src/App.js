@@ -1,8 +1,11 @@
 import * as React from 'react';
+import { API_URL } from 'babel-dotenv';
+import { View } from 'react-native';
 
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry, Text } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { ApolloClient, InMemoryCache, createHttpLink, ApolloProvider } from '@apollo/client';
 
 import TOKEN from './api/token';
 import AuthService from './api/services/AuthService';
@@ -12,6 +15,16 @@ import AppNavigator from './nav/AppNavigator';
 import UserController from './context/UserContext';
 
 export const AuthContext = React.createContext();
+
+const cache = new InMemoryCache();
+const link = createHttpLink({
+  uri: API_URL,
+});
+
+const client = new ApolloClient({
+  link: link,
+  cache: cache
+});
 
 function SplashScreen() {
   return (
@@ -87,19 +100,22 @@ export default function App({ navigation }) {
     []
   );
 
+
   return (
     <>
     <IconRegistry icons={EvaIconsPack} />
     <ApplicationProvider {...eva} theme={eva.light}>
-      <AuthContext.Provider value={authContext}>
-          {state.userToken == null ? (
-            <AuthNavigator />
-          ) : (
-            <UserController>
-              <AppNavigator token={state.userToken} />
-            </UserController>
-          )}
-      </AuthContext.Provider>
+      <ApolloProvider client={client}>
+        <AuthContext.Provider value={authContext}>
+            {state.userToken == null ? (
+              <AuthNavigator />
+            ) : (
+              <UserController>
+                <AppNavigator token={state.userToken} />
+              </UserController>
+            )}
+        </AuthContext.Provider>
+      </ApolloProvider>
     </ApplicationProvider>
     </>
   );
