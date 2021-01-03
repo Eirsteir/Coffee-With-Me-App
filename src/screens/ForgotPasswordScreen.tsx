@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Input, Text } from '@ui-kitten/components';
+import { View } from 'react-native';
+import { Button, Input, Text, StyleService, useStyleSheet } from '@ui-kitten/components';
 import { EmailIcon, LockIcon } from '../components/extra/icons';
 import { KeyboardAvoidingView } from '../components/extra/3rd-party';
 
 export default ({ navigation }): React.ReactElement => {
 
   const [email, setEmail] = React.useState<string>();
+  const styles = useStyleSheet(themedStyles);
 
   const onResetPasswordButtonPress = (): void => {
     navigation && navigation.goBack();
@@ -45,7 +46,7 @@ export default ({ navigation }): React.ReactElement => {
   );
 };
 
-const styles = StyleSheet.create({
+const themedStyles = StyleService.create({
   container: {     
     flex: 1,
     backgroundColor: 'background-basic-color-1',
@@ -53,7 +54,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    textAlign: "center",
     minHeight: 176,
   },
   lockIcon: {
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   enterEmailLabel: {
+    textAlign: "center",
     alignSelf: 'center',
     marginTop: 16,
     paddingHorizontal: 30,

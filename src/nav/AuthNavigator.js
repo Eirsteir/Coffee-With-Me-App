@@ -1,12 +1,12 @@
 import React from 'react'
 import { createStackNavigator } from 'react-navigation'
 
-import SignInScreen from '../screens/SignInScreen'
+import SignIn from '../screens/SignInScreen'
 import SignUp from '../screens/SignUpScreen'
 import ForgotPassword from '../screens/ForgotPasswordScreen'
 
 const routeConfig = {
-    Login: { screen: SignInScreen },
+    Login: { screen: SignIn },
     Register: { screen: SignUp },
     ForgotPassword: { screen: ForgotPassword },
 }
