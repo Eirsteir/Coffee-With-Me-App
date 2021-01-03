@@ -8,18 +8,9 @@ import { handleResponse } from '../httpHelpers';
 
 class AuthService {
 
-    static login = async ({email, password}, navigation) => {
-        const response = AUTH.authenticate(email, password);
-        
-        return response.then((response) => {
-            
-            if(response && response.data) {
-                const token = response.data;
-                return TOKEN.set(Constants.AUTH_TOKEN, token).then(() => {return token});
-            }
-            return null;
-        });
-    }
+    static login = async ({ token }, navigation) => {        
+        return TOKEN.set(Constants.AUTH_TOKEN, token).then(() => {return token});
+   }
 
     static register = async ({ email, name, password }, navigation) => {
         return AUTH.register(email, name, password)

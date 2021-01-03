@@ -105,7 +105,8 @@ class AppNavigator extends React.Component {
       <StreamApp
         apiKey={apiKey}
         appId={appId}
-        token={this.props.token} 
+        // Pass user token from backend
+        token='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDk0YjVjNzktYzQyZC00ZWI4LTg0NTctM2EyNThkZDdmNTkzIn0.lOcnZZnvuJa0FKph2AjE7cM-_ktXn3KZLpeDmFOleIE' 
         defaultUserData={{
           name: '',
           url: '',
@@ -113,7 +114,7 @@ class AppNavigator extends React.Component {
           profileImage: ''
         }}
       >
-        <Navigation />
+          <Navigation />
       </StreamApp>
     );
   }

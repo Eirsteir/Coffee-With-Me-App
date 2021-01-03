@@ -74,6 +74,7 @@ export default function App({ navigation }) {
         userToken = await TOKEN.get(Constants.AUTH_TOKEN); 
       } catch (e) {
         // Restoring token failed
+        console.log('Failed to restore user token');
       }
 
       // After restoring token, we may need to validate it in production apps
@@ -100,6 +101,7 @@ export default function App({ navigation }) {
     []
   );
 
+  let isLoggedIn = state.userToken == null;
 
   return (
     <>
@@ -107,7 +109,7 @@ export default function App({ navigation }) {
     <ApplicationProvider {...eva} theme={eva.light}>
       <ApolloProvider client={client}>
         <AuthContext.Provider value={authContext}>
-            {state.userToken == null ? (
+            { isLoggedIn ? (
               <AuthNavigator />
             ) : (
               <UserController>

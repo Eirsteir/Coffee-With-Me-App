@@ -1,21 +1,87 @@
 import React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
-import { Button, CheckBox, Input, Icon, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { gql, useMutation } from '@apollo/client';
+
+import { Button, Icon, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import InputField from '../components/InputField';
 import { EmailIcon, FacebookIcon, GoogleIcon, PersonIcon } from '../components/extra/icons';
 import { KeyboardAvoidingView } from '../components/extra/3rd-party';
+import { AuthContext } from '../App';
+import validate from '../validation/validation_wrapper';
+
+const REGISTER = gql`
+mutation register(
+    $name: String!,
+    $email: String!,
+    $password1: String!,
+    $password2: String!
+  ) {
+    register(
+      name: $name,
+      email: $email,
+      password1: $password1,
+      password2: $password2
+    ) {
+      success
+      errors
+      refreshToken
+      token
+  }
+}
+`
 
 export default ({ navigation }): React.ReactElement => {
 
   const [name, setName] = React.useState<string>();
   const [email, setEmail] = React.useState<string>();
   const [password, setPassword] = React.useState<string>();
-  const [termsAccepted, setTermsAccepted] = React.useState<boolean>(false);
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
+  const [emailError, setEmailError] =  React.useState<string>();
+  const [passwordError, setPasswordError] =  React.useState<string>();
+  const { login } = React.useContext(AuthContext);
+
+  const onSignUpCompleted = (data): void => {
+    if (data.register.success) {
+      const token = data.register.token;
+      return login({ token });
+    }
+  
+    // TODO: This should be handled better
+    const errors = data.register.errors
+    if (errors.email) {
+      setEmailError(errors.email[0].message);
+    } else if (errors.password) {
+      setPasswordError(errors.password[0].message);
+    } else if (errors.password2) {  
+      setPasswordError(errors.password2[0].message);
+    } 
+  };
+
+  const [register, { loading, error }] = useMutation(REGISTER, {
+    onCompleted: data => onSignUpCompleted(data),
+    onError: err => console.error(err)    
+  });
 
   const styles = useStyleSheet(themedStyles);
 
   const onSignUpButtonPress = (): void => {
-    navigation && navigation.goBack();
+
+    const emailError = validate('email', email);
+    const passwordError = validate('password', password);
+
+    setEmailError(emailError);
+    setPasswordError(passwordError);
+
+    if (emailError || passwordError) {
+      return;
+    }
+
+    register({ variables: {
+      name: name, 
+      email: email,
+      password1: password,
+      password2: password // workaround
+    }});
   };
 
   const onSignInButtonPress = (): void => {
@@ -46,38 +112,34 @@ export default ({ navigation }): React.ReactElement => {
         </Text>
       </View>
       <View style={styles.formContainer}>
-        <Input
+        <InputField
           autoCapitalize='none'
           placeholder='Full Name'
           accessoryRight={PersonIcon}
           value={name}
           onChangeText={setName}
         />
-        <Input
-          style={styles.formInput}
+        <InputField
           autoCapitalize='none'
           placeholder='Email'
           accessoryRight={EmailIcon}
           value={email}
           onChangeText={setEmail}
+          error={emailError}
         />
-        <Input
-          style={styles.formInput}
+        <InputField
           autoCapitalize='none'
           secureTextEntry={!passwordVisible}
           placeholder='Password'
           accessoryRight={renderEyeIcon}
           value={password}
           onChangeText={setPassword}
+          error={passwordError}
         />
-        <CheckBox
-          style={styles.termsCheckBox}
-          checked={termsAccepted}
-          onChange={(checked: boolean) => setTermsAccepted(checked)}
-        >
-          I read and agree to Terms & Conditions
-        </CheckBox>
       </View>
+
+      {error && <Text status='danger'>{error.message}</Text>}
+
       <Button
         style={styles.signUpButton}
         size='small'
@@ -130,12 +192,6 @@ const themedStyles = StyleService.create({
     paddingTop: 32,
     paddingHorizontal: 16,
   },
-  formInput: {
-    marginTop: 16,
-  },
-  termsCheckBox: {
-    marginTop: 24,
-  },
   signUpButton: {
     marginHorizontal: 16,
   },
@@ -153,5 +209,9 @@ const themedStyles = StyleService.create({
   socialAuthHintText: {
     alignSelf: 'center',
     marginBottom: 16,
+  },
+  indicator: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
