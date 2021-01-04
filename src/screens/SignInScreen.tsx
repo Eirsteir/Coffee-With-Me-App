@@ -38,7 +38,7 @@ export default ({ navigation }): React.ReactElement => {
   const handleErrors = (errors: { nonFieldErrors: { message: string; }[]; email: { message: string; }[]; password: { message: string; }[]; }): void => {
     if (errors == null) 
       return;
-
+      
     if (errors.nonFieldErrors) 
       setErrors(errors.nonFieldErrors[0].message);
     if (errors.email)

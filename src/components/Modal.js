@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import { Button, Card, Modal, Text } from '@ui-kitten/components';
 
 export const ErrorModal = (props) => {
-
   const [visible, setVisible] = React.useState(true);
 
   return (
@@ -32,6 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     padding: 8,
+    paddingBottom: 0,
     backgroundColor: '#8F9BB3',
   },
   button: {

@@ -1,9 +1,7 @@
 import NavigationActions from "react-navigation/src/NavigationActions";
 
-import AUTH from '../auth';
 import TOKEN from '../token';
 import Constants from '../../constants/Constants';
-import { handleResponse } from '../httpHelpers';
 
 
 class AuthService {
@@ -11,11 +9,6 @@ class AuthService {
     static login = async ({ token }, navigation) => {        
         return TOKEN.set(Constants.AUTH_TOKEN, token).then(() => {return token});
    }
-
-    static register = async ({ email, name, password }, navigation) => {
-        return AUTH.register(email, name, password)
-            .then((response) => handleResponse(response, navigation));
-    }
 
     static isAuthenticated = () => {
         return TOKEN.get(Constants.AUTH_TOKEN)
