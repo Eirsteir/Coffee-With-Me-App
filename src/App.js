@@ -102,6 +102,7 @@ export default function App({ navigation }) {
   );
 
   let isLoggedIn = state.userToken == null;
+  if (state.isLoading) return null;
 
   return (
     <>

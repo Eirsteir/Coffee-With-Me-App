@@ -7,7 +7,7 @@ import ForgotPassword from '../screens/ForgotPasswordScreen'
 
 const routeConfig = {
     Login: { screen: SignIn },
-    Register: { screen: SignUp },
+    SignUp: { screen: SignUp },
     ForgotPassword: { screen: ForgotPassword },
 }
 

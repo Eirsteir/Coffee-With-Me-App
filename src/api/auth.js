@@ -10,14 +10,5 @@ export default {
         }
         
         return axios.post(AUTH_URL + '/login', data);
-    },
-    register: (email, name, password) => {
-        const data = {
-            email: email,
-            name: name,
-            password: password
-        }
-
-        return axios.post(AUTH_URL + '/register', data)
     }
 }

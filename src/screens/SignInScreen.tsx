@@ -1,19 +1,54 @@
 import React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
-import { Button, Input, Layout, Icon, StyleService, Text, Divider, useStyleSheet } from '@ui-kitten/components';
+import { gql, useMutation } from '@apollo/client';
+
+import { Button, Input, Layout, Icon, StyleService, Text, Divider, Spinner, useStyleSheet, AnimationConfig } from '@ui-kitten/components';
 import { PersonIcon, FacebookIcon, GoogleIcon } from '../components/extra/icons';
 import { KeyboardAvoidingView } from '../components/extra/3rd-party';
+import { ErrorModal } from '../components/Modal';
+import { AuthContext } from '../App';
+import SIGNIN_MUTATION from '../graphql/signin.mutation';
+
 
 export default ({ navigation }): React.ReactElement => {
 
   const [email, setEmail] = React.useState<string>();
   const [password, setPassword] = React.useState<string>();
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
-
+  const [errors, setErrors] = React.useState<string>();
+  const { login } = React.useContext(AuthContext);
   const styles = useStyleSheet(themedStyles);
 
+  const [signIn, { loading, error }] = useMutation(SIGNIN_MUTATION, {
+      variables: {
+        email: email,
+        password: password
+      },
+      onCompleted: ({ tokenAuth }) => handleSignInCompleted(tokenAuth),
+      onError: err => console.error(err)
+  });
+  
+  const handleSignInCompleted = (tokenAuth: { success: boolean; token: string; errors: any; }): void => {
+      if (tokenAuth.success) 
+        return login({token: tokenAuth.token});
+
+      return handleErrors(tokenAuth.errors);
+  };
+
+  const handleErrors = (errors: { nonFieldErrors: { message: string; }[]; email: { message: string; }[]; password: { message: string; }[]; }): void => {
+    if (errors == null) 
+      return;
+
+    if (errors.nonFieldErrors) 
+      setErrors(errors.nonFieldErrors[0].message);
+    if (errors.email)
+      setErrors(errors.email[0].message);
+    if (errors.password)
+      setErrors(errors.password[0].message);
+  }
+
   const onSignUpButtonPress = (): void => {
-    navigation && navigation.navigate('Register');
+    navigation && navigation.navigate('SignUp');
   };
 
   const onForgotPasswordButtonPress = (): void => {
@@ -41,6 +76,11 @@ export default ({ navigation }): React.ReactElement => {
       <Layout
         style={styles.formContainer}
         level='1'>
+
+      {/* TODO: Does not work the second time */}
+      {error && <ErrorModal title={error.message} />}
+      {errors && <ErrorModal title={errors} />}
+
         <Input
           placeholder='Email'
           accessoryRight={PersonIcon}
@@ -67,8 +107,10 @@ export default ({ navigation }): React.ReactElement => {
       </Layout>
       <Button
         style={styles.signInButton}
-        size='small'>
-        SIGN IN
+        size='small'
+        disabled={!email || !password}
+        onPress={signIn}>
+        {loading ? <Spinner size='tiny' status='basic'/> : 'SIGN IN'}
       </Button>
       <View style={styles.orContainer}>
         <Divider style={styles.divider}/>

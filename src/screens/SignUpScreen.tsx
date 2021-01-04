@@ -1,34 +1,15 @@
 import React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
-import { Button, Icon, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { Button, Icon, StyleService, Text, Spinner, useStyleSheet } from '@ui-kitten/components';
 import InputField from '../components/InputField';
 import { EmailIcon, FacebookIcon, GoogleIcon, PersonIcon } from '../components/extra/icons';
 import { KeyboardAvoidingView } from '../components/extra/3rd-party';
 import { AuthContext } from '../App';
 import validate from '../validation/validation_wrapper';
+import SIGNUP_MUTATION from '../graphql/signup.mutation';
 
-const REGISTER = gql`
-mutation register(
-    $name: String!,
-    $email: String!,
-    $password1: String!,
-    $password2: String!
-  ) {
-    register(
-      name: $name,
-      email: $email,
-      password1: $password1,
-      password2: $password2
-    ) {
-      success
-      errors
-      refreshToken
-      token
-  }
-}
-`
 
 export default ({ navigation }): React.ReactElement => {
 
@@ -39,30 +20,38 @@ export default ({ navigation }): React.ReactElement => {
   const [emailError, setEmailError] =  React.useState<string>();
   const [passwordError, setPasswordError] =  React.useState<string>();
   const { login } = React.useContext(AuthContext);
+  const styles = useStyleSheet(themedStyles);
 
-  const onSignUpCompleted = (data): void => {
-    if (data.register.success) {
-      const token = data.register.token;
-      return login({ token });
-    }
-  
-    // TODO: This should be handled better
-    const errors = data.register.errors
-    if (errors.email) {
-      setEmailError(errors.email[0].message);
-    } else if (errors.password) {
-      setPasswordError(errors.password[0].message);
-    } else if (errors.password2) {  
-      setPasswordError(errors.password2[0].message);
-    } 
-  };
-
-  const [register, { loading, error }] = useMutation(REGISTER, {
-    onCompleted: data => onSignUpCompleted(data),
+  const [register, { loading, error }] = useMutation(SIGNUP_MUTATION, {
+    variables: {
+      name: name, 
+      email: email,
+      password1: password,
+      password2: password // workaround
+    },
+    onCompleted: ({ register }) => handleSignUpCompleted(register),
     onError: err => console.error(err)    
   });
 
-  const styles = useStyleSheet(themedStyles);
+
+  const handleSignUpCompleted = (register: { success: boolean; token: string; errors: any; }): void => {
+    if (register.success) 
+      return login({ token: register.token });
+  
+    handleErrors(register.errors); 
+  };
+
+  const handleErrors = (errors: { email: { message: string; }[]; password: { message: string; }[]; password2: { message: string; }[]; }): void => {
+    if (errors == null) 
+      return;
+
+    if (errors.email) 
+      setEmailError(errors.email[0].message);
+    if (errors.password) 
+      setPasswordError(errors.password[0].message);
+    if (errors.password2) 
+      setPasswordError(errors.password2[0].message);
+  }
 
   const onSignUpButtonPress = (): void => {
 
@@ -72,16 +61,10 @@ export default ({ navigation }): React.ReactElement => {
     setEmailError(emailError);
     setPasswordError(passwordError);
 
-    if (emailError || passwordError) {
+    if (emailError || passwordError)
       return;
-    }
 
-    register({ variables: {
-      name: name, 
-      email: email,
-      password1: password,
-      password2: password // workaround
-    }});
+    register();
   };
 
   const onSignInButtonPress = (): void => {
@@ -143,8 +126,9 @@ export default ({ navigation }): React.ReactElement => {
       <Button
         style={styles.signUpButton}
         size='small'
+        disabled={!email || !name || !password}
         onPress={onSignUpButtonPress}>
-        SIGN UP
+        {loading ? <Spinner size='tiny' status='basic'/> : 'SIGN UP'}
       </Button>
       <View style={styles.socialAuthContainer}>
         <Text
