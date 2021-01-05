@@ -10,13 +10,3 @@ export function ErrorSnackbar(props) {
         />
     )
 }
-
-export function SuccessSnackbar(props) {
-    return (
-        <SnackBar
-            backgroundColor='#4BCA81' 
-            accentColor='#f5f5f5' 	
-            {...props}
-        />
-    )
-}

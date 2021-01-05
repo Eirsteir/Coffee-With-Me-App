@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import { useMutation } from '@apollo/client';
 
-import { Button, Input, Layout, Icon, StyleService, Text, Divider, Spinner, useStyleSheet, AnimationConfig } from '@ui-kitten/components';
+import { Button, Input, Layout, Icon, StyleService, Text, Divider, Spinner, useStyleSheet } from '@ui-kitten/components';
 import { PersonIcon, FacebookIcon, GoogleIcon } from '../components/extra/icons';
 import { KeyboardAvoidingView } from '../components/extra/3rd-party';
 import { ErrorModal } from '../components/Modal';

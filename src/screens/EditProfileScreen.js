@@ -1,89 +1,113 @@
 // @flow
 import React from 'react';
-import { StatusBar, View, Text, TouchableOpacity } from 'react-native';
-import type { NavigationScreen } from 'expo-activity-feed';
-import type { NavigationEventSubscription } from 'react-navigation';
+import { View, TouchableOpacity } from 'react-native';
+import { Text, StyleService, Spinner, useStyleSheet } from '@ui-kitten/components';
+import { Avatar } from 'expo-activity-feed';
+import { useMutation } from '@apollo/client';
 
-import EditProfileForm from '../components/EditProfileForm';
-import { SuccessSnackbar, ErrorSnackbar } from '../components/Snackbar';
+import { UserContext } from '../context/UserContext';
+import { ErrorSnackbar } from '../components/Snackbar';
+import { ProfileSetting } from '../components/ProfileSetting';
+import { KeyboardAvoidingView } from '../components/extra/3rd-party';
+import UPDATE_PROFILE_MUTATION from '../graphql/updateProfile.mutation';
 
-type Props = {|
-  navigation: NavigationScreen,
-|};
 
-const SAVE_FUNC = 'saveFunc';
-const ERROR = 'error';
+// Oppdater react-navigation til 5.x
+export default ({ navigation }): React.ReactElement => {
 
-export default class EditProfileScreen extends React.Component<Props> {
-  _navListener: NavigationEventSubscription;
+  const { profile, update } = React.useContext(UserContext);
+  const user = profile();
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      successSnackbarIsVisible: false,
-      errorSnackbarIsVisible: false,
-    } 
-  }
+  const [name, setName] = React.useState(user.name);
+  const [username, setUsername] = React.useState(user.username);
+  const [profilePic, setProfilePic] = React.useState(user.profilePic);
+  const [errorSnackbarIsVisible, setErrorSnackbarIsVisible] = React.useState<boolean>(false);
 
-  static navigationOptions = ({ navigation }: Props) => ({
-    title: 'EDIT PROFILE',
-    headerRight: (
-      <TouchableOpacity 
-        style={{ paddingRight: 15 }}
-        onPress={() => {
-          navigation.getParam(SAVE_FUNC)();
-          
-          if (navigation.getParam(ERROR) === `undefined`) {
-            navigation.goBack();
-          }
-        }}
-      >
-        <Text style={{ color: '#fb5b5a', fontSize: 17 }}>Save</Text>
-      </TouchableOpacity>
-    ),
-    headerTitleStyle: {
-      fontWeight: '500',
-      fontSize: 13,
-      color: '#000'
+  const styles = useStyleSheet(themedStyles);
+
+  const [updateProfile, { loading, error }] = useMutation(UPDATE_PROFILE_MUTATION, {
+    variables: {
+      name: name || '', 
+      username: username || '',
+      locale: 'en_US'
     },
-    headerTintColor: '#fb5b5a',
+    onCompleted: ({ updateProfile }) => handleUpdateProfileCompleted(updateProfile),
+    onError: err => {
+      console.error(err);
+      return setErrorSnackbarIsVisible(true);
+    }    
   });
 
-  componentDidMount() {
-    this._navListener = this.props.navigation.addListener('didFocus', () => {
-      StatusBar.setBarStyle('dark-content');
-    });
+  const handleUpdateProfileCompleted = updateProfile => {
+    console.log(updateProfile);
+    // refresh user data
   }
 
-  render() {
-    return (
-      <View style={{ height: 100 + '%' }}>
-        <EditProfileForm
-          registerSave={(saveFunc) => {
-            this.props.navigation.setParams({ saveFunc });
-          }}
-          successCallback={() => {
-            this.setState({ successSnackbarIsVisible: true })
-          }}
-          errorCallback={(error) => {
-            this.setState({ errorSnackbarIsVisible: true })
-            this.props.navigation.setParams({ error });
-          }}
-        />
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Edit profile',
+      headerRight: renderHeaderRight()
+    });
+  }, [navigation]);
+    
+  const _onUploadButtonPress = () => console.log('Uploading profile pic');
 
-        <SuccessSnackbar 
-            visible={this.state.successSnackbarIsVisible} 
-            textMessage="Successfully updated profile" 
-            actionHandler={() => { this.setState({ successSnackbarIsVisible: false }) }} 
-            actionText="Ok"
+  const renderHeaderRight = (): React.ReactElement => (
+    <TouchableOpacity 
+    style={{ paddingRight: 15 }}
+    onPress={updateProfile}
+    >
+      {loading ? <Spinner size='small'/> : <Text>Done</Text>}
+    </TouchableOpacity>
+  );
+
+  return (
+    <KeyboardAvoidingView style={styles.container}>
+
+      <Avatar
+        source={profilePic}
+        // size={100}
+        style={styles.profileAvatar}
+        editButton
+        onUploadButtonPress={_onUploadButtonPress}
+        noShadow
+      />
+      <View style={styles.formContainer}>
+        <ProfileSetting
+          style={styles.profileSetting}
+          hint='Name'
+          value={name ? name : 'Name'}
+          onChangeText={setName}
         />
-        <ErrorSnackbar 
-          visible={this.state.errorSnackbarIsVisible} 
-          textMessage="Unable to perform update, please try again later" 
-          actionHandler={() => { this.setState({ errorSnackbarIsVisible: false }) }} 
-          actionText="Dismiss"
+        <ProfileSetting
+          style={styles.profileSetting}
+          hint='Username'
+          value={username ? username : 'Username'}
+          onChangeText={setUsername}
         />
       </View>
-    );
-  }
+      
+      <ErrorSnackbar 
+        visible={errorSnackbarIsVisible} 
+        textMessage="Unable update, try again later!" 
+        actionHandler={() => setErrorSnackbarIsVisible(false) } 
+        actionText="Dismiss"
+      />
+    </KeyboardAvoidingView>
+  );
 }
+
+const themedStyles = StyleService.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'background-basic-color-1',
+  },
+  profileAvatar: {
+    aspectRatio: 1.0,
+    height: 124,
+    alignSelf: 'center',
+  },
+  profileSetting: {
+    padding: 16,
+  },
+});

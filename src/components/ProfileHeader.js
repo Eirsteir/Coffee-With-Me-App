@@ -47,9 +47,9 @@ class ProfileHeaderInner extends React.Component {
   }
 
   render() {
-    let { name, username, profilePic, friends } = this.state.user;
+    let { name, username, profilePic } = this.state.user;
     
-    let friendsCount = friends.totalCount;
+    let friendsCount = this.state.user.friends?.totalCount;
     
     StatusBar.setBarStyle('light-content', true);
 

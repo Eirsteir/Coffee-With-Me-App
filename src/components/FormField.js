@@ -1,30 +1,29 @@
 import React from 'react';
 import { View, TextInput, Text } from 'react-native';
 
-const FormField = ({ label, value, placeholder, multiline, onChangeText }) => {
+const FormField = (props) => {
+  const { label } = props;
+
   return (
     <View
       style={{
-        borderBottomWidth: 1,
-        borderBottomColor: '#dcdcdc',
         marginBottom: 15,
+        flexDirection: 'row',
+        justifyContent: 'left',
       }}
     >
-      <Text style={{ marginBottom: 12, fontSize: 14, color: '#C5C5C5' }}>
+      <Text>
         {label}
       </Text>
       <TextInput
-        value={value}
         style={{
-          fontSize: 16,
-          fontWeight: '500',
           color: '#364047',
           paddingBottom: 10,
+          borderBottomWidth: 1,
+          borderBottomColor: '#dcdcdc',
         }}
-        placeholder={placeholder}
-        multiline={multiline}
-        onChangeText={onChangeText}
         underlineColorAndroid="transparent"
+        {...props}
       />
     </View>
   );
