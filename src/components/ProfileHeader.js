@@ -27,9 +27,11 @@ class ProfileHeaderInner extends React.Component {
     this.state = {
       user: {
         name: '',
-        nickname: '',
-        friendsCount: 0,
-        university: {},
+        username: '',
+        profilePic: '',
+        friends: {
+          totalCount: 0,
+        }
       },
     };
   }
@@ -45,8 +47,9 @@ class ProfileHeaderInner extends React.Component {
   }
 
   render() {
-    let { name, nickname, friendsCount, university } = this.state.user;
-    let profileImage = null;
+    let { name, username, profilePic, friends } = this.state.user;
+    
+    let friendsCount = friends.totalCount;
     
     StatusBar.setBarStyle('light-content', true);
 
@@ -57,10 +60,9 @@ class ProfileHeaderInner extends React.Component {
         <View style={styles.mainSection}>
           <View style={styles.userDetails}>
             <Text style={styles.userName}>{name}</Text>
-            <Text style={styles.userNickname}>{nickname}</Text>
-            <Text style={styles.userUniversity}>{university.name}</Text>
+            <Text style={styles.userUsername}>{username}</Text>
           </View>
-          <Avatar source={profileImage} size={150} noShadow />
+          <Avatar source={profilePic} size={150} noShadow />
         </View>
 
         <View style={styles.statSection}>
@@ -106,18 +108,13 @@ const styles = StyleSheet.create({
     fontSize: 39,
     color: 'white',
   },
-  userNickname: {
+  userUsername: {
     fontSize: 14,
     fontWeight: '500',
     color: '#364047',
     lineHeight: 19,
     paddingLeft: 3,
     marginTop: 7,
-  },
-  userUniversity: {
-    fontSize: 18,
-    paddingTop:10,
-    paddingLeft: 3,
   },
   statSection: {
     paddingLeft: margin * 2,

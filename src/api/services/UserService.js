@@ -5,10 +5,7 @@ import Constants from '../../constants/Constants';
 class UserService {
 
     static fetchCurrentUser = async () => {
-        return USER.fetchCurrentUser().then(response => {
-            console.log(response);
-            return response.data
-        });
+        return USER.fetchCurrentUser().then(response => {return response.data});
     }
 
     static updateUser = async (userData) => {

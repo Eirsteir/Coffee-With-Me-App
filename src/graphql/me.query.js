@@ -8,6 +8,9 @@ const ME_QUERY = gql`
             name
             profilePic
             username 
+            friends {
+                totalCount
+            }
             currentStatus {
                 id
                 statusType
