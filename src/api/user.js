@@ -1,25 +1,27 @@
 import axios from 'axios';
-import { getHeaders } from './httpHelpers';
+
+import apolloClient from '../apollo-client-setup';
+import ME_QUERY from '../graphql/me.query';
+import { getAuthHeaders } from './httpHelpers';
 
 const API_SOCIAL_URL = 'http://localhost:8080/api/social';
 
 export default {
-    fetchUserData: async (token) => {
-        return axios({
-            method: 'GET',
-            url: API_SOCIAL_URL + '/me',
-            headers: getHeaders(token)
+    fetchCurrentUser: async () => {
+        console.log('FETCHING CURRENT USER');
+        return apolloClient.query({
+            query: ME_QUERY
         });
     },
     update: async (token, userData) => {
         return axios({
             method: 'PUT',
             url: API_SOCIAL_URL + '/me',
-            headers: getHeaders(token),
+            headers: getAuthHeaders(token),
             data: userData
         });
     },
     fetchFriends: async token => {
-        return axios.get(API_SOCIAL_URL + '/friends', { headers: getHeaders(token) });
+        return axios.get(API_SOCIAL_URL + '/friends', { headers: getAuthHeaders(token) });
     },
 }

@@ -19,8 +19,8 @@ function isValidStatus(status) {
     return status >= 200 && status < 300;
 }
 
-export function getHeaders(token) {
+export function getAuthHeaders(token) {
     return {
-        'Authorization': Constants.JWT_PREFIX + token
+        authorization: Constants.JWT_PREFIX + token
     }
 }

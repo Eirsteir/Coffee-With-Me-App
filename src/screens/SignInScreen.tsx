@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 import { Button, Input, Layout, Icon, StyleService, Text, Divider, Spinner, useStyleSheet, AnimationConfig } from '@ui-kitten/components';
 import { PersonIcon, FacebookIcon, GoogleIcon } from '../components/extra/icons';
@@ -19,7 +19,7 @@ export default ({ navigation }): React.ReactElement => {
   const { login } = React.useContext(AuthContext);
   const styles = useStyleSheet(themedStyles);
 
-  const [signIn, { loading, error }] = useMutation(SIGNIN_MUTATION, {
+  const [signIn, { loading }] = useMutation(SIGNIN_MUTATION, {
       variables: {
         email: email,
         password: password
@@ -35,6 +35,7 @@ export default ({ navigation }): React.ReactElement => {
       return handleErrors(tokenAuth.errors);
   };
 
+  // TODO: Abstract this
   const handleErrors = (errors: { nonFieldErrors: { message: string; }[]; email: { message: string; }[]; password: { message: string; }[]; }): void => {
     if (errors == null) 
       return;
@@ -78,7 +79,6 @@ export default ({ navigation }): React.ReactElement => {
         level='1'>
 
       {/* TODO: Does not work the second time */}
-      {error && <ErrorModal title={error.message} />}
       {errors && <ErrorModal title={errors} />}
 
         <Input

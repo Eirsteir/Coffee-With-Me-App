@@ -36,7 +36,7 @@ export default function UserController(props) {
 
       React.useEffect(() => {
         const getUser = async () => {
-          const userData = await UserService.fetchUserData();
+          const userData = await UserService.fetchCurrentUser();
           dispatch({ type: 'GET', user: userData });
         };
     
@@ -46,8 +46,8 @@ export default function UserController(props) {
       const userContext = React.useMemo(
         () => ({
             profile: () => { return state.user; },
-            fetchUser: async () => {
-                const userData = await UserService.fetchUserData();
+            fetchCurrentUser: async () => {
+                const userData = await UserService.fetchCurrentUser();
                 
                 dispatch({ type: 'GET', user: userData });
             }, 

@@ -2,12 +2,12 @@ import USER from '../user';
 import TOKEN from '../token';
 import Constants from '../../constants/Constants';
 
-
 class UserService {
 
-    static fetchUserData = async () => {
-        return TOKEN.get(Constants.AUTH_TOKEN).then((token) => {
-            return USER.fetchUserData(token).then((response) => {return response.data});
+    static fetchCurrentUser = async () => {
+        return USER.fetchCurrentUser().then(response => {
+            console.log(response);
+            return response.data
         });
     }
 
