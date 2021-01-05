@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { API_URL } from 'babel-dotenv';
-import { View } from 'react-native';
 
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, IconRegistry, Text } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry, } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { ApolloClient, InMemoryCache, createHttpLink, ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 
 import TOKEN from './api/token';
 import AuthService from './api/services/AuthService';
@@ -13,26 +11,9 @@ import Constants from './constants/Constants';
 import AuthNavigator from './nav/AuthNavigator';
 import AppNavigator from './nav/AppNavigator';
 import UserController from './context/UserContext';
+import apolloClient from './apollo-client-setup';
 
 export const AuthContext = React.createContext();
-
-const cache = new InMemoryCache();
-const link = createHttpLink({
-  uri: API_URL,
-});
-
-const client = new ApolloClient({
-  link: link,
-  cache: cache
-});
-
-function SplashScreen() {
-  return (
-    <View>
-      <Text>Loading...</Text>
-    </View>
-  );
-}
 
 export default function App({ navigation }) {
   const [state, dispatch] = React.useReducer(
@@ -101,14 +82,14 @@ export default function App({ navigation }) {
     []
   );
 
-  let isLoggedIn = state.userToken == null;
   if (state.isLoading) return null;
+  let isLoggedIn = state.userToken == null;
 
   return (
     <>
     <IconRegistry icons={EvaIconsPack} />
     <ApplicationProvider {...eva} theme={eva.light}>
-      <ApolloProvider client={client}>
+      <ApolloProvider client={apolloClient}>
         <AuthContext.Provider value={authContext}>
             { isLoggedIn ? (
               <AuthNavigator />
