@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar } from 'expo-activity-feed';
 
 import Count from './Count';
@@ -10,9 +10,7 @@ import CoverImage from './CoverImage';
 import Button from '../components/Button';
 import { UserContext } from '../context/UserContext';
 
-type Props = {};
-
-export default function ProfileHeader(props: Props) {
+export default function ProfileHeader(props) {
   
   const { profile } = useContext(UserContext);  
   return (

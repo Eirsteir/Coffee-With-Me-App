@@ -12,8 +12,7 @@ import { KeyboardAvoidingView } from '../components/extra/3rd-party';
 import UPDATE_PROFILE_MUTATION from '../graphql/updateProfile.mutation';
 
 
-// Oppdater react-navigation til 5.x
-export default ({ navigation }): React.ReactElement => {
+export default ({ navigation }) => {
 
   const { profile, update } = React.useContext(UserContext);
   const user = profile();

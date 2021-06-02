@@ -1,4 +1,4 @@
-import NavigationActions from "react-navigation/src/NavigationActions";
+import { NavigationActions } from '@react-navigation/native';
 
 import TOKEN from '../token';
 import Constants from '../../constants/Constants';

@@ -29,7 +29,8 @@
     "metro-react-native-babel-preset": "^0.64.0",
     "prettier": "^2.2.1",
     "react-native-scripts": "2.0.1",
-    "react-test-renderer": "17.0.1"
+    "react-test-renderer": "17.0.1",
+    "typescript": "^3.7.2"
   },
   "main": "./index.js",
   "scripts": {
@@ -54,6 +55,9 @@
     "@apollo/client": "^3.3.6",
     "@eva-design/eva": "^2.0.0",
     "@expo/webpack-config": "^0.12.52",
+    "@react-native-community/masked-view": "^0.1.11",
+    "@react-navigation/bottom-tabs": "^5.11.11",
+    "@react-navigation/native": "^5.9.4",
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
     "axios": "^0.19.2",
@@ -71,12 +75,15 @@
     "react-native-autocomplete-input": "^4.2.0",
     "react-native-dotenv": "^0.2.0",
     "react-native-elements": "^2.0.1",
+    "react-native-gesture-handler": "~1.5.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-material-dropdown": "^0.11.1",
+    "react-native-reanimated": "~1.4.0",
+    "react-native-safe-area-context": "0.6.0",
+    "react-native-screens": "2.0.0-alpha.12",
     "react-native-snackbar-component": "^1.1.10",
     "react-native-svg": "9.13.3",
     "react-native-web": "0.11.2",
-    "react-navigation": "^2.3.1",
     "validate.js": "^0.13.1"
   }
 }

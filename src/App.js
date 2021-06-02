@@ -95,7 +95,7 @@ export default function App({ navigation }) {
               <AuthNavigator />
             ) : (
               <UserController>
-                <AppNavigator token={state.userToken} />
+                <AppNavigator />
               </UserController>
             )}
         </AuthContext.Provider>

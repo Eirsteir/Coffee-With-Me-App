@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native';
 
 import SearchBox from '../components/SearchBox';
@@ -31,33 +31,35 @@ function Item({ title, onPress }) {
   );
 }
 
-class AddFriendsScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: 'ADD FRIENDS',
-    headerTitleStyle: {
-      fontWeight: '500',
-      fontSize: 13,
-      color: '#000'
-    },
-    headerTintColor: '#fb5b5a',
-  });
+export default function({ navigation }) {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      title: 'Add friends',
+      headerTitleStyle: {
+        fontWeight: '500',
+        color: '#000',
+      },
+      headerTitleAlign: 'center',
+      headerTintColor: '#fb5b5a',
+    })
+  }, [navigation]);
+  
+  return (
+    <View style={styles.container}>
+      <SearchBox objectType={'users'} />
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <SearchBox objectType={'users'} />
-
-        <LargeHeading>Add Friends</LargeHeading>
-        <FlatList
-          style={{ marginTop: 5 }}
-          data={DATA}
-          renderItem={({ item }) => <Item title={item.title} onPress={item.onPress}/>}
-          keyExtractor={(item) => `item-${item.id}`}
-        />      
-      </View>
-    );
-  }
+      <LargeHeading>Add Friends</LargeHeading>
+      <FlatList
+        style={{ marginTop: 5 }}
+        data={DATA}
+        renderItem={({ item }) => <Item title={item.title} onPress={item.onPress}/>}
+        keyExtractor={(item) => `item-${item.id}`}
+      />      
+    </View>
+  );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -75,5 +77,3 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 })
-
-export default AddFriendsScreen;

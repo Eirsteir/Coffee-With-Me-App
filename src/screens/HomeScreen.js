@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { 
   StatusBar, 
   Image, 
@@ -16,89 +16,75 @@ import type { UserResponse, ActivityData } from '../types';
 import AddFriendsHeader from '../components/AddFriendsHeader';
 
 import type { NavigationScreen } from 'expo-activity-feed';
-import type { NavigationEventSubscription } from 'react-navigation';
+import type { NavigationEventSubscription } from '@react-navigation/native';
+import { useEffect } from 'react';
 
 type Props = {|
   navigation: NavigationScreen,
 |};
 
-class HomeScreen extends React.Component<Props> {
-  _navListener: NavigationEventSubscription;
-  static navigationOptions = ({ navigation }: Props) => ({
-    title: 'HOME',
-    headerTitleStyle: {
-      fontWeight: '500',
-      fontSize: 13,
-    },
-    headerLeft: (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Profile')}
-        style={{ paddingLeft: 15 }}
-      >
-        <Avatar
-          source={(userData: UserResponse) => userData.data.profileImage}
-          size={23}
-          noShadow
-        />
-      </TouchableOpacity>
-    ),
-    headerRight: (
-      <AddFriendsHeader navigation={navigation} /> 
-    ),
-  });
+export default function({ navigation }) {
 
-  componentDidMount() {
-    this._navListener = this.props.navigation.addListener('didFocus', () => {
-      StatusBar.setBarStyle('dark-content');
-    });
-  }
+  useLayoutEffect(() => {
 
-  _onPressActivity = (activity: ActivityData) => {
-    this.props.navigation.navigate('SinglePost', {
-      activity: activity,
-    });
-  };
+    navigation.setOptions({
+      title: 'Coffee with me',
+      headerTitleStyle: { alignSelf: 'center' },
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Profile')}
+          style={{ paddingLeft: 15 }}
+        >
+          <Avatar
+            source={(userData: UserResponse) => userData.data.profileImage}
+            size={23}
+            noShadow
+          />
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <AddFriendsHeader navigation={navigation} /> 
+      ),
+    })
+  }, [navigation]);
 
-  render() {
+  return (
+      <View style={styles.container}>
+  
+        <Text style={styles.title}>Invite your friends on a coffee break</Text>
+        <Text>You deserve it</Text>
 
-    return (
-        <View style={styles.container}>
-    
-          <Text style={styles.title}>Invite your friends on a coffee break</Text>
-          <Text>You deserve it</Text>
-
-          <View style={styles.dropdownView}>
-            <Dropdown
-              label='SELECT CAMPUS'
-              data={campusData}
-              rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
-              containerStyle={styles.dropdownContainer}
-              inputContainerStyle={styles.inputContainerStyle}
-              dropdownOffset={{ 'top': 5, 'left': 0 }}
-              pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
-              baseColor='#f5f5f5'
-              fontSize={13}
-            />
-            <Dropdown
-              label='SCHEDULE TO'
-              data={scheduleData}
-              rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
-              containerStyle={styles.dropdownContainer}
-              inputContainerStyle={styles.inputContainerStyle}
-              dropdownOffset={{ 'top': 5, 'left': 0 }}
-              pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
-              baseColor='#f5f5f5'
-              fontSize={13}
-            />
-          </View>
-
-          <TouchableOpacity style={styles.inviteBtn} >
-            <Text style={styles.inviteText}>INVITE</Text>
-          </TouchableOpacity>
-        
+        <View style={styles.dropdownView}>
+          <Dropdown
+            label='SELECT CAMPUS'
+            data={campusData}
+            rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
+            containerStyle={styles.dropdownContainer}
+            inputContainerStyle={styles.inputContainerStyle}
+            dropdownOffset={{ 'top': 5, 'left': 0 }}
+            pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
+            baseColor='#f5f5f5'
+            fontSize={13}
+          />
+          <Dropdown
+            label='SCHEDULE TO'
+            data={scheduleData}
+            rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
+            containerStyle={styles.dropdownContainer}
+            inputContainerStyle={styles.inputContainerStyle}
+            dropdownOffset={{ 'top': 5, 'left': 0 }}
+            pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
+            baseColor='#f5f5f5'
+            fontSize={13}
+          />
         </View>
-    );
-  }
+
+        <TouchableOpacity style={styles.inviteBtn} >
+          <Text style={styles.inviteText}>INVITE</Text>
+        </TouchableOpacity>
+      
+      </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -143,8 +129,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
-
-export default HomeScreen;
 
 let campusData = [{
   value: 'Banana', label: 'Gløshaugen'

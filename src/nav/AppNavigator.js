@@ -1,9 +1,8 @@
 //@flow
 import React from 'react';
-import {
-  createStackNavigator,
-  createBottomTabNavigator,
-} from 'react-navigation';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import {
   STREAM_API_KEY,
@@ -26,86 +25,103 @@ import {
 } from 'expo-activity-feed';
 import type { UserResponse } from '../types';
 
-// $FlowFixMe
-const NotificationsStack = createStackNavigator({
-  Notifications: { screen: NotificationsScreen },
-});
-
-const ProfileStack = createStackNavigator({
-  Profile: { screen: ProfileScreen },
-});
-
-const FriendsStack = createStackNavigator({
-  Friends: { screen: FriendsScreen },
-});
-
-const HomeStack = createStackNavigator({
-  Home: { screen: HomeScreen },
-});
-
-const TabNavigator = createBottomTabNavigator(
-  {
-    Home: HomeStack,
-    Friends: FriendsStack,
-    Notifications: NotificationsStack,
-    Profile: ProfileStack,
-  },
-  {
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: () => {
-        const { routeName } = navigation.state;
-        if (routeName === 'Home') {
-          return <Icon name="home" />; // todo: coffee cup icon
-        } else if (routeName === 'Friends') {
-          return <Icon name="friends" />;
-        } else if (routeName === 'Notifications') {
-          return (
-            <IconBadge showNumber>
-              <Icon name="notifications" />
-            </IconBadge>
-          );
-        } else if (routeName === 'Profile') {
-          return (
-            <Avatar
-              source={(userData: UserResponse) => userData.data.profileImage}
-              size={25}
-              noShadow
-            />
-          );
-        }
-      },
-    }),
-    initialRouteName: 'Home',
-  },
-);
 
 const doNotShowHeaderOption = {
-  navigationOptions: {
-    header: null,
-  },
+  headerShown: false
 };
 
-const Navigation = createStackNavigator({
-  Tabs: {
-    screen: TabNavigator,
-    ...doNotShowHeaderOption,
+const navigationOptions = ({ route }) => ({
+  tabBarIcon: () => {
+    const routeName = route.name;
+    if (routeName === 'Home') {
+      return <Icon name="home" />;
+    } else if (routeName === 'Friends') {
+      return <Icon name="friends" />;
+    } else if (routeName === 'Notifications') {
+      return (
+        <IconBadge showNumber>
+          <Icon name="notifications" />
+        </IconBadge>
+      );
+    } else if (routeName === 'Profile') {
+      return (
+        <Avatar
+          source={(userData: UserResponse) => userData.data.profileImage}
+          size={25}
+          noShadow
+        />
+      );
+    }
   },
-  SinglePost: { screen: SinglePostScreen },
-  AddFriends: { screen: AddFriendsScreen },
-  EditProfile: { screen: EditProfileScreen },
+  ...doNotShowHeaderOption
 });
+
+const HomeStack = createStackNavigator();
+const HomeStackScreen = () => (
+  <HomeStack.Navigator>
+    <HomeStack.Screen name="Home" component={HomeScreen}/>
+  </HomeStack.Navigator>
+);
+
+const FriendsStack = createStackNavigator();
+const FriendsStackScreen = () => (
+  <FriendsStack.Navigator screenOptions={doNotShowHeaderOption}>
+    <FriendsStack.Screen name="Friends" component={FriendsScreen}/>
+  </FriendsStack.Navigator>
+);
+
+const ProfileStack = createStackNavigator();
+const ProfileStackScreen = () => (
+  <ProfileStack.Navigator screenOptions={doNotShowHeaderOption}>
+    <ProfileStack.Screen name="Profile" component={ProfileScreen}/>
+  </ProfileStack.Navigator>
+);
+
+const NotificationsStack = createStackNavigator();
+const NotificationsStackScreen = () =>  (
+  <NotificationsStack.Navigator screenOptions={doNotShowHeaderOption}>
+    <NotificationsStack.Screen name="Notifications" component={NotificationsScreen} />
+  </NotificationsStack.Navigator>
+);
+
+const Tab = createBottomTabNavigator();
+
+const TabNavigator = () => (
+  <Tab.Navigator  
+    initialRouteName="Home"
+    screenOptions={navigationOptions}
+  >
+    <Tab.Screen name="Home" component={HomeStackScreen}/>
+    <Tab.Screen name="Friends" component={FriendsStackScreen}/>
+    <Tab.Screen name="Notifications" component={NotificationsStackScreen}/>
+    <Tab.Screen name="Profile" component={ProfileStackScreen}/>
+  </Tab.Navigator>
+);
+
+const NavigationStack = createStackNavigator();
+
+const Navigation = () => (
+  <NavigationContainer>
+    <NavigationStack.Navigator screenOptions={doNotShowHeaderOption}>
+      <NavigationStack.Screen name="TabNavigator" component={TabNavigator}/>
+      <NavigationStack.Screen name="SinglePost" component={SinglePostScreen}/>
+      <NavigationStack.Screen name="AddFriends" component={AddFriendsScreen}/>
+      <NavigationStack.Screen name="EditProfile" component={EditProfileScreen}/>
+    </NavigationStack.Navigator>
+  </NavigationContainer>
+);
 
 class AppNavigator extends React.Component {
 
   render() {
-    let apiKey = STREAM_API_KEY;
-    let appId = STREAM_APP_ID;
+    const apiKey = STREAM_API_KEY;
+    const appId = STREAM_APP_ID;
 
     return (
       <StreamApp
         apiKey={apiKey}
         appId={appId}
-        // Pass user token from backend
+        // TODO: Pass stream created user token from backend
         token='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDk0YjVjNzktYzQyZC00ZWI4LTg0NTctM2EyNThkZDdmNTkzIn0.lOcnZZnvuJa0FKph2AjE7cM-_ktXn3KZLpeDmFOleIE' 
         defaultUserData={{
           name: '',

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from '@react-navigation/native';
 
 import { StreamApp } from 'expo-activity-feed';
 import Count from './Count';
