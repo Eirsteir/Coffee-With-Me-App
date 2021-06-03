@@ -129,6 +129,7 @@ class AppNavigator extends React.Component {
           desc: '',
           profileImage: ''
         }}
+        errorHandler={console.error} // TODO: update in prod
       >
           <Navigation />
       </StreamApp>

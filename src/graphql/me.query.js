@@ -10,6 +10,21 @@ const ME_QUERY = gql`
             username 
             friends {
                 totalCount
+                edges {
+                    node {
+                      name 
+                      username
+                      friends {
+                        count
+                        edges {
+                          node {
+                            name
+                            username
+                          }
+                        }
+                      }
+                    }
+                  }
             }
             currentStatus {
                 id

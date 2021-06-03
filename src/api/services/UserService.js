@@ -4,7 +4,7 @@ import Constants from '../../constants/Constants';
 
 class UserService {
 
-    static fetchCurrentUser = async () => {
+    static fetchCurrentUser = () => {
         return USER.fetchCurrentUser().then(response => {return response.data});
     }
 
@@ -17,9 +17,10 @@ class UserService {
         });
     }
 
-    static getFriends = async () => {
-        return TOKEN.get(Constants.AUTH_TOKEN).then(token => {
-            return USER.fetchFriends(token).then(response => { return response.data });
+    static getFriends = async userId => {
+        return TOKEN.get(Constants.AUTH_TOKEN).then(async token => {
+            const response = await USER.fetchFriends(token, userId);
+            return response.data;
         });
     }
 

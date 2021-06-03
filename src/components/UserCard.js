@@ -1,25 +1,26 @@
 // @flow
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
 
 import AddFriendButton from './AddFriendButton';
+import RemoveFriendButton from './RemoveFriendButton';
+import { useCurrentUser } from '../hooks/User';
 
-export default class FriendCard extends React.Component {
-  static defaultProps = {};
-  
-  render() {
-    const { user } = this.props;
-    return (
-      <View style={styles.container}>
-        <Avatar source={user.profileImage} size={42} noShadow />
-        <Text style={styles.text}>{user.name}</Text>
+const UserCard = ({ user, isFriend }) => {
+  const { data } = useCurrentUser(user.uuid);
 
-        <AddFriendButton />
-      </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      <Avatar source={user.profileImage} size={42} noShadow />
+      <Text style={styles.text}>{user.name}</Text>
+      {isFriend ? <RemoveFriendButton userId={user.uuid} /> : user.uuid !== data?.uuid && <AddFriendButton userId={user.uuid} />}
+      <AddFriendButton />
+    </View>
+  );
 }
+
+export default UserCard;
 
 const styles = StyleSheet.create({
     container: {

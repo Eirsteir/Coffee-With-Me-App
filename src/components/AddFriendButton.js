@@ -1,60 +1,45 @@
 // @flow
-import React from 'react';
-import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { Alert } from 'react-native';
+import { Button } from '../components/Button';
+import { useUser, useIsAuthenticated } from '../hooks/User';
+import { useAddFriend } from '../hooks/Friends';
 
+const AddFriendButton = ({ userId, ...props }) => {
+  const { data: user } = useUser(userId);
+  const isAuthenticated = useIsAuthenticated();
+  const [befriend, { loading, data }] = useAddFriend(userId);
+  const [ hasAdded, setHasAdded ] = useState(false);
 
-export type Props = {|
-  /** callback function used on click */
-  clicked?: () => mixed,
-  /** initial follow state */
-  added?: boolean,
-|};
-
-export type State = {
-    added: boolean,
-};
-
-
-class AddFriendButton extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { added: this.props.added || false };
+  if (!user || !isAuthenticated) {
+    return null;
   }
 
-  static defaultProps = {
-    added: false,
-  };
+  const addFriend = async () => 
+    befriend({ 
+      variables: { toFriend: userId },
+      onCompleted: data => {
+        Alert("Du har sendt en venneforespørsel til " + user.name);
+        setHasAdded(true);
+      },
+      onError: e => Alert(e)
+    });
 
-  render() {
-    const { clicked } = this.props;
-
+  if (hasAdded) {
     return (
-      <TouchableOpacity onClick={clicked}>
-        <View
-          colors={
-            this.state.added ? ['#ccc', '#ccc'] : ['#008DFF', '#0079FF']
-          }
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>
-            {this.state.added ? 'Friend Request Sent' : 'Add Friend'}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
+      <Button
+        onPress={null}
+        children="La til venn"
+      />
+    )
   }
-}
 
-const styles = StyleSheet.create({
-  button: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 7,
-    paddingBottom: 7,
-    borderRadius: 5,
-    backgroundColor: '#FF5252',
-  },
-  buttonText: { color: 'white', fontSize: 10, fontWeight: 'bold' },
-});
+  return (
+    <Button
+      onPress={addFriend}
+      children={loading ? <Spinner size='tiny' status='basic'/> : 'Legg til venn'}
+    />
+  );
+};
 
 export default AddFriendButton;
