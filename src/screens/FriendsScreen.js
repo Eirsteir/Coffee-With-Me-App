@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { View, TouchableOpacity, Image, ScrollView, FlatList, Text } from 'react-native';
+import { View, TouchableOpacity, Image, ScrollView, FlatList, Text, StyleSheet } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
 
 import AddFriendsHeader from '../components/AddFriendsHeader';
@@ -9,6 +9,7 @@ import UserCard from '../components/UserCard';
 import SearchBox from '../components/SearchBox';
 import { useCurrentUser } from '../hooks/User';
 import { useFriendingPossibilities } from '../hooks/Friends';
+import FriendRequestsScreen from './FriendRequestsScreen';
 
 const INTERESTING_USERS = [
   {
@@ -53,15 +54,13 @@ const FriendsScreen = ({ navigation }) => {
   const { 
     loading: friendingPossibilitiesLoading, 
     error: friendingPossibilitiesError, 
-    data: friendingPossibilities} = useFriendingPossibilities();
+    data: friendingPossibilitiesData} = useFriendingPossibilities();
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: 'Venner',
-      headerTitleStyle: {
-        fontWeight: '500',
-        fontSize: 13,
-      },
+      headerShown: true,
+      headerTitleStyle: { alignSelf: 'center' },
       headerLeft: () => (
         <View style={{ paddingLeft: 15 }}>
           <Image
@@ -76,18 +75,18 @@ const FriendsScreen = ({ navigation }) => {
     })
   }, [navigation]);
 
-// todo: onRefresh
+  const friendingPossibilitiesCount = friendingPossibilitiesData?.friendingPossibilities.count;
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <SearchBox objectType={'friends'} />
+      <SearchBox />
 
-      <TouchableOpacity onPress={navigation.navigate('FriendRequests')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("FriendRequests")}>
         { friendingPossibilitiesError && <Text>Noe gikk galt</Text>}
         { friendingPossibilitiesLoading && <Text>Henter potensielle venner</Text>}
-        { friendingPossibilities && !friendingPossibilitiesLoading && 
-          friendingPossibilities.count > 0 
-          ? <Text>{friendingPossibilities.count} kaffedrikkere har lagt deg til! Se mer</Text> 
-          : <Text>Legg til venner</Text>}
+        { friendingPossibilitiesData 
+          ? <Text>{`${friendingPossibilitiesCount} kaffedrikkere har lagt deg til! Se mer`}</Text>
+          : friendingPossibilitiesCount === 0 && <Text>Ikke noe nytt her!</Text>}
       </TouchableOpacity>
 
       <LargeHeading>Nylig lagt til</LargeHeading>
@@ -138,7 +137,23 @@ const FriendsScreen = ({ navigation }) => {
       />
     </ScrollView>
   );
-
 }
+
+const styles = StyleSheet.create({
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#f5f5f5',
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 10,
+  }
+});
 
 export default FriendsScreen;

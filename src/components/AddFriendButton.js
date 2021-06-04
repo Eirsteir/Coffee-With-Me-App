@@ -29,7 +29,7 @@ const AddFriendButton = ({ user }) => {
     return (
       <Button
         onPress={null}
-        children="La til venn"
+        children="Avbryt"
       />
     )
   }

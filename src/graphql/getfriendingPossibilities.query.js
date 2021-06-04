@@ -8,8 +8,10 @@ query friendingPossibilities {
         node {
           id
           uuid
+          name
           username
           friendshipStatus
+          isViewerFriend
         }
       }
       pageInfo {

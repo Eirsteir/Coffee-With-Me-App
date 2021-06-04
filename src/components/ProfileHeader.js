@@ -65,7 +65,7 @@ class ProfileHeaderInner extends React.Component {
 
         <View style={styles.statSection}>
           <Count num={friendsCount}>{`Friend${friendsCount <= 1 ? '' : 's'}`}</Count>
-          <Button pressed={() => this.props.navigate('EditProfile')}>
+          <Button onPress={() => this.props.navigate('EditProfile')}>
             Edit Profile
           </Button>
         </View>

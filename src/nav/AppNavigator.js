@@ -17,6 +17,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import SinglePostScreen from '../screens/SinglePostScreen';
 import AddFriendsScreen from '../screens/AddFriendsScreen';
+import FriendRequestsScreen from '../screens/FriendRequestsScreen';
 
 import {
   Avatar,
@@ -33,17 +34,17 @@ const doNotShowHeaderOption = {
 const navigationOptions = ({ route }) => ({
   tabBarIcon: () => {
     const routeName = route.name;
-    if (routeName === 'Home') {
+    if (routeName === 'Hjem') {
       return <Icon name="home" />;
-    } else if (routeName === 'Friends') {
+    } else if (routeName === 'Venner') {
       return <Icon name="friends" />;
-    } else if (routeName === 'Notifications') {
+    } else if (routeName === 'Aktivitet') {
       return (
         <IconBadge showNumber>
           <Icon name="notifications" />
         </IconBadge>
       );
-    } else if (routeName === 'Profile') {
+    } else if (routeName === 'Profil') {
       return (
         <Avatar
           source={(userData: UserResponse) => userData.data.profileImage}
@@ -65,21 +66,22 @@ const HomeStackScreen = () => (
 
 const FriendsStack = createStackNavigator();
 const FriendsStackScreen = () => (
-  <FriendsStack.Navigator screenOptions={doNotShowHeaderOption}>
+  <FriendsStack.Navigator initialRouteName="Friends">
     <FriendsStack.Screen name="Friends" component={FriendsScreen}/>
+    <NavigationStack.Screen name="FriendRequests" component={FriendRequestsScreen}/>
   </FriendsStack.Navigator>
 );
 
 const ProfileStack = createStackNavigator();
 const ProfileStackScreen = () => (
-  <ProfileStack.Navigator screenOptions={doNotShowHeaderOption}>
+  <ProfileStack.Navigator>
     <ProfileStack.Screen name="Profile" component={ProfileScreen}/>
   </ProfileStack.Navigator>
 );
 
 const NotificationsStack = createStackNavigator();
 const NotificationsStackScreen = () =>  (
-  <NotificationsStack.Navigator screenOptions={doNotShowHeaderOption}>
+  <NotificationsStack.Navigator>
     <NotificationsStack.Screen name="Notifications" component={NotificationsScreen} />
   </NotificationsStack.Navigator>
 );
@@ -88,13 +90,13 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => (
   <Tab.Navigator  
-    initialRouteName="Home"
+    initialRouteName="Hjem"
     screenOptions={navigationOptions}
   >
-    <Tab.Screen name="Home" component={HomeStackScreen}/>
-    <Tab.Screen name="Friends" component={FriendsStackScreen}/>
-    <Tab.Screen name="Notifications" component={NotificationsStackScreen}/>
-    <Tab.Screen name="Profile" component={ProfileStackScreen}/>
+    <Tab.Screen name="Hjem" component={HomeStackScreen}/>
+    <Tab.Screen name="Venner" component={FriendsStackScreen}/>
+    <Tab.Screen name="Aktivitet" component={NotificationsStackScreen}/>
+    <Tab.Screen name="Profil" component={ProfileStackScreen}/>
   </Tab.Navigator>
 );
 
@@ -103,7 +105,7 @@ const NavigationStack = createStackNavigator();
 const Navigation = () => (
   <NavigationContainer>
     <NavigationStack.Navigator screenOptions={doNotShowHeaderOption}>
-      <NavigationStack.Screen name="TabNavigator" component={TabNavigator}/>
+      <NavigationStack.Screen name="Default" component={TabNavigator} options={doNotShowHeaderOption}/>
       <NavigationStack.Screen name="SinglePost" component={SinglePostScreen}/>
       <NavigationStack.Screen name="AddFriends" component={AddFriendsScreen}/>
       <NavigationStack.Screen name="EditProfile" component={EditProfileScreen}/>

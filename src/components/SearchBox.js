@@ -1,7 +1,8 @@
 import { useLazyQuery } from '@apollo/client';
 import React, { useState, useMemo } from 'react';
 import { SearchBar } from 'react-native-elements';
-import { SafeAreaView, View, Image, Text, StyleSheet, Animated, FlatList, ListItem } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
+
 import SEARCH_USERS from '../graphql/searchUsers.query';
 import UserCard from './UserCard';
 
@@ -21,16 +22,14 @@ const SearchBox = () => {
         suspend: false
       }); 
     } else {
-      // clear results
       setIsOpen(false);
     }
   };
 
   return (
-      <View>
+    <>
       <SearchBar
           round
-          showCancel
           lightTheme
           onChangeText={search}
           onClear={(text) => search('')}
@@ -55,30 +54,8 @@ const SearchBox = () => {
             keyExtractor={(item) => `item-${item.uuid}`}
           />
           }
-      </View>
+      </>
   );
 }
-
-const styles = StyleSheet.create({
-  searchbox: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
-    height: 28,
-    borderRadius: 4,
-    margin: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  placeholder: {
-    position: 'absolute',
-    color: '#8E8E93',
-    fontSize: 14,
-  },
-  textInput: {
-    paddingLeft: 5,
-    paddingRight: 5,
-    width: 100 + '%',
-  },
-});
 
 export default SearchBox;

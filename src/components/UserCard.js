@@ -12,7 +12,7 @@ const UserCard = ({ user, isFriend, friendshipStatus }) => {
 
   const FriendActionButton = () => {
     if (user.uuid === data?.uuid) {
-      return;
+      return <Text></Text>;
     } else if (friendshipStatus === "OUTGOING_REQUEST") {
       return <Text>"Forespurt av deg"</Text>;
     } else if (friendshipStatus === "INCOMING_REQUEST") {

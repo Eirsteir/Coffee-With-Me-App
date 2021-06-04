@@ -8,8 +8,8 @@ export const useFriendsById = userId => {
     return UserService.getFriends(userId);
 }
 
-export const useFriendingPossibilities = async () => useQuery(GET_FRIENDING_POSSIBILITIES_QUERY);
+export const useFriendingPossibilities = () => useQuery(GET_FRIENDING_POSSIBILITIES_QUERY);
 
 export const useAddFriend = () => useMutation(ADD_FRIEND_MUTATION);
 
-export const useRemoveFriend = options => useMutation(REMOVE_FRIEND_MUTATION, ...options);
+export const useRemoveFriend = () => useMutation(REMOVE_FRIEND_MUTATION);
