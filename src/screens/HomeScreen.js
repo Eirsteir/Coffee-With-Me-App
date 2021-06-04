@@ -1,29 +1,26 @@
 // @flow
 import React, { useLayoutEffect } from 'react';
 import { 
-  StatusBar, 
-  Image, 
   Text, 
   TouchableOpacity,
   View, 
   StyleSheet,
 } from 'react-native';
-import { Dropdown } from 'react-native-material-dropdown';
-
 import { Avatar } from 'expo-activity-feed';
-import type { UserResponse, ActivityData } from '../types';
-
+import { Icon, ButtonGroup, Layout } from '@ui-kitten/components';
 import AddFriendsHeader from '../components/AddFriendsHeader';
 
-import type { NavigationScreen } from 'expo-activity-feed';
-import type { NavigationEventSubscription } from '@react-navigation/native';
-import { useEffect } from 'react';
+import LargeHeading from '../components/LargeHeading';
+import { useCurrentUser } from '../hooks/User';
+import Button from '../components/Button';
+import { isNonEmptyArray } from '@apollo/client/utilities';
 
-type Props = {|
-  navigation: NavigationScreen,
-|};
+const StarIcon = (props) => (
+  <Icon {...props} name='star'/>
+);
 
-export default function({ navigation }) {
+const HomeScreen = ({ navigation }) =>  {
+  const { loading, error, data: user } = useCurrentUser();
 
   useLayoutEffect(() => {
 
@@ -36,7 +33,7 @@ export default function({ navigation }) {
           style={{ paddingLeft: 15 }}
         >
           <Avatar
-            source={(userData: UserResponse) => userData.data.profileImage}
+            source={(userData) => userData.data.profileImage}
             size={23}
             noShadow
           />
@@ -49,99 +46,38 @@ export default function({ navigation }) {
   }, [navigation]);
 
   return (
-      <View style={styles.container}>
-  
-        <Text style={styles.title}>Invite your friends on a coffee break</Text>
-        <Text>You deserve it</Text>
+    <Layout style={styles.container} level='1'>
+        {user && <LargeHeading>Hei, {user.me.name.split(" ")[0]}</LargeHeading>}
+        <Text style={styles.text} category='s1'>På tide med en pause? Inviter noen nå</Text>
 
-        <View style={styles.dropdownView}>
-          <Dropdown
-            label='SELECT CAMPUS'
-            data={campusData}
-            rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
-            containerStyle={styles.dropdownContainer}
-            inputContainerStyle={styles.inputContainerStyle}
-            dropdownOffset={{ 'top': 5, 'left': 0 }}
-            pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
-            baseColor='#f5f5f5'
-            fontSize={13}
-          />
-          <Dropdown
-            label='SCHEDULE TO'
-            data={scheduleData}
-            rippleInsets={{top: 0, bottom: 0, right: 0, left: 0}}
-            containerStyle={styles.dropdownContainer}
-            inputContainerStyle={styles.inputContainerStyle}
-            dropdownOffset={{ 'top': 5, 'left': 0 }}
-            pickerStyle={{ borderBottomColor: 'transparent', borderWidth: 0 }}
-            baseColor='#f5f5f5'
-            fontSize={13}
-          />
-        </View>
+        <ButtonGroup style={styles.buttonGroup} appearance='ghost' status='danger'>
+          <Button style={styles.button} accessoryLeft={StarIcon}/>
+          <Button style={styles.button} accessoryLeft={StarIcon}/>
+          <Button style={styles.button} accessoryLeft={StarIcon}/>
+        </ButtonGroup>
 
-        <TouchableOpacity style={styles.inviteBtn} >
-          <Text style={styles.inviteText}>INVITE</Text>
-        </TouchableOpacity>
-      
-      </View>
+        <LargeHeading>Venneoversikt</LargeHeading>
+
+      </Layout>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
+    flex: 2,
+  },
+  button: {
+    margin: 10,
+  },
+  buttonGroup: {
+    margin: 2,
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 20,
-  },
-  dropdownView: {
-    marginTop: 20,
-    width: 40 + '%',
-  },
-  dropdownContainer: {
-    width: 100 + '%',
-  },
-  inputContainerStyle: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fb5b5a',
-    width: 100 + '%',
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderRadius: 5,
-  },
-  inviteBtn:{
-    width:"80%",
-    backgroundColor:"#fb5b5a",
-    borderRadius:5,
-    height:50,
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop:30,
-    marginBottom:10
-  },
-  inviteText:{
-    color:"white",
-    fontSize: 18,
+  text: {
+    margin: 2,
+    marginTop: 15,
+    paddingLeft: 15,
   },
 });
 
-let campusData = [{
-  value: 'Banana', label: 'Gløshaugen'
-}, {
-  value: 'Mango', label: 'Label'
-}, {
-  value: 'Pear', label: 'Label'
-}];
-
-let scheduleData = [{
-  value: 'Banana', label: 'In 5 minutes'
-}, {
-  value: 'Mango', label: 'In 10 minutes'
-}, {
-  value: 'Pear', label: 'In 15 minutes'
-}];
+export default HomeScreen;
