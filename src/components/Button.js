@@ -7,7 +7,7 @@ const Button = ({ onPress, children, styling, ...props }) => {
       <UiKittenButton
         style={styles.button, styling}
         onPress={onPress}
-        props
+        {...props}
         >
         {children}
       </UiKittenButton>

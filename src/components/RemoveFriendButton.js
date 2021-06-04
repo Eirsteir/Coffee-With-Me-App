@@ -7,6 +7,8 @@ import Button from '../components/Button';
 import { useRemoveFriend } from '../hooks/Friends';
 import AddFriendButton from './AddFriendButton';
 
+
+// TODO: unfollow, unfriend, block?
 const RemoveFriendButton = ({ user }) => {
   const [ hasRemoved, setHasRemoved ] = useState(false);
   const [unfriend, { data, loading, error }] = useRemoveFriend();

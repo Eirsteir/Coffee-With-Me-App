@@ -7,6 +7,7 @@ import AddFriendButton from './AddFriendButton';
 import RemoveFriendButton from './RemoveFriendButton';
 import { useCurrentUser } from '../hooks/User';
 import IncomingFriendRequestButton from './IncomingFriendRequestButton';
+import OutgoingFriendRequestButton from './OutgoingFriendRequestButton';
 
 const UserCard = ({ user, isFriend, friendshipStatus }) => {
   const { data } = useCurrentUser();
@@ -15,7 +16,7 @@ const UserCard = ({ user, isFriend, friendshipStatus }) => {
     if (user.uuid === data?.uuid) {
       return <Text></Text>;
     } else if (friendshipStatus === "OUTGOING_REQUEST") {
-      return <Text>"Forespurt av deg"</Text>;
+      return <OutgoingFriendRequestButton user={user} /> 
     } else if (friendshipStatus === "INCOMING_REQUEST") {
       return <IncomingFriendRequestButton user={user} />
     } else if (isFriend) {

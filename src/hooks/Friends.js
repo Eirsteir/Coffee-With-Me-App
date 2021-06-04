@@ -5,6 +5,7 @@ import REMOVE_FRIEND_MUTATION from '../graphql/removeFriend.mutation';
 import GET_FRIENDING_POSSIBILITIES_QUERY from '../graphql/getfriendingPossibilities.query';
 import ACCEPT_FRIEND_REQUEST_MUTATION from '../graphql/acceptFriendRequest.mutation';
 import REJECT_FRIEND_REQUEST_MUTATION from '../graphql/rejectFriendRequest.mutation';
+import CANCEL_FRIEND_REQUEST_MUTATION from '../graphql/cancelFriendRequest.mutation';
 
 export const useFriendsById = userId => {
     return UserService.getFriends(userId);
@@ -19,3 +20,5 @@ export const useRemoveFriend = () => useMutation(REMOVE_FRIEND_MUTATION);
 export const useAcceptFriendRequest = () => useMutation(ACCEPT_FRIEND_REQUEST_MUTATION);
 
 export const useRejectFriendRequest = () => useMutation(REJECT_FRIEND_REQUEST_MUTATION);
+
+export const useCancelFriendRequest = () => useMutation(CANCEL_FRIEND_REQUEST_MUTATION);

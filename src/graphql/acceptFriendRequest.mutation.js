@@ -13,7 +13,6 @@ mutation acceptFriendRequest($requester: String!) {
       errors
     }
   }
-  
 `;
 
 

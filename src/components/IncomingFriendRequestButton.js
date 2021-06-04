@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { Spinner } from "@ui-kitten/components";
-import { View } from "react-native"
+import { Spinner, useStyleSheet, StyleService, ButtonGroup } from "@ui-kitten/components";
+
 import { useAcceptFriendRequest, useRejectFriendRequest } from "../hooks/Friends";
 import Button from "./Button"
 import RemoveFriendButton from './RemoveFriendButton';
 import AddFriendButton from './AddFriendButton';
 
 const IncomingFriendRequestButton = ({ user }) => {
+    const styles = useStyleSheet(themedStyles);
     const [ hasAccepted, setHasAccepted ] = useState(false);
     const [ hasRejected, setHasRejected ] = useState(false);
     const [ acceptFriendRequest, { data: acceptData, loading: acceptLoading, error: acceptError}] = useAcceptFriendRequest();
@@ -29,19 +30,27 @@ const IncomingFriendRequestButton = ({ user }) => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
-            { acceptError && acceptError.message}
-            { rejectError && rejectError.message}
+        <ButtonGroup style={styles.buttonGroup}>
+            {/* { acceptError && acceptError.message}
+            { rejectError && rejectError.message} */}
             <Button 
                 children={acceptLoading ? <Spinner size='tiny' status='basic'/> : "Bekreft"}
                 onPress={handleAcceptFriendRequest}
             />
             <Button 
-                children={rejectLoading ? <Spinner size='tiny' status='basic'/> : "Avvis"}
+                children={rejectLoading ? <Spinner size='tiny' status='basic'/> : "Slett"}
                 onPress={handleRejectFriendRequest}
+                // appearance='ghost'
+                status='basic'
             />
-        </View>
+        </ButtonGroup>
     )
 } 
+
+const themedStyles = StyleService.create({
+    buttonGroup: {
+        margin: 2,
+      },    
+});
 
 export default IncomingFriendRequestButton;

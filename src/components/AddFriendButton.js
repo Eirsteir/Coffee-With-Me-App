@@ -5,6 +5,7 @@ import { Spinner } from '@ui-kitten/components';
 
 import Button from '../components/Button';
 import { useAddFriend } from '../hooks/Friends';
+import OutGoingFriendRequestButton from './OutgoingFriendRequestButton';
 
 const AddFriendButton = ({ user }) => {
   const [ hasAdded, setHasAdded ] = useState(false);
@@ -26,12 +27,7 @@ const AddFriendButton = ({ user }) => {
   }
 
   if (hasAdded) {
-    return (
-      <Button
-        onPress={null}
-        children="Avbryt"
-      />
-    )
+    return <OutGoingFriendRequestButton user={user} />
   }
 
   return (
