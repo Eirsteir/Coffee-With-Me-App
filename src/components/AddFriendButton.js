@@ -1,29 +1,29 @@
 // @flow
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
-import { Button } from '../components/Button';
-import { useUser, useIsAuthenticated } from '../hooks/User';
+import { Spinner } from '@ui-kitten/components';
+
+import Button from '../components/Button';
 import { useAddFriend } from '../hooks/Friends';
 
-const AddFriendButton = ({ userId, ...props }) => {
-  const { data: user } = useUser(userId);
-  const isAuthenticated = useIsAuthenticated();
-  const [befriend, { loading, data }] = useAddFriend(userId);
+const AddFriendButton = ({ user }) => {
   const [ hasAdded, setHasAdded ] = useState(false);
+  const [befriend, { data, loading, error }] = useAddFriend();
 
-  if (!user || !isAuthenticated) {
+  if (!user) {
     return null;
   }
-
-  const addFriend = async () => 
+  const addFriend = async () => {
     befriend({ 
-      variables: { toFriend: userId },
-      onCompleted: data => {
+      variables: { toFriend: user.uuid }
+    }).then(
+      res => {
         Alert("Du har sendt en venneforespørsel til " + user.name);
         setHasAdded(true);
       },
-      onError: e => Alert(e)
-    });
+      err => Alert(err)
+    );
+  }
 
   if (hasAdded) {
     return (
@@ -37,7 +37,7 @@ const AddFriendButton = ({ userId, ...props }) => {
   return (
     <Button
       onPress={addFriend}
-      children={loading ? <Spinner size='tiny' status='basic'/> : 'Legg til venn'}
+      children={loading ? <Spinner size='tiny' status='basic'/> : 'Legg til'}
     />
   );
 };

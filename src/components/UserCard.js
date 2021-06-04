@@ -7,15 +7,28 @@ import AddFriendButton from './AddFriendButton';
 import RemoveFriendButton from './RemoveFriendButton';
 import { useCurrentUser } from '../hooks/User';
 
-const UserCard = ({ user, isFriend }) => {
-  const { data } = useCurrentUser(user.uuid);
+const UserCard = ({ user, isFriend, friendshipStatus }) => {
+  const { data } = useCurrentUser();
 
+  const FriendActionButton = () => {
+    if (user.uuid === data?.uuid) {
+      return;
+    } else if (friendshipStatus === "OUTGOING_REQUEST") {
+      return <Text>"Forespurt av deg"</Text>;
+    } else if (friendshipStatus === "INCOMING_REQUEST") {
+      return <Text>"Bekreft/avvis"</Text>;
+    } else if (isFriend) {
+      return <RemoveFriendButton user={user} />;
+    }
+
+    return <AddFriendButton user={user} />;    
+  }
+  
   return (
     <View style={styles.container}>
-      <Avatar source={user.profileImage} size={42} noShadow />
+      <Avatar source={user.profilePic} size={42} noShadow />
       <Text style={styles.text}>{user.name}</Text>
-      {isFriend ? <RemoveFriendButton userId={user.uuid} /> : user.uuid !== data?.uuid && <AddFriendButton userId={user.uuid} />}
-      <AddFriendButton />
+      <FriendActionButton />
     </View>
   );
 }

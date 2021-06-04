@@ -35,7 +35,7 @@ export default function({ navigation }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      title: 'Add friends',
+      title: 'Legg til venner',
       headerTitleStyle: {
         fontWeight: '500',
         color: '#000',
@@ -47,9 +47,9 @@ export default function({ navigation }) {
   
   return (
     <View style={styles.container}>
-      <SearchBox objectType={'users'} />
+      <SearchBox/>
 
-      <LargeHeading>Add Friends</LargeHeading>
+      <LargeHeading>Alternativt</LargeHeading>
       <FlatList
         style={{ marginTop: 5 }}
         data={DATA}

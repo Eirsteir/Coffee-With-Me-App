@@ -105,20 +105,22 @@ const FriendsScreen = ({ navigation }) => {
         <LargeHeading>Dine venner</LargeHeading>
         { error && <Text>Noe gikk galt</Text>}
         { loading && <Text>Henter dine venner</Text>}
-        <FlatList
+        { user && 
+          <FlatList
           style={{ marginTop: 15 }}
           data={user.friends}
           renderItem={({ item }) => (
             <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
               <UserCard
                 user={item}
-                isFriend={false}
+                isFriend={item.isViewerFriend}
               />
             </View>
           )}
-          keyExtractor={(item) => `item-${item.id}`}
+          keyExtractor={(item) => `item-${item.uuid}`}
         />
-
+        }
+      
       {/* TODO: users at same uni */}
       <LargeHeading>Folk du kanskje kjenner</LargeHeading>
       <FlatList

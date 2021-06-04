@@ -1,4 +1,4 @@
-import { useQuery, useLazyQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import UserService from "../api/services/UserService";
 import ADD_FRIEND_MUTATION from '../graphql/addFriend.mutation';
 import REMOVE_FRIEND_MUTATION from '../graphql/removeFriend.mutation';
@@ -10,6 +10,6 @@ export const useFriendsById = userId => {
 
 export const useFriendingPossibilities = async () => useQuery(GET_FRIENDING_POSSIBILITIES_QUERY);
 
-export const useAddFriend = () =>  useLazyQuery(ADD_FRIEND_MUTATION);
+export const useAddFriend = () => useMutation(ADD_FRIEND_MUTATION);
 
-export const useRemoveFriend = () => useLazyQuery(REMOVE_FRIEND_MUTATION);
+export const useRemoveFriend = options => useMutation(REMOVE_FRIEND_MUTATION, ...options);

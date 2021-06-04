@@ -8,8 +8,9 @@ export const useCurrentUser = () => {
     return isAuthenticated ? useQuery(ME_QUERY) : undefined;
 }
 
-export const useUser = (userId) => {
+export const useUser = userId => {
     const isAuthenticated = useIsAuthenticated();
+    console.log(isAuthenticated)
     return isAuthenticated ? useQuery(USER_QUERY, { variables: { id: userId }}) : undefined;
 };
 

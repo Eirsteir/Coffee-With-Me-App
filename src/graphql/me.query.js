@@ -12,14 +12,20 @@ const ME_QUERY = gql`
                 totalCount
                 edges {
                     node {
+                      id
+                      uuid
                       name 
                       username
+                      isViewerFriend
                       friends {
                         count
                         edges {
                           node {
+                            id
+                            uuid
                             name
                             username
+                            isViewerFriend
                           }
                         }
                       }

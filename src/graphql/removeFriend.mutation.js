@@ -1,17 +1,17 @@
 import { gql } from '@apollo/client';
 
-const ADD_FRIEND_MUTATION = gql`
-mutation friend_request($toFriend: String!) {   
-    sendFriendRequest(toFriend: $toFriend) {
-    sent_friend_requestee {
-        id
-        uuid
-        username
-      }
-      success
-      errors
+const REMOVE_FRIEND_MUTATION = gql`
+mutation unfriendUser($friend: UUID) {
+  unfriendUser(friend: $friend) {
+    unfriendedUser {
+      id
+      uuid
+      username
+      name
     }
+    ok
   }
+}
 `;
 
-export default ADD_FRIEND_MUTATION;
+export default REMOVE_FRIEND_MUTATION;

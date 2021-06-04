@@ -1,26 +1,29 @@
 // @flow
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
-import { Button, Spinner } from '../components/Button';
-import { useUser, useIsAuthenticated } from '../hooks/User';
+import { Spinner } from '@ui-kitten/components';
+
+import Button from '../components/Button';
 import { useRemoveFriend } from '../hooks/Friends';
 
-const RemoveFriendButton = ({ userId, ...props }) => {
-  const { data: user } = useUser(userId);
-  const isAuthenticated = useIsAuthenticated();
-  const [unfriend, { loading, data }] = useRemoveFriend(userId);
-    const [ hasRemoved, setHasRemoved ] = useState(false);
+const RemoveFriendButton = ({ user }) => {
+  const [ hasRemoved, setHasRemoved ] = useState(false);
+  const [unfriend, { data, loading, error }] = useRemoveFriend();
 
-  if (!user || !isAuthenticated) {
+  if (!user) {
     return null;
   }
 
   const removeFriend = async () => 
     unfriend({ 
-      variables: { friend: userId },
-      onCompleted: data => Alert("Du og " + user.name + " er ikke lenger venner"),
-      onError: e => Alert(e)
-    });
+      variables: { friend: user.uuid }
+    }).then(
+      res => {
+        Alert("Du og " + user.name + " er ikke lenger venner"),
+        setHasRemoved(true);
+      },
+      err => Alert(err)
+    );
 
     if (hasRemoved) {
         return (
