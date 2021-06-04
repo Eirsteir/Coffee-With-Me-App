@@ -6,6 +6,7 @@ import { Avatar } from 'expo-activity-feed';
 import AddFriendButton from './AddFriendButton';
 import RemoveFriendButton from './RemoveFriendButton';
 import { useCurrentUser } from '../hooks/User';
+import IncomingFriendRequestButton from './IncomingFriendRequestButton';
 
 const UserCard = ({ user, isFriend, friendshipStatus }) => {
   const { data } = useCurrentUser();
@@ -16,7 +17,7 @@ const UserCard = ({ user, isFriend, friendshipStatus }) => {
     } else if (friendshipStatus === "OUTGOING_REQUEST") {
       return <Text>"Forespurt av deg"</Text>;
     } else if (friendshipStatus === "INCOMING_REQUEST") {
-      return <Text>"Bekreft/avvis"</Text>;
+      return <IncomingFriendRequestButton user={user} />
     } else if (isFriend) {
       return <RemoveFriendButton user={user} />;
     }

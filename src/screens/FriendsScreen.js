@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import { View, TouchableOpacity, Image, ScrollView, FlatList, Text, StyleSheet } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
 
@@ -9,7 +9,6 @@ import UserCard from '../components/UserCard';
 import SearchBox from '../components/SearchBox';
 import { useCurrentUser } from '../hooks/User';
 import { useFriendingPossibilities } from '../hooks/Friends';
-import FriendRequestsScreen from './FriendRequestsScreen';
 
 const INTERESTING_USERS = [
   {
@@ -55,6 +54,8 @@ const FriendsScreen = ({ navigation }) => {
     loading: friendingPossibilitiesLoading, 
     error: friendingPossibilitiesError, 
     data: friendingPossibilitiesData} = useFriendingPossibilities();
+
+  const friends = useMemo(() => (user !== undefined ? user.me.friends.edges.map((edge) => edge.node) : []), [user]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -104,15 +105,16 @@ const FriendsScreen = ({ navigation }) => {
         <LargeHeading>Dine venner</LargeHeading>
         { error && <Text>Noe gikk galt</Text>}
         { loading && <Text>Henter dine venner</Text>}
-        { user && 
+        { friends && 
           <FlatList
           style={{ marginTop: 15 }}
-          data={user.friends}
+          data={friends}
           renderItem={({ item }) => (
             <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
               <UserCard
                 user={item}
                 isFriend={item.isViewerFriend}
+                friendshipStatus={item.friendshipStatus}
               />
             </View>
           )}

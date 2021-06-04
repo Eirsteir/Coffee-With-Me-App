@@ -1,15 +1,16 @@
 import { gql } from '@apollo/client';
 
 const REMOVE_FRIEND_MUTATION = gql`
-mutation unfriendUser($friend: UUID) {
+mutation unfriendUser($friend: String!) {
   unfriendUser(friend: $friend) {
-    unfriendedUser {
+    unfriendedPerson {
       id
       uuid
-      username
       name
+      username
     }
-    ok
+    success
+    errors
   }
 }
 `;

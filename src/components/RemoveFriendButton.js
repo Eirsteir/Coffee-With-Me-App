@@ -5,6 +5,7 @@ import { Spinner } from '@ui-kitten/components';
 
 import Button from '../components/Button';
 import { useRemoveFriend } from '../hooks/Friends';
+import AddFriendButton from './AddFriendButton';
 
 const RemoveFriendButton = ({ user }) => {
   const [ hasRemoved, setHasRemoved ] = useState(false);
@@ -26,12 +27,7 @@ const RemoveFriendButton = ({ user }) => {
     );
 
     if (hasRemoved) {
-        return (
-            <Button
-                onPress={null}
-                children="Fjernet venn"
-            />
-        )
+        return <AddFriendButton user={user}/>
     }
 
     return (
