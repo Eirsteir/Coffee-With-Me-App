@@ -8,15 +8,6 @@ class UserService {
         return USER.fetchCurrentUser().then(response => {return response.data});
     }
 
-    static updateUser = async (userData) => {
-        return await TOKEN.get(Constants.AUTH_TOKEN).then((token) => {
-            return USER.update(token, userData)
-                .then((response) => { 
-                    return response.user; 
-                });
-        });
-    }
-
     static getFriends = async userId => {
         return TOKEN.get(Constants.AUTH_TOKEN).then(async token => {
             const response = await USER.fetchFriends(token, userId);
