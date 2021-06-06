@@ -5,6 +5,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import {
+  Avatar,
+  StreamApp,
+  IconBadge,
+} from 'expo-activity-feed';
+
+import {
   STREAM_API_KEY,
   STREAM_APP_ID,
 } from 'babel-dotenv';
@@ -18,12 +24,7 @@ import EditProfileScreen from '../screens/EditProfileScreen';
 import SinglePostScreen from '../screens/SinglePostScreen';
 import AddFriendsScreen from '../screens/AddFriendsScreen';
 import FriendRequestsScreen from '../screens/FriendRequestsScreen';
-
-import {
-  Avatar,
-  StreamApp,
-  IconBadge,
-} from 'expo-activity-feed';
+import InitiateBreakScreen from '../screens/InitiateBreakScreen';
 import type { UserResponse } from '../types';
 
 
@@ -104,11 +105,34 @@ const NavigationStack = createStackNavigator();
 
 const Navigation = () => (
   <NavigationContainer>
-    <NavigationStack.Navigator screenOptions={doNotShowHeaderOption}>
+    <NavigationStack.Navigator 
+    screenOptions={{
+      headerShown: false,
+      cardStyle: { backgroundColor: 'transparent' },
+      cardOverlayEnabled: true,
+      cardStyleInterpolator: ({ current: { progress } }) => ({
+        cardStyle: {
+          opacity: progress.interpolate({
+            inputRange: [0, 0.5, 0.9, 1],
+            outputRange: [0, 0.25, 0.7, 1],
+          }),
+        },
+        overlayStyle: {
+          opacity: progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 0.5],
+            extrapolate: 'clamp',
+          }),
+        },
+      }),
+    }}
+    mode="modal"
+    >
       <NavigationStack.Screen name="Default" component={TabNavigator} options={doNotShowHeaderOption}/>
       <NavigationStack.Screen name="SinglePost" component={SinglePostScreen}/>
       <NavigationStack.Screen name="AddFriends" component={AddFriendsScreen}/>
       <NavigationStack.Screen name="EditProfile" component={EditProfileScreen}/>
+      <NavigationStack.Screen name="InitiateBreak" component={InitiateBreakScreen} />
     </NavigationStack.Navigator>
   </NavigationContainer>
 );

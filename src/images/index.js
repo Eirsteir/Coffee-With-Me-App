@@ -1,0 +1,1 @@
+export const BreakVisual = require('./coffeeBreakVisual.png');

@@ -1,26 +1,31 @@
 // @flow
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import { 
-  Text, 
   TouchableOpacity,
-  View, 
+  Image, 
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
-import { Icon, ButtonGroup, Layout } from '@ui-kitten/components';
-import AddFriendsHeader from '../components/AddFriendsHeader';
+import { Icon, Layout, List, Text } from '@ui-kitten/components';
 
+import AddFriendsHeader from '../components/AddFriendsHeader';
+import UserStatusCard from '../components/UserStatusCard';
 import LargeHeading from '../components/LargeHeading';
-import { useCurrentUser } from '../hooks/User';
 import Button from '../components/Button';
-import { isNonEmptyArray } from '@apollo/client/utilities';
+
+import { useCurrentUser } from '../hooks/User';
+import { BreakVisual } from '../images/index';
 
 const StarIcon = (props) => (
   <Icon {...props} name='star'/>
 );
 
+const win = Dimensions.get('window');
+
 const HomeScreen = ({ navigation }) =>  {
   const { loading, error, data: user } = useCurrentUser();
+  const friends = useMemo(() => (user !== undefined ? user.me.friends.edges.map((edge) => edge.node) : []), [user]);
 
   useLayoutEffect(() => {
 
@@ -47,16 +52,39 @@ const HomeScreen = ({ navigation }) =>  {
 
   return (
     <Layout style={styles.container} level='1'>
+      <Image
+        resizeMode={'contain'} 
+        style={styles.visual}
+        source={BreakVisual}
+      />
         {user && <LargeHeading>Hei, {user.me.name.split(" ")[0]}</LargeHeading>}
-        <Text style={styles.text} category='s1'>På tide med en pause? Inviter noen nå</Text>
+        <Text style={styles.text} category='p1'>På tide med en pause?</Text>
 
-        <ButtonGroup style={styles.buttonGroup} appearance='ghost' status='danger'>
-          <Button style={styles.button} accessoryLeft={StarIcon}/>
-          <Button style={styles.button} accessoryLeft={StarIcon}/>
-          <Button style={styles.button} accessoryLeft={StarIcon}/>
-        </ButtonGroup>
+        <Button 
+          children="Inviter nå" 
+          onPress={() => navigation.navigate('InitiateBreak')}
+          styling={styles.button} 
+        />
 
         <LargeHeading>Venneoversikt</LargeHeading>
+
+        <List
+          data={friends}
+          renderItem={({ item }) => (
+              <UserStatusCard 
+                user={item}
+                currentStatus={item.currentStatus}
+              />
+          )}
+          keyExtractor={(item) => `item-${item.id}`}
+          ListEmptyComponent={ () => (
+            <Button 
+              styling={styles.button}
+              onPress={() => navigation.navigate("AddFriends")} 
+              children="Legg til venner"
+            />
+          )}
+        />
 
       </Layout>
   );
@@ -69,14 +97,16 @@ const styles = StyleSheet.create({
   button: {
     margin: 10,
   },
-  buttonGroup: {
-    margin: 2,
-    justifyContent: 'center',
-  },
   text: {
     margin: 2,
     marginTop: 15,
     paddingLeft: 15,
+  },
+  visual: {
+    alignSelf: 'center',
+    width: win.width * .7,
+    height: 30 + '%',
+    padding: 15,
   },
 });
 

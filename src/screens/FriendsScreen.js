@@ -7,6 +7,8 @@ import LargeHeading from '../components/LargeHeading';
 import HorizontalScrollFeed from '../components/HorizontalScrollFeed';
 import UserCard from '../components/UserCard';
 import SearchBox from '../components/SearchBox';
+import Button from '../components/Button';
+
 import { useCurrentUser } from '../hooks/User';
 import { useFriendingPossibilities } from '../hooks/Friends';
 
@@ -117,6 +119,13 @@ const FriendsScreen = ({ navigation }) => {
                 friendshipStatus={item.friendshipStatus}
               />
             </View>
+          )}
+          ListEmptyComponent={ () => (
+            <Button 
+              styling={{ margin: 10 }}
+              onPress={() => navigation.navigate("AddFriends")} 
+              children="Legg til venner"
+            />
           )}
           keyExtractor={(item) => `item-${item.uuid}`}
         />

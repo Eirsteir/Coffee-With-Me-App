@@ -8,6 +8,7 @@ const ME_QUERY = gql`
             name
             profilePic
             username 
+            locale
             friends {
                 totalCount
                 edges {
@@ -17,17 +18,10 @@ const ME_QUERY = gql`
                       name 
                       username
                       isViewerFriend
-                      friends {
-                        count
-                        edges {
-                          node {
-                            id
-                            uuid
-                            name
-                            username
-                            isViewerFriend
-                          }
-                        }
+                      currentStatus {
+                        statusType
+                        verb
+                        created
                       }
                     }
                   }
