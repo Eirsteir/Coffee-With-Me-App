@@ -1,6 +1,5 @@
 {
   "expo": {
-    "sdkVersion": "36.0.0",
     "name": "CoffeeWithMe",
     "slug": "coffee-with-me",
     "platforms": [

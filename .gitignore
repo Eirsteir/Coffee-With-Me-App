@@ -22,3 +22,10 @@ yarn-error.log*
 .idea
 **/.tern-port
 
+# specific for windows script files
+*.bat text eol=crlf
+
+# Bundle artifact
+*.jsbundle
+# CocoaPods
+/ios/Pods/
