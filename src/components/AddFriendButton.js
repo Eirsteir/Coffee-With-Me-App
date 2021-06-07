@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import { Spinner } from '@ui-kitten/components';
 
-import Button from '../components/Button';
+import Button from './Button';
+import { PersonAddIcon } from './Icons';
 import { useAddFriend } from '../hooks/Friends';
 import OutGoingFriendRequestButton from './OutgoingFriendRequestButton';
 
-const AddFriendButton = ({ user }) => {
+const AddFriendButton = ({ user, style }) => {
   const [ hasAdded, setHasAdded ] = useState(false);
   const [ addFriend, { data, loading, error }] = useAddFriend({
       variables: { toFriend: user.uuid },
@@ -32,8 +33,10 @@ const AddFriendButton = ({ user }) => {
 
   return (
     <Button
+      style={style}
       onPress={addFriend}
-      children={loading ? <Spinner size='tiny' status='basic'/> : 'Legg til'}
+      accessoryLeft={PersonAddIcon}
+      children={loading ? <Spinner size='tiny' status='basic'/> : 'Legg til venn'}
     />
   );
 };

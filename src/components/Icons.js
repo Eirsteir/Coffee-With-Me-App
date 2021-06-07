@@ -1,7 +1,8 @@
 import React from 'react';
 import { Image } from 'react-native';
+import { Icon, useTheme , List, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 
-const Icon = ({ name }) => {
+export const TabIcon = ({ name }) => {
   if (name === 'home') {
     return (
       <Image
@@ -26,4 +27,18 @@ const Icon = ({ name }) => {
   }
 };
 
-export default Icon;
+export const PinIcon = () => {
+  const theme = useTheme();
+  return (
+    <Icon
+      width={16}
+      height={16}
+      fill={theme['text-basic-color']}
+      name='pin'
+    />
+  );
+};
+
+export const PersonAddIcon = (style) => (
+  <Icon {...style} name='person-add'/>
+);

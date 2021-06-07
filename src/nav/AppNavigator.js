@@ -15,7 +15,7 @@ import {
   STREAM_APP_ID,
 } from 'babel-dotenv';
 
-import Icon from '../components/Icon';
+import { TabIcon } from '../components/Icons';
 import HomeScreen from '../screens/HomeScreen';
 import FriendsScreen from '../screens/FriendsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
@@ -36,13 +36,13 @@ const navigationOptions = ({ route }) => ({
   tabBarIcon: () => {
     const routeName = route.name;
     if (routeName === 'Hjem') {
-      return <Icon name="home" />;
+      return <TabIcon name="home" />;
     } else if (routeName === 'Venner') {
-      return <Icon name="friends" />;
+      return <TabIcon name="friends" />;
     } else if (routeName === 'Aktivitet') {
       return (
         <IconBadge showNumber>
-          <Icon name="notifications" />
+          <TabIcon name="notifications" />
         </IconBadge>
       );
     } else if (routeName === 'Profil') {
@@ -77,7 +77,7 @@ const FriendsStackScreen = () => (
 const ProfileStack = createStackNavigator();
 const ProfileStackScreen = () => (
   <ProfileStack.Navigator>
-    <ProfileStack.Screen name="Profile" component={ProfileScreen}/>
+    <ProfileStack.Screen name="Profile" component={ProfileScreen} initialParams={{ userId: undefined }}/>
   </ProfileStack.Navigator>
 );
 
