@@ -42,3 +42,7 @@ export const PinIcon = () => {
 export const PersonAddIcon = (style) => (
   <Icon {...style} name='person-add'/>
 );
+
+export const BackIcon = (props) => (
+  <Icon {...props} name='arrow-back' />
+);

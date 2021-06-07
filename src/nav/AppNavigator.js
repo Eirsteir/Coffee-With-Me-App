@@ -24,7 +24,6 @@ import EditProfileScreen from '../screens/EditProfileScreen';
 import SinglePostScreen from '../screens/SinglePostScreen';
 import AddFriendsScreen from '../screens/AddFriendsScreen';
 import FriendRequestsScreen from '../screens/FriendRequestsScreen';
-import InitiateBreakScreen from '../screens/InitiateBreakScreen';
 import type { UserResponse } from '../types';
 
 
@@ -60,9 +59,8 @@ const navigationOptions = ({ route }) => ({
 
 const HomeStack = createStackNavigator();
 const HomeStackScreen = () => (
-  <HomeStack.Navigator mode="modal">
+  <HomeStack.Navigator>
     <HomeStack.Screen name="Home" component={HomeScreen}/>
-    {/* <HomeStack.Screen name="InitiateBreak" component={InitiateBreakScreen} /> */}
   </HomeStack.Navigator>
 );
 

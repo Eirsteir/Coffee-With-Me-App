@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { ListRenderItemInfo, ScrollView, View } from 'react-native';
+import React, { useMemo, useLayoutEffect } from 'react';
+import { LogBox, ScrollView, View, Alert } from 'react-native';
 import { List, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import { Avatar } from 'expo-activity-feed';
 
@@ -7,22 +7,45 @@ import { ProfileSocial } from '../components/Profile/ProfileSocial';
 import FriendActionButton from '../components/FriendActionButton';
 import { PinIcon } from '../components/Icons';
 import { useUser } from '../hooks/User';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews']);
 
 const ProfileScreen = ({ route, navigation }) => {
   const { userId } = route.params;
-  const { data: user, loading, error } = useUser(userId);
-  const profile = useMemo(() => user !== undefined ? (user.hasOwnProperty("me") ? user.me : user.user) : null);
+  const { data: user, loading, error } = useUser(userId);  
+  const profile = useMemo(() => user !== undefined ? user.me || user.user : undefined, [user]);
   const friends = useMemo(() => (profile !== undefined ? profile.friends.edges.map((edge) => edge.node) : []), [profile]);
   const styles = useStyleSheet(themedStyle);
+  
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Profil',
+      headerShown: true,
+      headerTitleStyle: { alignSelf: 'center' },
+      headerBackTitle: ' '
+    })
+  }, [navigation, userId]);
+
+  if (error) {
+    Alert.alert(error);
+    return null;
+  }
+
+  if (loading || !user) {
+    return null;
+  }
 
   const renderFriendItem = (info) => (
     <View style={styles.friendItem}>
-      <Avatar source={info.item.profilePic}/>
-      <Text
-        style={styles.friendName}
-        category='c2'>
-        {info.item.name}
-      </Text>
+      <TouchableOpacity style={styles.friendItem} onPress={() => navigation.push('Default', { screen: 'Profil', params: { screen: 'Profile', params: { userId: info.item.uuid } } })}>
+        <Avatar source={info.item.profilePic} size={42} noShadow />
+        <Text
+          style={styles.friendName}
+          category='c2'>
+          {info.item.name}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -64,12 +87,12 @@ const ProfileScreen = ({ route, navigation }) => {
         <View style={styles.socialsContainer}>
           <ProfileSocial
             style={styles.profileSocial}
-            hint='Followers'
+            hint='Følgere'
             value={`${profile.followers || 0}`}
           />
           <ProfileSocial
             style={styles.profileSocial}
-            hint='Following'
+            hint='Følger'
             value={`${profile.following || 0}`}
           />
           <ProfileSocial
@@ -160,6 +183,7 @@ const themedStyle = StyleService.create({
     marginHorizontal: 16,
   },
   friendsList: {
+    backgroundColor: 'background-basic-color-1',
     marginHorizontal: 8,
   },
   friendItem: {

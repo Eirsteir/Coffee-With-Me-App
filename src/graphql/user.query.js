@@ -7,12 +7,26 @@ query user($userId: UUID) {
       uuid
       username
       name
+      profilePic
       isViewerFriend
       socialContext
       currentStatus {
         id
         statusType
         verb
+      }
+      friends {
+        totalCount
+        edges {
+            node {
+              id
+              uuid
+              name 
+              username
+              profilePic
+              isViewerFriend
+            }
+          }
       }
       friendshipStatus
     }

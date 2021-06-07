@@ -8,8 +8,7 @@ import OutgoingFriendRequestButton from './OutgoingFriendRequestButton';
 
 
 const FriendActionButton = ({ currentUser, user, friendshipStatus, isFriend, style }) => {
-    console.log(user)
-    console.log(currentUser)
+
     if (user.uuid === currentUser?.uuid) {
       return <Text></Text>;
     } else if (friendshipStatus === "OUTGOING_REQUEST") {

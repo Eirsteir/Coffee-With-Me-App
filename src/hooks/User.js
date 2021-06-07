@@ -5,7 +5,7 @@ import USER_QUERY from '../graphql/user.query';
 
 export const useCurrentUser = () => {
     const isAuthenticated = useIsAuthenticated();
-    return isAuthenticated ? useQuery(ME_QUERY, { onCompleted: data => data.me }) : undefined;
+    return isAuthenticated ? useQuery(ME_QUERY) : undefined;
 }
 
 export const useUser = userId => {
@@ -14,7 +14,7 @@ export const useUser = userId => {
         return useCurrentUser();
     }
 
-    return isAuthenticated ? useQuery(USER_QUERY, { variables: { id: userId }}) : undefined;
+    return isAuthenticated ? useQuery(USER_QUERY, { variables: { userId: userId }}) : undefined;
 };
 
 export const useIsAuthenticated = () => {
