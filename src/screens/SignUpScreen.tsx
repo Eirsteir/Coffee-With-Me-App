@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableWithoutFeedback } from 'react-native';
+import { View, TouchableWithoutFeedback, Alert } from 'react-native';
 import { useMutation } from '@apollo/client';
 
 import { Button, Icon, StyleService, Text, Spinner, useStyleSheet } from '@ui-kitten/components';
@@ -30,7 +30,7 @@ export default ({ navigation }): React.ReactElement => {
       password2: password // workaround
     },
     onCompleted: ({ register }) => handleSignUpCompleted(register),
-    onError: err => console.error(err)    
+    onError: err => Alert.alert(err)    
   });
 
 
@@ -68,7 +68,7 @@ export default ({ navigation }): React.ReactElement => {
   };
 
   const onSignInButtonPress = (): void => {
-    navigation && navigation.navigate('Login');
+    navigation && navigation.navigate('SignIn');
   };
 
   const onPasswordIconPress = (): void => {
@@ -96,28 +96,31 @@ export default ({ navigation }): React.ReactElement => {
       </View>
       <View style={styles.formContainer}>
         <InputField
-          autoCapitalize='none'
+          autoCapitalize='words'
           placeholder='Full Name'
           accessoryRight={PersonIcon}
           value={name}
           onChangeText={setName}
         />
         <InputField
-          autoCapitalize='none'
           placeholder='Email'
           accessoryRight={EmailIcon}
           value={email}
           onChangeText={setEmail}
           error={emailError}
+          keyboardType='email-address'
+          autoCompleteType='email'
+          autoCapitalize='none'
         />
         <InputField
-          autoCapitalize='none'
           secureTextEntry={!passwordVisible}
           placeholder='Password'
           accessoryRight={renderEyeIcon}
           value={password}
           onChangeText={setPassword}
           error={passwordError}
+          autoCompleteType='password'
+          autoCapitalize='none'
         />
       </View>
 
@@ -166,7 +169,7 @@ const themedStyles = StyleService.create({
   headerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: 176,
+    minHeight: 216,
   },
   signUpLabel: {
     marginTop: 16,

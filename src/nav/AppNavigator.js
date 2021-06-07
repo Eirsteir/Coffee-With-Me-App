@@ -60,8 +60,9 @@ const navigationOptions = ({ route }) => ({
 
 const HomeStack = createStackNavigator();
 const HomeStackScreen = () => (
-  <HomeStack.Navigator>
+  <HomeStack.Navigator mode="modal">
     <HomeStack.Screen name="Home" component={HomeScreen}/>
+    {/* <HomeStack.Screen name="InitiateBreak" component={InitiateBreakScreen} /> */}
   </HomeStack.Navigator>
 );
 
@@ -105,34 +106,11 @@ const NavigationStack = createStackNavigator();
 
 const Navigation = () => (
   <NavigationContainer>
-    <NavigationStack.Navigator 
-    screenOptions={{
-      headerShown: false,
-      cardStyle: { backgroundColor: 'transparent' },
-      cardOverlayEnabled: true,
-      cardStyleInterpolator: ({ current: { progress } }) => ({
-        cardStyle: {
-          opacity: progress.interpolate({
-            inputRange: [0, 0.5, 0.9, 1],
-            outputRange: [0, 0.25, 0.7, 1],
-          }),
-        },
-        overlayStyle: {
-          opacity: progress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 0.5],
-            extrapolate: 'clamp',
-          }),
-        },
-      }),
-    }}
-    mode="modal"
-    >
+    <NavigationStack.Navigator screenOptions={doNotShowHeaderOption}>
       <NavigationStack.Screen name="Default" component={TabNavigator} options={doNotShowHeaderOption}/>
       <NavigationStack.Screen name="SinglePost" component={SinglePostScreen}/>
       <NavigationStack.Screen name="AddFriends" component={AddFriendsScreen}/>
       <NavigationStack.Screen name="EditProfile" component={EditProfileScreen}/>
-      <NavigationStack.Screen name="InitiateBreak" component={InitiateBreakScreen} />
     </NavigationStack.Navigator>
   </NavigationContainer>
 );

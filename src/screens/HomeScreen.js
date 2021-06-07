@@ -1,5 +1,5 @@
 // @flow
-import React, { useLayoutEffect, useMemo } from 'react';
+import React, { useLayoutEffect, useMemo, useRef, useCallback } from 'react';
 import { 
   TouchableOpacity,
   Image, 
@@ -13,17 +13,16 @@ import AddFriendsHeader from '../components/AddFriendsHeader';
 import UserStatusCard from '../components/UserStatusCard';
 import LargeHeading from '../components/LargeHeading';
 import Button from '../components/Button';
+import InitiateBreakScreen from './InitiateBreakScreen';
 
 import { useCurrentUser } from '../hooks/User';
 import { BreakVisual } from '../images/index';
 
-const StarIcon = (props) => (
-  <Icon {...props} name='star'/>
-);
 
 const win = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }) =>  {
+  const bottomSheetModalRef = useRef(null);
   const { loading, error, data: user } = useCurrentUser();
   const friends = useMemo(() => (user !== undefined ? user.me.friends.edges.map((edge) => edge.node) : []), [user]);
 
@@ -50,6 +49,10 @@ const HomeScreen = ({ navigation }) =>  {
     })
   }, [navigation]);
 
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
   return (
     <Layout style={styles.container} level='1'>
       <Image
@@ -61,8 +64,8 @@ const HomeScreen = ({ navigation }) =>  {
         <Text style={styles.text} category='p1'>På tide med en pause?</Text>
 
         <Button 
-          children="Inviter nå" 
-          onPress={() => navigation.navigate('InitiateBreak')}
+          children="Ta en pause" 
+          onPress={handlePresentModalPress}
           styling={styles.button} 
         />
 
@@ -86,6 +89,27 @@ const HomeScreen = ({ navigation }) =>  {
           )}
         />
 
+        <InitiateBreakScreen 
+          bottomSheetModalRef={bottomSheetModalRef}
+        />
+
+        {/* <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.2)',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 70,
+              position: 'absolute',
+              bottom: 10,
+              right: 10,
+              height: 70,
+              backgroundColor: '#fff',
+              borderRadius: 100,
+            }}
+          >
+            <Icon name='plus' />
+          </TouchableOpacity> */}
       </Layout>
   );
 }

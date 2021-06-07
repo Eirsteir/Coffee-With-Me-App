@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableWithoutFeedback } from 'react-native';
+import { View, TouchableWithoutFeedback, Alert } from 'react-native';
 import { useMutation } from '@apollo/client';
 
 import { Button, Input, Layout, Icon, StyleService, Text, Divider, Spinner, useStyleSheet } from '@ui-kitten/components';
@@ -25,7 +25,7 @@ export default ({ navigation }): React.ReactElement => {
         password: password
       },
       onCompleted: ({ tokenAuth }) => handleSignInCompleted(tokenAuth),
-      onError: err => console.error(err)
+      onError: err => Alert.alert(err)
   });
   
   const handleSignInCompleted = (tokenAuth: { success: boolean; token: string; errors: any; }): void => {
@@ -86,6 +86,9 @@ export default ({ navigation }): React.ReactElement => {
           accessoryRight={PersonIcon}
           value={email}
           onChangeText={setEmail}
+          keyboardType='email-address'
+          autoCompleteType='email'
+          autoCapitalize='none'
         />
         <Input
           style={styles.passwordInput}
@@ -94,6 +97,8 @@ export default ({ navigation }): React.ReactElement => {
           value={password}
           secureTextEntry={!passwordVisible}
           onChangeText={setPassword}
+          autoCompleteType='password'
+          autoCapitalize='none'
         />
         <View style={styles.forgotPasswordContainer}>
           <Button

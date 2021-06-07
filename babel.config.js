@@ -3,7 +3,7 @@ module.exports = function(api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [["babel-plugin-dotenv", {
-      "replacedModuleName": "babel-dotenv"
+        "replacedModuleName": "babel-dotenv"
     }]]
   };
 };

@@ -9,25 +9,25 @@ import OutGoingFriendRequestButton from './OutgoingFriendRequestButton';
 
 const AddFriendButton = ({ user }) => {
   const [ hasAdded, setHasAdded ] = useState(false);
-  const [befriend, { data, loading, error }] = useAddFriend();
+  const [ addFriend, { data, loading, error }] = useAddFriend({
+      variables: { toFriend: user.uuid },
+      onCompleted: () => {
+        Alert.alert("Du har sendt en venneforespørsel til " + user.name);
+        setHasAdded(true);
+      },
+      onError: err => Alert.alert(err)
+  });
 
   if (!user) {
     return null;
   }
-  const addFriend = async () => {
-    befriend({ 
-      variables: { toFriend: user.uuid }
-    }).then(
-      res => {
-        Alert("Du har sendt en venneforespørsel til " + user.name);
-        setHasAdded(true);
-      },
-      err => Alert(err)
-    );
-  }
 
   if (hasAdded) {
     return <OutGoingFriendRequestButton user={user} />
+  }
+
+  if (error) {
+    Alert.alert(error);
   }
 
   return (

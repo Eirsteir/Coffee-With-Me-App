@@ -11,7 +11,8 @@ import OutgoingFriendRequestButton from './OutgoingFriendRequestButton';
 
 const UserCard = ({ user, isFriend, friendshipStatus }) => {
   const { data } = useCurrentUser();
-
+  console.log(user);
+  
   const FriendActionButton = () => {
     if (user.uuid === data?.uuid) {
       return <Text></Text>;

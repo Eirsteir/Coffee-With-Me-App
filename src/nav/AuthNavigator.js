@@ -7,7 +7,10 @@ import SignUp from '../screens/SignUpScreen'
 import ForgotPassword from '../screens/ForgotPasswordScreen'
   
 const navigationOptions = {
-  headerStyle: {  borderBottomColor: 'white' },
+  headerStyle: {
+    borderBottomWidth: 0,
+    height: 0,
+  }
 }
 
 const Stack = createStackNavigator();
@@ -18,8 +21,8 @@ const AuthNavigator = () => {
       <Stack.Navigator 
         screenOptions={navigationOptions}
       >
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUp" component={SignUp} options={{ headerBackTitle: '', headerTitle: '', ...navigationOptions}}/>
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       </Stack.Navigator>
     </ NavigationContainer>

@@ -2,7 +2,6 @@
 import type { UserResponse } from './types';
 export function goToProfile(id: string) {
   // TODO: implement
-  console.log('user id: ', id);
 }
 
 export function userOrDefault(user: UserResponse | 'NotFound') {

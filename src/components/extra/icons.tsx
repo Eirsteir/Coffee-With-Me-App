@@ -33,3 +33,7 @@ export const FacebookIcon = (style: ImageStyle): IconElement => (
   export const BackIcon = (props) => (
     <Icon {...props} name='arrow-back'/>
   );
+
+  export const PlusIcon = (props) => (
+    <Icon {...props} name='plus' />
+  )

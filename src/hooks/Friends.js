@@ -13,7 +13,7 @@ export const useFriendsById = userId => {
 
 export const useFriendingPossibilities = () => useQuery(GET_FRIENDING_POSSIBILITIES_QUERY);
 
-export const useAddFriend = () => useMutation(ADD_FRIEND_MUTATION);
+export const useAddFriend = options => useMutation(ADD_FRIEND_MUTATION, options);
 
 export const useRemoveFriend = () => useMutation(REMOVE_FRIEND_MUTATION);
 
@@ -21,4 +21,4 @@ export const useAcceptFriendRequest = () => useMutation(ACCEPT_FRIEND_REQUEST_MU
 
 export const useRejectFriendRequest = () => useMutation(REJECT_FRIEND_REQUEST_MUTATION);
 
-export const useCancelFriendRequest = () => useMutation(CANCEL_FRIEND_REQUEST_MUTATION);
+export const useCancelFriendRequest = options => useMutation(CANCEL_FRIEND_REQUEST_MUTATION, options);

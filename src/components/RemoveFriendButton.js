@@ -22,10 +22,10 @@ const RemoveFriendButton = ({ user }) => {
       variables: { friend: user.uuid }
     }).then(
       res => {
-        Alert("Du og " + user.name + " er ikke lenger venner"),
+        AlertAlert.alert("Du og " + user.name + " er ikke lenger venner"),
         setHasRemoved(true);
       },
-      err => Alert(err)
+      err => Alert.alert(err)
     );
 
     if (hasRemoved) {
