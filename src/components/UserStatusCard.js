@@ -5,13 +5,28 @@ import { ListItem } from '@ui-kitten/components';
 import { Avatar } from 'expo-activity-feed';
 
 import Button from './Button';
+import { PlusIcon } from './extra/icons';
 
 
 const UserStatusCard = ({ user, currentStatus }) => {
   
   const description = currentStatus && `${user.name} is ${currentStatus.verb} at ${currentStatus.created}`
-  const renderItemIcon = (props) => (
-    <Icon {...props} name='person'/>
+
+  const renderAddToInvitees = () => (
+        <TouchableOpacity
+          style={{
+            borderWidth: 1,
+            borderColor: 'rgba(0,0,0,0.2)',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 70,
+            height: 70,
+            backgroundColor: '#fff',
+            borderRadius: 100,
+          }}
+        >
+          <PlusIcon/>
+        </TouchableOpacity>
   );
   
   return (
@@ -19,7 +34,7 @@ const UserStatusCard = ({ user, currentStatus }) => {
         title={user.name}
         description={description || "Ikke sjekket inn"}
         accessoryLeft={() => <Avatar source={user.profilePic} size={42} noShadow />}
-        accessoryRight={() => <Button children="Inviter" />}
+        accessoryRight={renderAddToInvitees}
       />
     );
 }
