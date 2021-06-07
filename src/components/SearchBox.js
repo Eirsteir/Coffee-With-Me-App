@@ -1,7 +1,8 @@
 import { useLazyQuery } from '@apollo/client';
 import React, { useState, useMemo } from 'react';
 import { SearchBar } from 'react-native-elements';
-import { View, Text, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
+import { Divider, Text } from '@ui-kitten/components';
 
 import SEARCH_USERS from '../graphql/searchUsers.query';
 import UserCard from './UserCard';
@@ -42,8 +43,9 @@ const SearchBox = () => {
             style={{ marginTop: 15 }}
             data={results}
             listEmptyComponent={error?.message || 'Fant ingen brukere'}
+            ItemSeparatorComponent={Divider}
             renderItem={({ item }) => (
-              <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
+              <View style={{ marginLeft: 15, marginRight: 15}}>
                 <UserCard
                   user={item}
                   isFriend={item.isViewerFriend}
@@ -54,7 +56,7 @@ const SearchBox = () => {
             keyExtractor={(item) => `item-${item.uuid}`}
           />
           }
-      </>
+        </>
   );
 }
 
