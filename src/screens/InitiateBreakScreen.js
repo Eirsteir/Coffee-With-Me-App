@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { Text } from '@ui-kitten/components';
+import { Layout, Text } from '@ui-kitten/components';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {
     BottomSheetModal,
@@ -29,11 +29,12 @@ const InitiateBreakScreen = ({ bottomSheetModalRef }) => {
     const startingInMinutes = moment().to(time);
 
     const renderContent = () => (
-        <View style={styles.container}>
+        <Layout style={styles.container} level='1'>
 
             <LargeHeading>Start en pause</LargeHeading>
             
-            <View style={styles.startTimeContainer}>
+            <View 
+            style={styles.startTimeContainer}>
                 <Text>
                     Pausen vil starte {startingInMinutes}.
                 </Text>
@@ -64,7 +65,7 @@ const InitiateBreakScreen = ({ bottomSheetModalRef }) => {
             <Button styling={styles.button} onPress={handleClosePress}>
                 Inviter
             </Button>
-        </View>
+        </Layout>
     )
 
     return (

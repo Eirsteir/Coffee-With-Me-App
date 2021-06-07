@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Appearance, useColorScheme } from 'react-native';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry, } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
@@ -12,10 +13,29 @@ import AuthNavigator from './nav/AuthNavigator';
 import AppNavigator from './nav/AppNavigator';
 import UserController from './context/UserContext';
 import apolloClient from './apollo-client-setup';
+import { ThemeContext } from './theme-context';
 
 export const AuthContext = React.createContext();
 
 export default function App({ navigation }) {
+  const colorScheme = useColorScheme();
+  const [theme, setTheme] = React.useState(colorScheme);
+  console.log(colorScheme);
+  console.log(theme);
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+  };
+
+  React.useEffect(() => {
+    Appearance.addChangeListener(
+      (preferences) => {
+        const { colorScheme } = preferences;
+        setTheme(colorScheme);
+      },
+    );
+  }, [])
+
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -87,20 +107,22 @@ export default function App({ navigation }) {
 
   return (
     <>
-    <IconRegistry icons={EvaIconsPack} />
-    <ApplicationProvider {...eva} theme={eva.light}>
-      <ApolloProvider client={apolloClient}>
-        <AuthContext.Provider value={authContext}>
-            { isLoggedIn ? (
-              <AuthNavigator />
-            ) : (
-              <UserController>
-                <AppNavigator />
-              </UserController>
-            )}
-        </AuthContext.Provider>
-      </ApolloProvider>
-    </ApplicationProvider>
+      <IconRegistry icons={EvaIconsPack} />
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ApplicationProvider {...eva} theme={eva[theme]}>
+          <ApolloProvider client={apolloClient}>
+            <AuthContext.Provider value={authContext}>
+                { isLoggedIn ? (
+                  <AuthNavigator />
+                ) : (
+                  <UserController>
+                    <AppNavigator />
+                  </UserController>
+                )}
+            </AuthContext.Provider>
+          </ApolloProvider>
+        </ApplicationProvider>
+      </ThemeContext.Provider>  
     </>
   );
 }

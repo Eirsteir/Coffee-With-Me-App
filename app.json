@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "CoffeeWithMe",
-    "slug": "coffee-with-me",
+    "name": "Kaffepause",
+    "slug": "kaffepause",
     "platforms": [
       "ios",
       "android"
@@ -11,6 +11,8 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "icon": "https://cdn.dribbble.com/users/5912/screenshots/1300524/attachments/181387/io7-isome-icon-P.png"
-  }
+    "icon": "https://cdn.dribbble.com/users/5912/screenshots/1300524/attachments/181387/io7-isome-icon-P.png",
+    "userInterfaceStyle": "automatic"
+  },
+  "ios": {"userInterfaceStyle": "automatic"}
 }

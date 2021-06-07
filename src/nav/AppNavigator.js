@@ -1,6 +1,6 @@
 //@flow
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useContext } from 'react';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -15,6 +15,7 @@ import {
   STREAM_APP_ID,
 } from 'babel-dotenv';
 
+import { ThemeContext } from '../theme-context';
 import { TabIcon } from '../components/Icons';
 import HomeScreen from '../screens/HomeScreen';
 import FriendsScreen from '../screens/FriendsScreen';
@@ -102,41 +103,44 @@ const TabNavigator = () => (
 
 const NavigationStack = createStackNavigator();
 
-const Navigation = () => (
-  <NavigationContainer>
-    <NavigationStack.Navigator screenOptions={doNotShowHeaderOption}>
-      <NavigationStack.Screen name="Default" component={TabNavigator} options={doNotShowHeaderOption}/>
-      <NavigationStack.Screen name="SinglePost" component={SinglePostScreen}/>
-      <NavigationStack.Screen name="AddFriends" component={AddFriendsScreen}/>
-      <NavigationStack.Screen name="EditProfile" component={EditProfileScreen}/>
-    </NavigationStack.Navigator>
-  </NavigationContainer>
-);
+const Navigation = () => {
+  const themeContext = useContext(ThemeContext);
 
-class AppNavigator extends React.Component {
+  return (
+    <NavigationContainer theme={themeContext.theme === "dark" ? DarkTheme : DefaultTheme}>
+      <NavigationStack.Navigator screenOptions={doNotShowHeaderOption}>
+        <NavigationStack.Screen name="Default" component={TabNavigator} options={doNotShowHeaderOption}/>
+        <NavigationStack.Screen name="SinglePost" component={SinglePostScreen}/>
+        <NavigationStack.Screen name="AddFriends" component={AddFriendsScreen}/>
+        <NavigationStack.Screen name="EditProfile" component={EditProfileScreen}/>
+      </NavigationStack.Navigator>
+    </NavigationContainer>
+  )
+};
 
-  render() {
-    const apiKey = STREAM_API_KEY;
-    const appId = STREAM_APP_ID;
 
-    return (
-      <StreamApp
-        apiKey={apiKey}
-        appId={appId}
-        // TODO: Pass stream created user token from backend
-        token='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDk0YjVjNzktYzQyZC00ZWI4LTg0NTctM2EyNThkZDdmNTkzIn0.lOcnZZnvuJa0FKph2AjE7cM-_ktXn3KZLpeDmFOleIE' 
-        defaultUserData={{
-          name: '',
-          url: '',
-          desc: '',
-          profileImage: ''
-        }}
-        errorHandler={console.error} // TODO: update in prod
-      >
-          <Navigation />
-      </StreamApp>
-    );
-  }
+const AppNavigator = () => {
+
+  const apiKey = STREAM_API_KEY;
+  const appId = STREAM_APP_ID;
+
+  return (
+    <StreamApp
+      apiKey={apiKey}
+      appId={appId}
+      // TODO: Pass stream created user token from backend
+      token='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDk0YjVjNzktYzQyZC00ZWI4LTg0NTctM2EyNThkZDdmNTkzIn0.lOcnZZnvuJa0FKph2AjE7cM-_ktXn3KZLpeDmFOleIE' 
+      defaultUserData={{
+        name: '',
+        url: '',
+        desc: '',
+        profileImage: ''
+      }}
+      errorHandler={console.error} // TODO: update in prod
+    >
+      <Navigation />
+    </StreamApp>
+  );
 }
 
 export default AppNavigator;

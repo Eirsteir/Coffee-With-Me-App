@@ -1,6 +1,8 @@
 import React, { useLayoutEffect, useMemo } from 'react';
-import { View, TouchableOpacity, Image, ScrollView, FlatList, Text, StyleSheet } from 'react-native';
+import { View, Image, ScrollView, FlatList, StyleSheet } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
+import { Layout, Text, useTheme } from '@ui-kitten/components';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import AddFriendsHeader from '../components/AddFriendsHeader';
 import LargeHeading from '../components/LargeHeading';
@@ -51,6 +53,7 @@ const INTERESTING_USERS = [
 ]
 
 const FriendsScreen = ({ navigation }) => {
+  const theme = useTheme();
   const { loading, error, data: user } = useCurrentUser();    
   const { 
     loading: friendingPossibilitiesLoading, 
@@ -81,10 +84,15 @@ const FriendsScreen = ({ navigation }) => {
   const friendingPossibilitiesCount = friendingPossibilitiesData?.friendingPossibilities.count;
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <Layout style={{ flex: 1}} level='1'>
+    <ScrollView style={{ flex: 1}}>
+
       <SearchBox />
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("FriendRequests")}>
+      <TouchableOpacity 
+        style={[styles.button, { backgroundColor: theme['background-basic-color-3'] }]}
+        onPress={() => navigation.navigate("FriendRequests")}
+      >
         { friendingPossibilitiesError && <Text>Noe gikk galt</Text>}
         { friendingPossibilitiesLoading && <Text>Henter potensielle venner</Text>}
         { friendingPossibilitiesData 
@@ -146,7 +154,8 @@ const FriendsScreen = ({ navigation }) => {
         )}
         keyExtractor={(item) => `item-${item.id}`}
       />
-    </ScrollView>
+      </ScrollView>
+    </Layout>
   );
 }
 
@@ -155,15 +164,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f5f5f5',
     borderRadius: 5,
-    borderWidth: 2,
-    borderColor: '#f5f5f5',
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 15,
+    paddingBottom: 15,
     marginLeft: 15,
     marginRight: 15,
-    marginTop: 10,
   }
 });
 

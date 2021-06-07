@@ -1,12 +1,13 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Avatar } from 'expo-activity-feed';
 
 import FriendActionButton from './FriendActionButton';
 import { useCurrentUser } from '../hooks/User';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Text } from '@ui-kitten/components';
 
 const UserCard = ({ user, isFriend, friendshipStatus }) => {
   const { data } = useCurrentUser();
