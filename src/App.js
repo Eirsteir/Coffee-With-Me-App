@@ -17,11 +17,10 @@ import { ThemeContext } from './theme-context';
 
 export const AuthContext = React.createContext();
 
-export default function App({ navigation }) {
+const Providers = ({ children }) => {
   const colorScheme = useColorScheme();
   const [theme, setTheme] = React.useState(colorScheme);
-  console.log(colorScheme);
-  console.log(theme);
+
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
@@ -36,6 +35,22 @@ export default function App({ navigation }) {
     );
   }, [])
 
+  return (
+    <>
+      <IconRegistry icons={EvaIconsPack} />
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ApplicationProvider {...eva} theme={eva[theme]}>
+          <ApolloProvider client={apolloClient}>
+            {children}
+          </ApolloProvider>
+        </ApplicationProvider>
+      </ThemeContext.Provider>  
+    </>
+  );
+}
+
+const Navigators = () => {
+  
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -67,21 +82,16 @@ export default function App({ navigation }) {
   );
 
   React.useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
 
       try {
         userToken = await TOKEN.get(Constants.AUTH_TOKEN); 
       } catch (e) {
-        // Restoring token failed
         console.log('Failed to restore user token');
       }
 
       // After restoring token, we may need to validate it in production apps
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
 
@@ -103,26 +113,24 @@ export default function App({ navigation }) {
   );
 
   if (state.isLoading) return null;
-  let isLoggedIn = state.userToken == null;
+  let isLoggedIn = state.userToken != null;
 
   return (
-    <>
-      <IconRegistry icons={EvaIconsPack} />
-      <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <ApplicationProvider {...eva} theme={eva[theme]}>
-          <ApolloProvider client={apolloClient}>
-            <AuthContext.Provider value={authContext}>
-                { isLoggedIn ? (
-                  <AuthNavigator />
-                ) : (
-                  <UserController>
-                    <AppNavigator />
-                  </UserController>
-                )}
-            </AuthContext.Provider>
-          </ApolloProvider>
-        </ApplicationProvider>
-      </ThemeContext.Provider>  
-    </>
-  );
+    <AuthContext.Provider value={authContext}>
+      { isLoggedIn ? (
+        <UserController>
+          <AppNavigator />
+        </UserController>
+        ) : <AuthNavigator />
+      }
+    </AuthContext.Provider>
+  )
+}
+
+export default App = () => {
+  return (
+    <Providers>
+        <Navigators />
+    </Providers>
+  )
 }
