@@ -13,21 +13,46 @@ import localization from 'moment/locale/nb';
 
 import Button from '../components/Button';
 import LargeHeading from '../components/LargeHeading';
+import { useNavigation } from '@react-navigation/core';
 
 const now = new Date();
 now.setMinutes(now.getMinutes() + 15);
 
-const InitiateBreakScreen = ({ bottomSheetModalRef }) => {
+const InitiateBreakScreen = ({ invitees, bottomSheetModalRef }) => {
+    const navigation = useNavigation();
     const [time, setTime] = useState(now);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const snapPoints = useMemo(() => ['65%', '100%'], []);
-
+    console.log(invitees);
     const handleClosePress = useCallback(() => {
         bottomSheetModalRef.current?.close();
       }, []);
 
     moment.updateLocale("nb", localization);
     const startingInMinutes = moment().to(time);
+
+    const renderInvitees = () => {
+        
+        if (invitees !== undefined && invitees.size) { 
+            const firstInvitee = invitees.values().next().value;
+            const firstInviteeName = firstInvitee.name.split(' ')[0];
+            const inviteeLink = () => (
+                <Text onPress={() => navigation.push('Default', { screen: 'Profil', params: { screen: 'Profile', params: { userId: firstInvitee.uuid } } })}>
+                    {firstInviteeName}
+                </Text>
+                );
+            return (
+                <Text>
+                    Du inviterer {inviteeLink()} 
+                    { invitees.size === 1 && ` og ${invitees.size - 1} andre`}.
+                </Text>
+            );
+        } else {
+            return (
+                <Text>Inviter noen venner til pausen.</Text>
+            );
+        }
+    }    
 
     const renderContent = () => (
         <Layout style={styles.container} level='1'>
@@ -62,7 +87,14 @@ const InitiateBreakScreen = ({ bottomSheetModalRef }) => {
                     </TouchableOpacity>
                 </View>
                 )}
-            
+                <View style={styles.startTimeContainer}>
+                    {renderInvitees()}
+                <View style={styles.changeStartTimeHint}>
+                    <TouchableOpacity onPress={setShowTimePicker}> 
+                        <Text appearance='hint'>Endre</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
             <Button styling={styles.button} onPress={handleClosePress}>
                 Inviter
             </Button>

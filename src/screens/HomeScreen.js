@@ -1,5 +1,5 @@
 // @flow
-import React, { useLayoutEffect, useMemo, useRef, useCallback } from 'react';
+import React, { useLayoutEffect, useMemo, useRef, useCallback, useState } from 'react';
 import { 
   TouchableOpacity,
   Image, 
@@ -16,8 +16,8 @@ import InitiateBreakScreen from './InitiateBreakScreen';
 
 import { useCurrentUser } from '../hooks/User';
 import { BreakVisual } from '../images/index';
-import { MenuIcon } from '../components/Icons';
-
+import { PlusIcon } from '../components/Icons';
+import { View } from 'react-native';
 
 const win = Dimensions.get('window');
 
@@ -25,16 +25,61 @@ const HomeScreen = ({ navigation }) =>  {
   const bottomSheetModalRef = useRef(null);
   const { loading, error, data: user } = useCurrentUser();
   const friends = useMemo(() => (user !== undefined ? user.me.friends.edges.map((edge) => edge.node) : []), [user]);
+  const [ invitees, setInvitees ] = useState(new Set());
+
+  const renderHeaderRightIcon = (props) => {
+    return (
+    invitees.size ? (
+      <View>
+        <PlusIcon {...props} />
+        <View
+          style={{
+            height: 15,
+            width: 15,
+            backgroundColor: '#ff708d',
+            borderRadius: 10,
+            position: "absolute",
+            right: 0,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Text
+            style={{ color: "#fff",  fontSize: 10 }}
+          >
+            {invitees.size}
+          </Text>
+        </View>
+      </View>
+    ) : (
+      <PlusIcon {...props} />
+    )
+  )}
 
   const renderRightActions = () => (
     <React.Fragment>
-      <TopNavigationAction icon={MenuIcon} onPress={handlePresentModalPress}/>
+      <TopNavigationAction 
+        icon={renderHeaderRightIcon} 
+        onPress={handlePresentModalPress}/>
     </React.Fragment>
   );
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
-  }, []);
+  }, [bottomSheetModalRef]);
+
+  const addInvitee = useCallback((user) => {
+    setInvitees((invitees) => new Set(invitees).add(user));
+    console.log(invitees)
+  }, [invitees]);
+
+  const removeInvitee = useCallback((user) => {
+    setInvitees((invitees) => {
+      const next = new Set(invitees);
+      next.delete(user);
+      return next;
+    });
+  }, [invitees]);
 
   return (
     <React.Fragment>
@@ -66,6 +111,8 @@ const HomeScreen = ({ navigation }) =>  {
               <UserStatusCard 
                 user={item}
                 currentStatus={item.currentStatus}
+                onAdd={() => addInvitee(item)}
+                onRemove={() => removeInvitee(item)}
               />
           )}
           keyExtractor={(item) => `item-${item.id}`}
@@ -77,29 +124,10 @@ const HomeScreen = ({ navigation }) =>  {
             />
           )}
         />
-
-
-
-        {/* <TouchableOpacity
-            style={{
-              borderWidth: 1,
-              borderColor: 'rgba(0,0,0,0.2)',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 70,
-              position: 'absolute',
-              bottom: 10,
-              right: 10,
-              height: 70,
-              backgroundColor: '#fff',
-              borderRadius: 100,
-            }}
-          >
-            <Icon name='plus' />
-          </TouchableOpacity> */}
       </Layout>
       
       <InitiateBreakScreen 
+          invitees={invitees}
           bottomSheetModalRef={bottomSheetModalRef}
       />
 

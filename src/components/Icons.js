@@ -50,3 +50,11 @@ export const BackIcon = (props) => (
 export const MenuIcon = (style) => (
   <Icon {...style} name='menu' />
 );
+
+export const PlusIcon = (props) => (
+  <Icon {...props} name='plus' />
+);
+
+export const MinusIcon = (props) => (
+  <Icon {...props} name='minus' />
+);
