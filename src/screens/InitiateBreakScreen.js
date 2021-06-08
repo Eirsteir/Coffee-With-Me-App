@@ -23,7 +23,7 @@ const InitiateBreakScreen = ({ invitees, bottomSheetModalRef }) => {
     const [time, setTime] = useState(now);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const snapPoints = useMemo(() => ['65%', '100%'], []);
-    console.log(invitees);
+
     const handleClosePress = useCallback(() => {
         bottomSheetModalRef.current?.close();
       }, []);
@@ -41,10 +41,11 @@ const InitiateBreakScreen = ({ invitees, bottomSheetModalRef }) => {
                     {firstInviteeName}
                 </Text>
                 );
+                console.log(invitees.size)
             return (
                 <Text>
                     Du inviterer {inviteeLink()} 
-                    { invitees.size === 1 && ` og ${invitees.size - 1} andre`}.
+                    { invitees.size > 1 && ` og ${invitees.size - 1} andre`}.
                 </Text>
             );
         } else {
