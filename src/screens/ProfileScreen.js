@@ -86,7 +86,7 @@ const ProfileScreen = ({ route, navigation }) => {
     <React.Fragment>
 
       <SafeAreaView style={styles.container}>
-        <Layout style={styles.navContainer} level='1'>
+        <Layout level='1'>
           <TopNavigation
             alignment='center'
             title='Profil'
@@ -171,11 +171,7 @@ const ProfileScreen = ({ route, navigation }) => {
 };
 
 const themedStyle = StyleService.create({
-  navContainer: {
-    // minHeight: 128,
-  },
   container: {
-    flex: 1,
     backgroundColor: 'background-basic-color-1',
   },
   header: {
