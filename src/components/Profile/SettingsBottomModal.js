@@ -49,7 +49,6 @@ const SettingsBottomModal = ({ bottomSheetModalRef }) => {
         logout();
     };
 
-    const background = <Layout level='1'/>;
     return (
         <BottomSheetModalProvider>
             <BottomSheetModal

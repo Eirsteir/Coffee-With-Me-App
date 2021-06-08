@@ -6,10 +6,9 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import { Avatar } from 'expo-activity-feed';
-import { Layout, List, Text } from '@ui-kitten/components';
+import { Layout, List, Text, TopNavigationAction } from '@ui-kitten/components';
 
-import AddFriendsHeader from '../components/AddFriendsHeader';
+import TopNavigation from '../components/TopNavigation';
 import UserStatusCard from '../components/UserStatusCard';
 import LargeHeading from '../components/LargeHeading';
 import Button from '../components/Button';
@@ -17,6 +16,7 @@ import InitiateBreakScreen from './InitiateBreakScreen';
 
 import { useCurrentUser } from '../hooks/User';
 import { BreakVisual } from '../images/index';
+import { MenuIcon } from '../components/Icons';
 
 
 const win = Dimensions.get('window');
@@ -26,34 +26,23 @@ const HomeScreen = ({ navigation }) =>  {
   const { loading, error, data: user } = useCurrentUser();
   const friends = useMemo(() => (user !== undefined ? user.me.friends.edges.map((edge) => edge.node) : []), [user]);
 
-  useLayoutEffect(() => {
-
-    navigation.setOptions({
-      title: 'Coffee with me',
-      headerTitleStyle: { alignSelf: 'center' },
-      headerLeft: () => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Profile')}
-          style={{ paddingLeft: 15 }}
-        >
-          <Avatar
-            source={(userData) => userData.data.profileImage}
-            size={23}
-            noShadow
-          />
-        </TouchableOpacity>
-      ),
-      headerRight: () => (
-        <AddFriendsHeader navigation={navigation} /> 
-      ),
-    })
-  }, [navigation]);
+  const renderRightActions = () => (
+    <React.Fragment>
+      <TopNavigationAction icon={MenuIcon} onPress={handlePresentModalPress}/>
+    </React.Fragment>
+  );
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
 
   return (
+    <React.Fragment>
+      <TopNavigation 
+        title='Pause'      
+        accessoryRight={renderRightActions} 
+      />
+
     <Layout style={styles.container} level='1'>
       <Image
         resizeMode={'contain'} 
@@ -89,9 +78,7 @@ const HomeScreen = ({ navigation }) =>  {
           )}
         />
 
-        <InitiateBreakScreen 
-          bottomSheetModalRef={bottomSheetModalRef}
-        />
+
 
         {/* <TouchableOpacity
             style={{
@@ -111,6 +98,12 @@ const HomeScreen = ({ navigation }) =>  {
             <Icon name='plus' />
           </TouchableOpacity> */}
       </Layout>
+      
+      <InitiateBreakScreen 
+          bottomSheetModalRef={bottomSheetModalRef}
+      />
+
+      </React.Fragment>
   );
 }
 

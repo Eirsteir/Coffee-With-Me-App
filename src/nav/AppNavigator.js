@@ -60,7 +60,7 @@ const navigationOptions = ({ route }) => ({
 
 const HomeStack = createStackNavigator();
 const HomeStackScreen = () => (
-  <HomeStack.Navigator>
+  <HomeStack.Navigator screenOptions={{ safeAreaInsets: { top: 0 }, ...doNotShowHeaderOption }}>
     <HomeStack.Screen name="Home" component={HomeScreen}/>
   </HomeStack.Navigator>
 );
@@ -75,7 +75,7 @@ const FriendsStackScreen = () => (
 
 const ProfileStack = createStackNavigator();
 const ProfileStackScreen = () => (
-  <ProfileStack.Navigator mode="modal">
+  <ProfileStack.Navigator mode="modal" screenOptions={{ safeAreaInsets: { top: 0 }, ...doNotShowHeaderOption }}>
     <ProfileStack.Screen name="Profile" component={ProfileScreen} initialParams={{ userId: undefined }}/>
     <NavigationStack.Screen name="EditProfile" component={EditProfileScreen}/>
   </ProfileStack.Navigator>

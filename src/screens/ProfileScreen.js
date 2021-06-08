@@ -1,6 +1,6 @@
 import React, { useMemo, useLayoutEffect, useRef, useCallback } from 'react';
 import { LogBox, ScrollView, View, Alert } from 'react-native';
-import { List, StyleService, Text, Layout, useStyleSheet, TopNavigation, TopNavigationAction  } from '@ui-kitten/components';
+import { List, StyleService, Text, Layout, useStyleSheet, TopNavigationAction  } from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Avatar } from 'expo-activity-feed';
 
@@ -8,9 +8,9 @@ import { ProfileSocial } from '../components/Profile/ProfileSocial';
 import FriendActionButton from '../components/FriendActionButton';
 import SettingsBottomModal from '../components/Profile/SettingsBottomModal';
 import { PinIcon, MenuIcon } from '../components/Icons';
+import TopNavigation from '../components/TopNavigation';
 import Button from '../components/Button';
 import { useUser } from '../hooks/User';
-import { SafeAreaView } from 'react-native';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews']);
 
@@ -22,12 +22,6 @@ const ProfileScreen = ({ route, navigation }) => {
   const friends = useMemo(() => (profile !== undefined ? profile.friends.edges.map((edge) => edge.node) : []), [profile]);
   const styles = useStyleSheet(themedStyle);
   
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false
-    })
-  }, [navigation]);
-
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
@@ -66,7 +60,8 @@ const ProfileScreen = ({ route, navigation }) => {
           Rediger profil
         </Button>
     </View>
-  )
+  );
+
   const renderRightActions = () => (
     <React.Fragment>
       <TopNavigationAction icon={MenuIcon} onPress={handlePresentModalPress}/>
@@ -85,15 +80,10 @@ const ProfileScreen = ({ route, navigation }) => {
   return (
     <React.Fragment>
 
-      <SafeAreaView style={styles.container}>
-        <Layout level='1'>
-          <TopNavigation
-            alignment='center'
-            title='Profil'
-            accessoryRight={renderRightActions}
-          />
-        </Layout>
-      </SafeAreaView>
+      <TopNavigation
+        title='Profil'
+        accessoryRight={renderRightActions}
+      />
 
       <ScrollView style={styles.container}>
         <View
