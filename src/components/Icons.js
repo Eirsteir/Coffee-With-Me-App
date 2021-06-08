@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from 'react-native';
-import { Icon, useTheme , List, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { Icon, useTheme } from '@ui-kitten/components';
 
 export const TabIcon = ({ name }) => {
   if (name === 'home') {
@@ -45,4 +45,8 @@ export const PersonAddIcon = (style) => (
 
 export const BackIcon = (props) => (
   <Icon {...props} name='arrow-back' />
+);
+
+export const MenuIcon = (style) => (
+  <Icon {...style} name='menu' />
 );

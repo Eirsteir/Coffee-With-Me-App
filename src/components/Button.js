@@ -17,7 +17,7 @@ const Button = ({ onPress, children, styling, ...props }) => {
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 24,
+    // TODO: make slimmer
   }
 });
 

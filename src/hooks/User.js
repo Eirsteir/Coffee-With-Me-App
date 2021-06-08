@@ -20,3 +20,13 @@ export const useUser = userId => {
 export const useIsAuthenticated = () => {
     return typeof AuthService.isAuthenticated() !== 'undefined';
 };
+
+export const useLogout = () => {
+    // clear apollo cache?
+    return () => logout();
+}
+
+export const logout = async () => {
+    await removeItem(ACCESS_TOKEN);
+    await removeItem(REFRESH_TOKEN);
+}

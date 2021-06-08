@@ -5,9 +5,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {
     BottomSheetModal,
     BottomSheetModalProvider,
+    BottomSheetBackdrop
   } from '@gorhom/bottom-sheet';
 
-  import moment from 'moment';
+import moment from 'moment';
 import localization from 'moment/locale/nb';
 
 import Button from '../components/Button';
@@ -74,7 +75,8 @@ const InitiateBreakScreen = ({ bottomSheetModalRef }) => {
             ref={bottomSheetModalRef}
             index={0}
             snapPoints={snapPoints}
-            style={styles.backDrop}
+            backdropComponent={BottomSheetBackdrop}
+            backgroundComponent={({ style, animatedIndex}) => <Layout level='1' style={style} />}
           >
             {renderContent()}
           </BottomSheetModal>
@@ -93,16 +95,6 @@ const styles = StyleSheet.create({
     },
     button: {
         margin: 10,
-    },
-    backDrop: {
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
     },
     // This only works on iOS
     datePicker: {

@@ -75,8 +75,9 @@ const FriendsStackScreen = () => (
 
 const ProfileStack = createStackNavigator();
 const ProfileStackScreen = () => (
-  <ProfileStack.Navigator>
+  <ProfileStack.Navigator mode="modal">
     <ProfileStack.Screen name="Profile" component={ProfileScreen} initialParams={{ userId: undefined }}/>
+    <NavigationStack.Screen name="EditProfile" component={EditProfileScreen}/>
   </ProfileStack.Navigator>
 );
 
@@ -112,7 +113,6 @@ const Navigation = () => {
         <NavigationStack.Screen name="Default" component={TabNavigator} options={doNotShowHeaderOption}/>
         <NavigationStack.Screen name="SinglePost" component={SinglePostScreen}/>
         <NavigationStack.Screen name="AddFriends" component={AddFriendsScreen}/>
-        <NavigationStack.Screen name="EditProfile" component={EditProfileScreen}/>
       </NavigationStack.Navigator>
     </NavigationContainer>
   )

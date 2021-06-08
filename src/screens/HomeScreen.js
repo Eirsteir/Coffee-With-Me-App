@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
-import { Icon, Layout, List, Text } from '@ui-kitten/components';
+import { Layout, List, Text } from '@ui-kitten/components';
 
 import AddFriendsHeader from '../components/AddFriendsHeader';
 import UserStatusCard from '../components/UserStatusCard';
