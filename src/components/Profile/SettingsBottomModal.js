@@ -7,11 +7,13 @@ import {
 import { Menu, MenuItem, Layout, Text, StyleService, Divider } from '@ui-kitten/components';
 import { useLogout } from '../../hooks/User';
 import { AuthContext } from "../../App";
+import { useApolloClient } from '@apollo/client';
 
 const SettingsBottomModal = ({ bottomSheetModalRef }) => {
     const snapPoints = useMemo(() => ['35%'], []);
     const { logout } = useContext(AuthContext);
-    const signOutUser = useLogout(); 
+    const client = useApolloClient();
+    const signOutUser = useLogout(client); 
 
     const handleClosePress = useCallback(() => {
         bottomSheetModalRef.current?.close();
