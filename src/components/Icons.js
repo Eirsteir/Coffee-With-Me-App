@@ -34,7 +34,19 @@ export const PinIcon = () => {
 };
 
 export const PersonAddIcon = (style) => (
-  <Icon {...style} name='person-add'/>
+  <Icon {...style} name='person-add-outline'/>
+);
+
+export const NavigationIcon = (style) => (
+  <Icon {...style} name='navigation-2-outline' />
+);
+
+export const SettingsIcon = (style) => (
+  <Icon {...style} name='settings-outline' />
+);
+
+export const LockIcon = (style) => (
+  <Icon {...style} name='lock-outline' />
 );
 
 export const BackIcon = (props) => (
@@ -51,4 +63,8 @@ export const PlusIcon = (props) => (
 
 export const MinusIcon = (props) => (
   <Icon {...props} name='minus' />
+);
+
+export const LogoutIcon = (props) => (
+  <Icon {...props} name='log-out'/>
 );

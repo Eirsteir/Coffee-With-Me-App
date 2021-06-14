@@ -8,6 +8,7 @@ import { Menu, MenuItem, Layout, Text, StyleService, Divider } from '@ui-kitten/
 import { useLogout } from '../../hooks/User';
 import { AuthContext } from "../../App";
 import { useApolloClient } from '@apollo/client';
+import { LockIcon, LogoutIcon, NavigationIcon, PersonAddIcon, SettingsIcon } from '../Icons';
 
 const SettingsBottomModal = ({ bottomSheetModalRef }) => {
     const snapPoints = useMemo(() => ['35%'], []);
@@ -22,11 +23,11 @@ const SettingsBottomModal = ({ bottomSheetModalRef }) => {
 
     const renderMenu = () => (
         <Menu style={styles.menu}>
-            <MenuItem title='Instillinger' onPress={onSettingsPress}/>
-            <MenuItem title='Endre passord' onPress={onChangePasswordPress}/>
-            <MenuItem title='Nære venner' onPress={onCloseFriendsPress}/>
-            <MenuItem title='Finn venner' onPress={onFindFriendsPress}/>
-            <MenuItem title='Logg ut' onPress={onLogoutPress}/>
+            <MenuItem title='Instillinger' accessoryLeft={SettingsIcon} onPress={onSettingsPress}/>
+            <MenuItem title='Endre passord' accessoryLeft={LockIcon} onPress={onChangePasswordPress}/>
+            <MenuItem title='Nære venner' accessoryLeft={NavigationIcon} onPress={onCloseFriendsPress}/>
+            <MenuItem title='Finn venner' accessoryLeft={PersonAddIcon} onPress={onFindFriendsPress}/>
+            <MenuItem title='Logg ut' accessoryLeft={LogoutIcon} onPress={onLogoutPress}/>
         </Menu>
     );
     
