@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { Layout, Text } from '@ui-kitten/components';
+import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
+import { Layout, Text, Spinner } from '@ui-kitten/components';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {
     BottomSheetModal,
@@ -14,6 +14,7 @@ import localization from 'moment/locale/nb';
 import Button from '../components/Button';
 import LargeHeading from '../components/LargeHeading';
 import { useNavigation } from '@react-navigation/core';
+import { useIniateBreak } from '../hooks/Breaks';
 
 const now = new Date();
 now.setMinutes(now.getMinutes() + 15);
@@ -23,6 +24,7 @@ const InitiateBreakScreen = ({ invitees, bottomSheetModalRef }) => {
     const [time, setTime] = useState(now);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const snapPoints = useMemo(() => ['65%', '100%'], []);
+    const [initiateBreak, { loading, error, data }] = useIniateBreak();
 
     const handleClosePress = useCallback(() => {
         bottomSheetModalRef.current?.close();
@@ -41,7 +43,6 @@ const InitiateBreakScreen = ({ invitees, bottomSheetModalRef }) => {
                     {firstInviteeName}
                 </Text>
                 );
-                console.log(invitees.size)
             return (
                 <Text>
                     Du inviterer {inviteeLink()} 
@@ -54,6 +55,25 @@ const InitiateBreakScreen = ({ invitees, bottomSheetModalRef }) => {
             );
         }
     }    
+
+    const onInvitePress = () => {
+        const variables = {
+            variables: {
+                addressees: [...invitees].map(user => user.uuid),
+                startTime: time
+            }
+        }
+
+        initiateBreak(variables);
+        
+        if (data && data.initiateBreak.success) {
+            Alert.alert("Pausen ble planlagt")
+        }
+    }
+
+    if (error) {
+        console.warn(error);
+    }
 
     const renderContent = () => (
         <Layout style={styles.container} level='1'>
@@ -96,8 +116,8 @@ const InitiateBreakScreen = ({ invitees, bottomSheetModalRef }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <Button styling={styles.button} onPress={handleClosePress}>
-                Inviter
+            <Button styling={styles.button} onPress={onInvitePress}>
+                {loading ? <Spinner size='tiny' status='basic'/> : 'Inviter'}
             </Button>
         </Layout>
     )

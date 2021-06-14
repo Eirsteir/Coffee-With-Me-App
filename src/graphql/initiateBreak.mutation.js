@@ -2,7 +2,8 @@ import { gql } from '@apollo/client';
 
 const INITIATE_BREAK_MUTATION = gql`
 mutation initiateBreak($addressees: [UUID], $startTime: DateTime) {
-    initiateBreak(addressees: $addressees, startTime: $startTime) {
+  initiateBreak(addressees: $addressees, startTime: $startTime) {
+    break_ {
       id
       uuid
       invitation {
@@ -28,9 +29,10 @@ mutation initiateBreak($addressees: [UUID], $startTime: DateTime) {
       }
       startingAt
     }
-    success
-    errors
+  success
+  errors
   }
+}
 `;
 
 export default INITIATE_BREAK_MUTATION;
