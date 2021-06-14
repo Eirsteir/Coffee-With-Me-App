@@ -24,11 +24,19 @@ const InitiateBreakScreen = ({ invitees, bottomSheetModalRef }) => {
     const [time, setTime] = useState(now);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const snapPoints = useMemo(() => ['65%', '100%'], []);
-    const [initiateBreak, { loading, error, data }] = useIniateBreak();
+    const [initiateBreak, { loading, data }] = useIniateBreak({
+        variables: {
+            addressees: [...invitees].map(user => user.uuid),
+            startTime: time
+        },
+        onCompleted: () => {
+            Alert.alert("Vent på svar og gjør deg klar til pause!");
+            handleClosePress();
+        },
+        onError: err => Alert.alert(err)
+    });
 
-    const handleClosePress = useCallback(() => {
-        bottomSheetModalRef.current?.close();
-      }, []);
+    const handleClosePress = useCallback(() => bottomSheetModalRef.current?.close(), [bottomSheetModalRef]);
 
     moment.updateLocale("nb", localization);
     const startingInMinutes = moment().to(time);
@@ -55,25 +63,6 @@ const InitiateBreakScreen = ({ invitees, bottomSheetModalRef }) => {
             );
         }
     }    
-
-    const onInvitePress = () => {
-        const variables = {
-            variables: {
-                addressees: [...invitees].map(user => user.uuid),
-                startTime: time
-            }
-        }
-
-        initiateBreak(variables);
-        
-        if (data && data.initiateBreak.success) {
-            Alert.alert("Pausen ble planlagt")
-        }
-    }
-
-    if (error) {
-        console.warn(error);
-    }
 
     const renderContent = () => (
         <Layout style={styles.container} level='1'>
@@ -116,7 +105,7 @@ const InitiateBreakScreen = ({ invitees, bottomSheetModalRef }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <Button styling={styles.button} onPress={onInvitePress}>
+            <Button styling={styles.button} onPress={() => initiateBreak()}>
                 {loading ? <Spinner size='tiny' status='basic'/> : 'Inviter'}
             </Button>
         </Layout>
