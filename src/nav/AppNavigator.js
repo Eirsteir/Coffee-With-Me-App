@@ -23,6 +23,7 @@ import EditProfileScreen from '../screens/EditProfileScreen';
 import SinglePostScreen from '../screens/SinglePostScreen';
 import AddFriendsScreen from '../screens/AddFriendsScreen';
 import FriendRequestsScreen from '../screens/FriendRequestsScreen';
+import InboxScreen from '../screens/InboxScreen';
 
 
 const doNotShowHeaderOption = {
@@ -48,7 +49,8 @@ const navigationOptions = ({ route }) => ({
 const HomeStack = createStackNavigator();
 const HomeStackScreen = () => (
   <HomeStack.Navigator screenOptions={{ safeAreaInsets: { top: 0 }, ...doNotShowHeaderOption }}>
-    <HomeStack.Screen name="Home" component={HomeScreen}/>
+    <HomeStack.Screen name="Home" component={HomeScreen} initialParams={{ showBottomSheetModal: false }}/>
+    <HomeStack.Screen name="Inbox" component={InboxScreen} />
   </HomeStack.Navigator>
 );
 

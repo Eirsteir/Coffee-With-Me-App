@@ -77,13 +77,29 @@ const ProfileScreen = ({ route, navigation }) => {
     return null;
   }
 
+
+  const renderTopNavigation = () => {
+    if (user.uuid === userId) {
+      return (
+        <TopNavigation
+          title='Profil'
+          accessoryRight={renderRightActions}
+        />
+        )
+    } else {
+      return (
+        <TopNavigation
+          title='Profil'
+          accessoryRight={renderRightActions}
+          showBackAction
+        />
+        )
+    }
+  }
   return (
     <React.Fragment>
 
-      <TopNavigation
-        title='Profil'
-        accessoryRight={renderRightActions}
-      />
+      {renderTopNavigation()}
 
       <ScrollView style={styles.container}>
         <View

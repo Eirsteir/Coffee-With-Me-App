@@ -16,18 +16,19 @@ import InitiateBreakScreen from './InitiateBreakScreen';
 
 import { useCurrentUser } from '../hooks/User';
 import { BreakVisual } from '../images/index';
-import { PlusIcon } from '../components/Icons';
+import { InboxIcon, PlusIcon } from '../components/Icons';
 import { View } from 'react-native';
 
 const win = Dimensions.get('window');
 
-const HomeScreen = ({ navigation }) =>  {
+const HomeScreen = ({ route, navigation }) =>  {
+  const { showBottomSheetModal } = route.params; 
   const bottomSheetModalRef = useRef(null);
   const { loading, error, data: user } = useCurrentUser();
   const friends = useMemo(() => (user !== undefined ? user.me.friends.edges.map((edge) => edge.node) : []), [user]);
   const [ invitees, setInvitees ] = useState(new Set());
 
-  const renderHeaderRightIcon = (props) => {
+  const renderHeaderRightInviteIcon = (props) => {
     return (
     invitees.size ? (
       <View>
@@ -56,10 +57,45 @@ const HomeScreen = ({ navigation }) =>  {
     )
   )}
 
+  
+  const renderHeaderRightInboxIcon = (props) => {
+    return (
+    invitees.size ? (
+      <View>
+        <InboxIcon {...props} />
+        <View
+          style={{
+            height: 15,
+            width: 15,
+            backgroundColor: '#ff708d',
+            borderRadius: 10,
+            position: "absolute",
+            right: 0,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Text
+            style={{ color: "#fff",  fontSize: 10 }}
+          >
+            {invitees.size}
+          </Text>
+        </View>
+      </View>
+    ) : (
+      <InboxIcon {...props} />
+    )
+  )}
+
+  const onInboxPress = () => navigation.navigate("Inbox");
+
   const renderRightActions = () => (
     <React.Fragment>
       <TopNavigationAction 
-        icon={renderHeaderRightIcon} 
+        icon={renderHeaderRightInboxIcon} 
+        onPress={onInboxPress}/>
+      <TopNavigationAction 
+        icon={renderHeaderRightInviteIcon} 
         onPress={handlePresentModalPress}/>
     </React.Fragment>
   );
@@ -80,6 +116,10 @@ const HomeScreen = ({ navigation }) =>  {
       return next;
     });
   }, [invitees]);
+
+  if (showBottomSheetModal) {
+    handlePresentModalPress();
+  }
 
   return (
     <React.Fragment>

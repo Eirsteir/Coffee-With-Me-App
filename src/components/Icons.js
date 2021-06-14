@@ -57,6 +57,10 @@ export const MenuIcon = (style) => (
   <Icon {...style} name='menu' />
 );
 
+export const InboxIcon = (props) => (
+  <Icon {...props} name='email-outline' />
+);
+
 export const PlusIcon = (props) => (
   <Icon {...props} name='plus' />
 );
