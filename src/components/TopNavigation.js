@@ -3,12 +3,14 @@ import { Layout, StyleService, useStyleSheet, Text, TopNavigation as UiKittenTop
 import { SafeAreaView } from "react-native";
 
 import { BackIcon } from './Icons';
+import { useNavigation } from '@react-navigation/native';
 
 const TopNavigation = ({title, showBackAction, ...props}) => {
     const styles = useStyleSheet(themedStyle);
+    const navigation = useNavigation();
 
     const renderBackAction = () => (
-        <TopNavigationAction icon={BackIcon}/>
+        <TopNavigationAction icon={BackIcon} onPress={() => navigation.goBack()}/>
     );
 
     return (

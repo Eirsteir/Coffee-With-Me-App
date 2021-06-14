@@ -6,6 +6,7 @@ const Button = ({ children, styling, ...props }) => {
   return (
       <UiKittenButton
         style={styles.button, styling}
+        size='small'
         {...props}
         >
         {children}

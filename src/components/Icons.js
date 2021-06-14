@@ -72,3 +72,11 @@ export const MinusIcon = (props) => (
 export const LogoutIcon = (props) => (
   <Icon {...props} name='log-out'/>
 );
+
+export const CheckMarkIcon = (style) => (
+  <Icon {...style} name='checkmark-outline' />
+)
+
+export const CloseIcon = (style) => (
+  <Icon {...style} name='close-outline' />
+)

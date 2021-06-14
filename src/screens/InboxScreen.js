@@ -1,16 +1,29 @@
-import React from 'react';
-import { Layout, List, Text } from '@ui-kitten/components';
+import React, { useMemo } from 'react';
+import { Layout, List, Spinner, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { View } from 'react-native';
 
 import { usePendingBreakInvitations } from '../hooks/Breaks';
 import EmptyStateActionButton from '../components/EmptyStateActionButton';
 import TopNavigation from '../components/TopNavigation';
-
+import BreakInvitationCard from '../components/BreakInvitationCard';
 
 const InboxScreen = ({ navigation }) => {
+    const styles = useStyleSheet(themedStyles);
+
     const { loading, error, data } = usePendingBreakInvitations();
+    const invitations = useMemo(() => data !== undefined ? data.pendingBreakInvitations.edges.map(edge => edge.node) : [], [data]);
+
+
+    const onItemPress = () => {
+        navigation && navigation.navigate('Chat1');
+    };
 
     const renderInvitations = ({ item }) => (
-        <View></View>
+        <BreakInvitationCard 
+            style={styles.item}
+            invitation={item}
+            onPress={onItemPress}
+        />
     );
 
     return (
@@ -19,25 +32,38 @@ const InboxScreen = ({ navigation }) => {
                 title='Invitasjoner' 
                 showBackAction
             />
-            { data !== undefined ? (
-                <Layout level='1'>
+                {loading && <Spinner size='tiny' status='basic'/>}
+
                     <List 
-                        data={data}
+                        data={invitations}
                         renderItem={renderInvitations}
+                        style={styles.list}
                         keyExtractor={(item) => `item-${item.id}`}
                     />
-                </Layout>
-                ) : (
-                    <EmptyStateActionButton 
-                        title='Du har ingen nye invitasjoner'
-                        buttonText='Start en pause'
-                        hint='Trykk på knappen for å planlegge en pause '
-                        onPress={() => navigation.navigate("Home", { showBottomSheetModal: true })}
-                    />
-                )
-            }
+                    { (!data && !loading) && (
+                        <Layout level='3' style={styles.list}>
+                            <EmptyStateActionButton 
+                                title='Du har ingen nye invitasjoner'
+                                buttonText='Start en pause'
+                                hint='Trykk på knappen for å planlegge en pause'
+                                onPress={() => navigation.navigate("Home", { showBottomSheetModal: true })}
+                            />
+                        </Layout>
+                    )
+                }
+                
         </React.Fragment>
     );
 }
+
+const themedStyles = StyleService.create({
+    list: {
+      flex: 1,
+    },
+    item: {
+      borderBottomWidth: 1,
+      borderBottomColor: 'background-basic-color-3',
+    },
+});
 
 export default InboxScreen;
