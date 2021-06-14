@@ -1,31 +1,25 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { Icon, useTheme } from '@ui-kitten/components';
+import { IconBadge } from 'expo-activity-feed';
 
-export const TabIcon = ({ name }) => {
-  if (name === 'home') {
-    return (
-      <Image
-        source={require('../../images/icons/home.png')}
-        style={{ width: 25, height: 25 }}
-      />
-    );
-  } else if (name === 'notifications') {
-    return (
-      <Image
-        source={require('../../images/icons/notifications.png')}
-        style={{ width: 25, height: 25 }}
-      />
-    );
-  } else if (name === 'friends') {
-    return (
-      <Image
-        source={require('../../images/icons/friends.png')}
-        style={{ width: 35, height: 35 }}
-      />
-    );
-  }
-};
+export const HomeIcon = (style) => (
+  <Icon {...style} name='home-outline'/>
+);
+
+export const FriendsIcon = (style) => (
+  <Icon {...style} name='people-outline'/>
+);
+
+export const ProfileIcon = (style) => (
+  <Icon {...style} name='person-outline' />
+);
+
+export const NotificationIcon = (style) => (
+  <IconBadge showNumber>
+    <Icon {...style} name='bell-outline' />
+  </IconBadge>
+);
 
 export const PinIcon = () => {
   const theme = useTheme();

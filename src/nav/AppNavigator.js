@@ -3,12 +3,10 @@ import React, { useContext } from 'react';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { BottomNavigation, BottomNavigationTab, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import {
-  Avatar,
-  StreamApp,
-  IconBadge,
-} from 'expo-activity-feed';
+import { StreamApp } from 'expo-activity-feed';
 
 import {
   STREAM_API_KEY,
@@ -16,7 +14,7 @@ import {
 } from 'babel-dotenv';
 
 import { ThemeContext } from '../theme-context';
-import { TabIcon } from '../components/Icons';
+import { HomeIcon, FriendsIcon, ProfileIcon, NotificationIcon } from '../components/Icons';
 import HomeScreen from '../screens/HomeScreen';
 import FriendsScreen from '../screens/FriendsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
@@ -25,7 +23,6 @@ import EditProfileScreen from '../screens/EditProfileScreen';
 import SinglePostScreen from '../screens/SinglePostScreen';
 import AddFriendsScreen from '../screens/AddFriendsScreen';
 import FriendRequestsScreen from '../screens/FriendRequestsScreen';
-import type { UserResponse } from '../types';
 
 
 const doNotShowHeaderOption = {
@@ -33,26 +30,16 @@ const doNotShowHeaderOption = {
 };
 
 const navigationOptions = ({ route }) => ({
-  tabBarIcon: () => {
+  tabBarIcon: ({ color, size, tintColor }) => {
     const routeName = route.name;
-    if (routeName === 'Hjem') {
-      return <TabIcon name="home" />;
+    if (routeName === 'Home') {
+      return <HomeIcon  width={25} height={25} fill={tintColor}/>;
     } else if (routeName === 'Venner') {
-      return <TabIcon name="friends" />;
+      return <FriendsIcon />;
     } else if (routeName === 'Aktivitet') {
-      return (
-        <IconBadge showNumber>
-          <TabIcon name="notifications" />
-        </IconBadge>
-      );
+      return <NotificationIcon />;
     } else if (routeName === 'Profil') {
-      return (
-        <Avatar
-          source={(userData: UserResponse) => userData.data.profileImage}
-          size={25}
-          noShadow
-        />
-      );
+      return <ProfileIcon/>;
     }
   },
   ...doNotShowHeaderOption
@@ -88,14 +75,32 @@ const NotificationsStackScreen = () =>  (
   </NotificationsStack.Navigator>
 );
 
+const BottomTabBar = ({ navigation, state }) => {
+  const styles = useStyleSheet(themedStyle);
+
+  return (
+  <SafeAreaView style={styles.container}>
+  <BottomNavigation
+    appearance='noIndicator'
+    selectedIndex={state.index}
+    onSelect={index => navigation.navigate(state.routeNames[index])}>
+    <BottomNavigationTab icon={HomeIcon}/>
+    <BottomNavigationTab icon={FriendsIcon}/>
+    <BottomNavigationTab icon={NotificationIcon}/>
+    <BottomNavigationTab icon={ProfileIcon}/>
+  </BottomNavigation>
+  </SafeAreaView>
+)};
+
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => (
   <Tab.Navigator  
-    initialRouteName="Hjem"
+    initialRouteName="Home"
     screenOptions={navigationOptions}
+    tabBar={props => <BottomTabBar {...props} />}
   >
-    <Tab.Screen name="Hjem" component={HomeStackScreen}/>
+    <Tab.Screen name="Home" component={HomeStackScreen}/>
     <Tab.Screen name="Venner" component={FriendsStackScreen}/>
     <Tab.Screen name="Aktivitet" component={NotificationsStackScreen}/>
     <Tab.Screen name="Profil" component={ProfileStackScreen}/>
@@ -142,5 +147,11 @@ const AppNavigator = () => {
     </StreamApp>
   );
 }
+
+const themedStyle = StyleService.create({
+  container: {
+    backgroundColor: 'background-basic-color-1',
+  },
+});
 
 export default AppNavigator;
