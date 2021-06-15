@@ -6,7 +6,7 @@ import { Avatar, ListItem, Text, Spinner, useTheme } from '@ui-kitten/components
 import moment from 'moment';
 import { CheckMarkIcon, CloseIcon } from './Icons';
 import { ThemeContext } from '../theme-context';
-import { useAcceptBreakInvitation } from '../hooks/Breaks';
+import { useAcceptBreakInvitation, useDeclineBreakInvitation } from '../hooks/Breaks';
 
 
 export const BreakInvitationCard = ({ invitation, onPress, onAccept, ...listItemProps }) => {
@@ -17,16 +17,27 @@ export const BreakInvitationCard = ({ invitation, onPress, onAccept, ...listItem
         onError: err => Alert.alert("Noe gikk galt: ", err)
     }, invitation);
 
-
-    const handleAcceptInvitation = () => {
-        acceptInvitation();
-        onAccept();
-    };
+    const [declineInvitation, { loading: declineLoading, error: declineError }] = useDeclineBreakInvitation({ 
+        variables: { invitation: invitation.uuid },
+        onCompleted: () => Alert.alert("Du har ignorert invitasjonen"),
+        onError: err => Alert.alert("Noe gikk galt: ", err)
+    }, invitation);
 
   const renderActionIcons = (style) => (
     <View style={styles.dateContainer}>
-      <CloseIcon {...style} fill={theme['color-danger-default']} height={42} width={42} />
-      <CheckMarkIcon {...style} fill={theme['color-success-default']} height={42} width={42} onPress={handleAcceptInvitation}/>
+      <CloseIcon 
+        {...style} 
+        fill={theme['color-danger-default']} 
+        height={42} 
+        width={42} 
+        onPress={() => declineInvitation()}
+        />
+      <CheckMarkIcon 
+        {...style} 
+        fill={theme['color-success-default']} 
+        height={42} 
+        width={42} 
+        onPress={() => acceptInvitation()}/>
     </View>
   );
 
