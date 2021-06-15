@@ -1,8 +1,8 @@
-import { useQuery, useApolloClient } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
 import AuthService from "../api/services/AuthService";
 import TOKEN from '../api/token';
-import { AUTH_TOKEN } from '../constants/Constants';
+import Constants from "../constants/Constants";
 import ME_QUERY from "../graphql/me.query";
 import USER_QUERY from '../graphql/user.query';
 
@@ -30,6 +30,6 @@ export const useLogout = (apolloClient) => {
 }
 
 export const logout = (apolloClient) => {
-    TOKEN.remove(AUTH_TOKEN);
+    TOKEN.remove(Constants.AUTH_TOKEN);
     apolloClient.clearStore();
 }

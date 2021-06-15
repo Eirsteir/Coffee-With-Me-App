@@ -8,6 +8,7 @@ import { KeyboardAvoidingView } from '../components/extra/3rd-party';
 import { ErrorModal } from '../components/Modal';
 import { AuthContext } from '../App';
 import SIGNIN_MUTATION from '../graphql/signin.mutation';
+import RegisterOrSignupView from './Register/components/RegisterOrSignupView';
 
 
 export default ({ navigation }): React.ReactElement => {
@@ -82,7 +83,7 @@ export default ({ navigation }): React.ReactElement => {
       {errors && <ErrorModal title={errors} />}
 
         <Input
-          placeholder='Epost'
+          placeholder='E-postadresse'
           accessoryRight={PersonIcon}
           value={email}
           onChangeText={setEmail}
@@ -139,16 +140,12 @@ export default ({ navigation }): React.ReactElement => {
           </View>
       </View>
 
-      <View style={styles.registerContainer}>
-      
-        <Divider style={{alignSelf: 'stretch'}}/>
-        <View style={{ flexDirection: 'row', alignItems: 'center',}}>
-          <Text style={styles.signUpButton} appearance='hint' category='c2'>
-            Har du ikke en konto?
-          </Text>        
-          <Text status='info' category='c2' onPress={onSignUpButtonPress}>Registrer deg.</Text>
-        </View>
-      </View>
+      <RegisterOrSignupView 
+        questionText='Har du ikke en konto?'
+        actionText='Registrer deg.'
+        onPress={onSignUpButtonPress}
+      />
+
     </KeyboardAvoidingView>
   );
 };
@@ -211,10 +208,5 @@ const themedStyles = StyleService.create({
   socialAuthHintText: {
     alignSelf: 'center',
     marginBottom: 16,
-  },
-  registerContainer: { 
-    flex: 1, 
-    justifyContent: 'flex-end', 
-    alignItems: 'center' 
   }
 });
