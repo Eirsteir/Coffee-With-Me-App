@@ -2,26 +2,26 @@
 import React from 'react';
 
 import { Alert, StyleSheet, View } from 'react-native';
-import { Avatar, ListItem, Text, useTheme } from '@ui-kitten/components';
+import { Avatar, ListItem, Text, Spinner, useTheme } from '@ui-kitten/components';
 import moment from 'moment';
 import { CheckMarkIcon, CloseIcon } from './Icons';
 import { ThemeContext } from '../theme-context';
 import { useAcceptBreakInvitation } from '../hooks/Breaks';
 
 
-export const BreakInvitationCard = ({ invitation, onPress, ...listItemProps }) => {
+export const BreakInvitationCard = ({ invitation, onPress, onAccept, ...listItemProps }) => {
     const theme = useTheme(ThemeContext);
     const [acceptInvitation, { loading: acceptLoading, error: acceptError }] = useAcceptBreakInvitation({ 
         variables: { invitation: invitation.uuid },
-        onCompleted: () => {
-            console.log("completed")
-            Alert.alert("Vent på svar og gjør deg klar til pause!");
-        },
-        onError: err => Alert.alert("Noe gikk galt: ", err) 
-    });
+        onCompleted: () => Alert.alert("Du har godtatt invitasjonen!", `Pausen starter ${moment().to(invitation.subject.startingAt)}`),
+        onError: err => Alert.alert("Noe gikk galt: ", err)
+    }, invitation);
 
 
-    const handleAcceptInvitation = () => acceptInvitation();
+    const handleAcceptInvitation = () => {
+        acceptInvitation();
+        onAccept();
+    };
 
   const renderActionIcons = (style) => (
     <View style={styles.dateContainer}>
