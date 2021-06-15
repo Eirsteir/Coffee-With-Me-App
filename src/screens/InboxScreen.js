@@ -14,7 +14,7 @@ const InboxScreen = ({ navigation }) => {
     const invitations = useMemo(() => (data !== undefined ? data.pendingBreakInvitations.edges.map(edge => edge.node) : []), [data]);
 
     const onItemPress = () => {
-        navigation && navigation.navigate('Chat1');
+        navigation && navigation.navigate('');
     };
 
     const renderInvitations = ({ item }) => (
@@ -22,7 +22,6 @@ const InboxScreen = ({ navigation }) => {
             style={styles.item}
             invitation={item}
             onPress={onItemPress}
-            onAccept={() => invitations.splice(item)}
         />
     );
     

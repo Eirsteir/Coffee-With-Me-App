@@ -9,7 +9,7 @@ import { ThemeContext } from '../theme-context';
 import { useAcceptBreakInvitation, useDeclineBreakInvitation } from '../hooks/Breaks';
 
 
-export const BreakInvitationCard = ({ invitation, onPress, onAccept, ...listItemProps }) => {
+export const BreakInvitationCard = ({ invitation, onPress, ...listItemProps }) => {
     const theme = useTheme(ThemeContext);
     const [acceptInvitation, { loading: acceptLoading, error: acceptError }] = useAcceptBreakInvitation({ 
         variables: { invitation: invitation.uuid },

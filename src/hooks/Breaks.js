@@ -1,9 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client";
 import ACCEPT_BREAK_INVITATION from "../graphql/acceptBreakInvitation.mutation";
+import BREAK_HISTORY_QUERY from "../graphql/breakHistory.query";
 import DECLINE_BREAK_INVITATION from "../graphql/declineBreakInvitation.mutation";
 import INITIATE_BREAK_MUTATION from "../graphql/initiateBreak.mutation";
 import PENDING_BREAK_INVITATIONS_QUERY from "../graphql/pendingBreakInvitations.query";
 
+
+export const useBreakHistory = () => useQuery(BREAK_HISTORY_QUERY);
 
 export const usePendingBreakInvitations = () => useQuery(PENDING_BREAK_INVITATIONS_QUERY);
 

@@ -18,7 +18,7 @@ import { HomeIcon, FriendsIcon, ProfileIcon, NotificationIcon } from '../compone
 import HomeScreen from '../screens/HomeScreen';
 import FriendsScreen from '../screens/FriendsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileScreen from '../screens/Profile/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import SinglePostScreen from '../screens/SinglePostScreen';
 import AddFriendsScreen from '../screens/AddFriendsScreen';

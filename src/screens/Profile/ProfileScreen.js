@@ -1,26 +1,32 @@
-import React, { useMemo, useLayoutEffect, useRef, useCallback } from 'react';
+import React, { useMemo, useRef, useCallback } from 'react';
 import { LogBox, ScrollView, View, Alert } from 'react-native';
-import { List, StyleService, Text, Layout, useStyleSheet, TopNavigationAction  } from '@ui-kitten/components';
+import { List, StyleService, Text, useStyleSheet, TopNavigationAction  } from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Avatar } from 'expo-activity-feed';
 
-import { ProfileSocial } from '../components/Profile/ProfileSocial';
-import FriendActionButton from '../components/FriendActionButton';
-import SettingsBottomModal from '../components/Profile/SettingsBottomModal';
-import { PinIcon, MenuIcon } from '../components/Icons';
-import TopNavigation from '../components/TopNavigation';
-import Button from '../components/Button';
-import { useUser } from '../hooks/User';
+import { ProfileSocial } from '../../components/Profile/ProfileSocial';
+import FriendActionButton from '../../components/FriendActionButton';
+import SettingsBottomModal from '../../components/Profile/SettingsBottomModal';
+import { PinIcon, MenuIcon } from '../../components/Icons';
+import TopNavigation from '../../components/TopNavigation';
+import Button from '../../components/Button';
+import BreakHistoryList from './components/BreakHistoryList';
+import { useUser } from '../../hooks/User';
+import { useBreakHistory } from '../../hooks/Breaks';
+import { Spinner } from '@ui-kitten/components';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews']);
 
 const ProfileScreen = ({ route, navigation }) => {
   const { userId } = route.params;
+  const styles = useStyleSheet(themedStyle);
   const bottomSheetModalRef = useRef(null);
-  const { data: user, loading, error } = useUser(userId); 
+  const { data: user, loading, error } = useUser(userId);
+  const { data: breakHistoryData, loading: breakHistoryLoading, error: breakHistoryError } = useBreakHistory(); 
   const profile = useMemo(() => user !== undefined ? user.me || user.user : undefined, [user]);
   const friends = useMemo(() => (profile !== undefined ? profile.friends.edges.map((edge) => edge.node) : []), [profile]);
-  const styles = useStyleSheet(themedStyle);
+  const breakHistory = useMemo(() => (breakHistoryData !== undefined ? breakHistoryData.breakHistory.edges.map((edge) => edge.node) : []), [breakHistoryData]);
+
   
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -145,11 +151,6 @@ const ProfileScreen = ({ route, navigation }) => {
           </View>
         </View>
         <Text
-          style={styles.sectionLabel}
-          category='s1'>
-          Om
-        </Text>
-        <Text
           style={styles.profileDescription}
           appearance='hint'>
           {profile.description}
@@ -170,6 +171,9 @@ const ProfileScreen = ({ route, navigation }) => {
           category='s1'>
           Historie
         </Text>
+        
+        <BreakHistoryList data={breakHistory} loading={breakHistoryLoading} error={breakHistoryError} style={styles.breakHistoryList} /> 
+      
       </ScrollView>
       <SettingsBottomModal bottomSheetModalRef={bottomSheetModalRef} />
     </React.Fragment>
@@ -177,6 +181,10 @@ const ProfileScreen = ({ route, navigation }) => {
 };
 
 const themedStyle = StyleService.create({
+  loading: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     backgroundColor: 'background-basic-color-1',
   },
@@ -235,6 +243,9 @@ const themedStyle = StyleService.create({
   },
   friendName: {
     marginTop: 8,
+  },
+  breakHistoryList: {
+    flex: 1,
   }
 });
 
