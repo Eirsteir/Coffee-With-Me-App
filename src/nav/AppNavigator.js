@@ -4,7 +4,7 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BottomNavigation, BottomNavigationTab, StyleService, useStyleSheet } from '@ui-kitten/components';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import { StreamApp } from 'expo-activity-feed';
 
@@ -34,7 +34,7 @@ const navigationOptions = ({ route }) => ({
   tabBarIcon: ({ color, size, tintColor }) => {
     const routeName = route.name;
     if (routeName === 'Home') {
-      return <HomeIcon  width={25} height={25} fill={tintColor}/>;
+      return <HomeIcon />;
     } else if (routeName === 'Venner') {
       return <FriendsIcon />;
     } else if (routeName === 'Aktivitet') {
@@ -46,9 +46,16 @@ const navigationOptions = ({ route }) => ({
   ...doNotShowHeaderOption
 });
 
-const HomeStack = createStackNavigator();
+const HomeStack = createMaterialTopTabNavigator();
 const HomeStackScreen = () => (
-  <HomeStack.Navigator screenOptions={{ safeAreaInsets: { top: 0 }, ...doNotShowHeaderOption }}>
+  <HomeStack.Navigator 
+    screenOptions={{ safeAreaInsets: { top: 0 },  ...doNotShowHeaderOption }}
+    tabBarOptions= {{
+      showLabel: false,
+      showIcon: false,
+      style: { height: 0 }
+    }}
+  >
     <HomeStack.Screen name="Home" component={HomeScreen} initialParams={{ showBottomSheetModal: false }}/>
     <HomeStack.Screen name="Inbox" component={InboxScreen} />
   </HomeStack.Navigator>
@@ -78,20 +85,18 @@ const NotificationsStackScreen = () =>  (
 );
 
 const BottomTabBar = ({ navigation, state }) => {
-  const styles = useStyleSheet(themedStyle);
 
   return (
-  <SafeAreaView style={styles.container}>
-  <BottomNavigation
-    appearance='noIndicator'
-    selectedIndex={state.index}
-    onSelect={index => navigation.navigate(state.routeNames[index])}>
-    <BottomNavigationTab icon={HomeIcon}/>
-    <BottomNavigationTab icon={FriendsIcon}/>
-    <BottomNavigationTab icon={NotificationIcon}/>
-    <BottomNavigationTab icon={ProfileIcon}/>
-  </BottomNavigation>
-  </SafeAreaView>
+    <BottomNavigation
+      style={{paddingBottom: 50}}
+      appearance='noIndicator'
+      selectedIndex={state.index}
+      onSelect={index => navigation.navigate(state.routeNames[index])}>
+      <BottomNavigationTab icon={HomeIcon}/>
+      <BottomNavigationTab icon={FriendsIcon}/>
+      <BottomNavigationTab icon={NotificationIcon}/>
+      <BottomNavigationTab icon={ProfileIcon}/>
+    </BottomNavigation>
 )};
 
 const Tab = createBottomTabNavigator();
