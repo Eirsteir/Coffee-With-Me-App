@@ -71,7 +71,7 @@ export default ({ navigation }): React.ReactElement => {
       <View style={styles.headerContainer}>
         <Text
           category='h1'>
-          Break
+          Pause
         </Text>
       </View>
       <Layout
@@ -82,7 +82,7 @@ export default ({ navigation }): React.ReactElement => {
       {errors && <ErrorModal title={errors} />}
 
         <Input
-          placeholder='Email'
+          placeholder='Epost'
           accessoryRight={PersonIcon}
           value={email}
           onChangeText={setEmail}
@@ -92,7 +92,7 @@ export default ({ navigation }): React.ReactElement => {
         />
         <Input
           style={styles.passwordInput}
-          placeholder='Password'
+          placeholder='Passord'
           accessoryRight={renderEyeIcon}
           value={password}
           secureTextEntry={!passwordVisible}
@@ -105,52 +105,50 @@ export default ({ navigation }): React.ReactElement => {
             style={styles.forgotPasswordButton}
             appearance='ghost'
             status='primary'
+            size='small'
             onPress={onForgotPasswordButtonPress}>
-            Forgot your password?
+            Har du glemt passordet?
           </Button>
         </View>
       </Layout>
       <Button
         style={styles.signInButton}
-        size='small'
         disabled={!email || !password}
         onPress={signIn}>
-        {loading ? <Spinner size='tiny' status='basic'/> : 'SIGN IN'}
+        {loading ? <Spinner size='tiny' status='basic'/> : <Text category='s2'>Logg inn</Text>}
       </Button>
       <View style={styles.orContainer}>
         <Divider style={styles.divider}/>
         <Text
           style={styles.orLabel}
-          category='h5'>
-          OR
+          category='s2'
+          appearance='hint'>
+          ELLER
         </Text>
         <Divider style={styles.divider}/>
       </View>
       <View style={styles.socialAuthContainer}>
-          <Text
-            style={styles.socialAuthHintText}>
-            Sign in with a social account
-          </Text>
           <View style={styles.socialAuthButtonsContainer}>
             <Button
               appearance='ghost'
-              size='giant'
-              accessoryRight={GoogleIcon}
-            />
-            <Button
-              appearance='ghost'
-              size='giant'
-              accessoryRight={FacebookIcon}
-            />
+              size='small'
+              accessoryLeft={FacebookIcon}
+            >
+              Logg inn med Facebook
+            </Button>
           </View>
+      </View>
+
+      <View style={styles.registerContainer}>
+      
+        <Divider style={{alignSelf: 'stretch'}}/>
+        <View style={{ flexDirection: 'row', alignItems: 'center',}}>
+          <Text style={styles.signUpButton} appearance='hint' category='c2'>
+            Har du ikke en konto?
+          </Text>        
+          <Text status='info' category='c2' onPress={onSignUpButtonPress}>Registrer deg.</Text>
         </View>
-      <Button
-        style={styles.signUpButton}
-        appearance='ghost'
-        status='basic'
-        onPress={onSignUpButtonPress}>
-        Don't have an account? Sign up.
-      </Button>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -160,9 +158,10 @@ const themedStyles = StyleService.create({
     backgroundColor: 'background-basic-color-1',
   },
   headerContainer: {
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    minHeight: 216,
+    minHeight: 290,
+    paddingBottom: 40
   },
   formContainer: {
     paddingHorizontal: 16,
@@ -172,10 +171,12 @@ const themedStyles = StyleService.create({
   },
   signInButton: {
     marginHorizontal: 16,
+    color: 'red'
   },
   signUpButton: {
     marginVertical: 12,
-    marginHorizontal: 16,
+    marginHorizontal: 3,
+    paddingVertical: 20
   },
   forgotPasswordContainer: {
     flexDirection: 'row',
@@ -186,6 +187,7 @@ const themedStyles = StyleService.create({
   },
   forgotPasswordButton: {
     paddingHorizontal: 0,
+    marginBottom: 20
   },
   orContainer: {
     flexDirection: 'row',
@@ -197,10 +199,10 @@ const themedStyles = StyleService.create({
     flex: 1,
   },
   orLabel: {
-    marginHorizontal: 8,
+    marginHorizontal: 30,
   },
   socialAuthContainer: {
-    marginTop: 48,
+    marginTop: 20,
   },
   socialAuthButtonsContainer: {
     flexDirection: 'row',
@@ -210,4 +212,9 @@ const themedStyles = StyleService.create({
     alignSelf: 'center',
     marginBottom: 16,
   },
+  registerContainer: { 
+    flex: 1, 
+    justifyContent: 'flex-end', 
+    alignItems: 'center' 
+  }
 });
