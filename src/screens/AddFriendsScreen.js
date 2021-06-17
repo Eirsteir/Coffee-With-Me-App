@@ -3,6 +3,7 @@ import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native
 
 import SearchBox from '../components/SearchBox';
 import LargeHeading from '../components/LargeHeading';
+import TopNavigation from '../components/TopNavigation';
 
 
 const DATA = [
@@ -32,31 +33,25 @@ function Item({ title, onPress }) {
 }
 
 export default function({ navigation }) {
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      title: 'Legg til venner',
-      headerTitleStyle: {
-        fontWeight: '500',
-        color: '#000',
-      },
-      headerTitleAlign: 'center',
-      headerTintColor: '#fb5b5a',
-    })
-  }, [navigation]);
   
   return (
-    <View style={styles.container}>
-      <SearchBox/>
+    <React.Fragment>
+      <TopNavigation 
+        title='Legg til venner'
+        showBackAction
+      />
+      <View style={styles.container}>
+        <SearchBox/>
 
-      <LargeHeading>Alternativt</LargeHeading>
-      <FlatList
-        style={{ marginTop: 5 }}
-        data={DATA}
-        renderItem={({ item }) => <Item title={item.title} onPress={item.onPress}/>}
-        keyExtractor={(item) => `item-${item.id}`}
-      />      
-    </View>
+        <LargeHeading>Alternativt</LargeHeading>
+        <FlatList
+          style={{ marginTop: 5 }}
+          data={DATA}
+          renderItem={({ item }) => <Item title={item.title} onPress={item.onPress}/>}
+          keyExtractor={(item) => `item-${item.id}`}
+        />      
+      </View>
+    </React.Fragment>
   );
 }
 
