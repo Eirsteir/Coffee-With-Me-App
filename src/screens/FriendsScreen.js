@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useMemo } from 'react';
 import { View, Image, ScrollView, FlatList, StyleSheet } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
-import { Layout, Text, useTheme } from '@ui-kitten/components';
+import { Layout, Text, useTheme, TopNavigationAction } from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import AddFriendsHeader from '../components/AddFriendsHeader';
@@ -13,6 +13,8 @@ import Button from '../components/Button';
 
 import { useCurrentUser } from '../hooks/User';
 import { useFriendingPossibilities } from '../hooks/Friends';
+import TopNavigation from '../components/TopNavigation';
+import { PersonAddIcon } from '../components/Icons';
 
 const INTERESTING_USERS = [
   {
@@ -62,100 +64,105 @@ const FriendsScreen = ({ navigation }) => {
 
   const friends = useMemo(() => (user !== undefined ? user.me.friends.edges.map((edge) => edge.node) : []), [user]);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: 'Venner',
-      headerShown: true,
-      headerTitleStyle: { alignSelf: 'center' },
-      headerLeft: () => (
-        <View style={{ paddingLeft: 15 }}>
-          <Image
-            source={require('../../images/icons/categories.png')}
-            style={{ width: 23, height: 23 }}
-          />
-        </View>
-      ),
-      headerRight: () => (
-          <AddFriendsHeader navigation={navigation} />
-        ),
-    })
-  }, [navigation]);
-
   const friendingPossibilitiesCount = friendingPossibilitiesData?.friendingPossibilities.count;
 
+  const renderNavigationRightActions = () => (
+    <TopNavigationAction 
+      icon={PersonAddIcon}
+      onPress={() => navigation.navigate("AddFriends")}
+    />
+  )
+
+  const renderFriendingPossibilitiesText = () => {
+    if (friendingPossibilitiesCount === 0) {
+      return (
+        <Text>Ingen har lagt deg til enda</Text>
+      );
+    } else {
+      const pluralForm = friendingPossibilitiesCount >= 1 ? 'e' : '';
+      return ( 
+        <Text>{`${friendingPossibilitiesCount} kaffedrikker${pluralForm} har lagt deg til! Se mer`}</Text>
+      )
+    }
+  }
+
   return (
-    <Layout style={{ flex: 1}} level='1'>
-    <ScrollView style={{ flex: 1}}>
-
-      <SearchBox />
-
-      <TouchableOpacity 
-        style={[styles.button, { backgroundColor: theme['background-basic-color-3'] }]}
-        onPress={() => navigation.navigate("FriendRequests")}
-      >
-        { friendingPossibilitiesError && <Text>Noe gikk galt</Text>}
-        { friendingPossibilitiesLoading && <Text>Henter potensielle venner</Text>}
-        { friendingPossibilitiesData 
-          ? <Text>{`${friendingPossibilitiesCount} kaffedrikkere har lagt deg til! Se mer`}</Text>
-          : friendingPossibilitiesCount === 0 && <Text>Ikke noe nytt her!</Text>}
-      </TouchableOpacity>
-
-      <LargeHeading>Nylig lagt til</LargeHeading>
-      <HorizontalScrollFeed
-        data={INTERESTING_USERS}
-        renderItem={({ item }) => (
-          <View style={{ marginRight: 6, flex: 1, alignItems: 'center' }}>
-            <Avatar size={60} noShadow source={item.user_image} />
-            <Text style={{ color: '#d2d2d2' }}>{item.name.split(" ")[0]}</Text>
-          </View>
-        )}
-        keyExtractor={(item) => `item-${item.id}`}
+    <React.Fragment>
+      <TopNavigation
+        title='Venner'
+        accessoryRight={renderNavigationRightActions}
       />
+      <Layout style={{ flex: 1}} level='1'>
+      <ScrollView style={{ flex: 1}}>
 
-        <LargeHeading>Dine venner</LargeHeading>
-        { error && <Text>Noe gikk galt</Text>}
-        { loading && <Text>Henter dine venner</Text>}
-        { friends && 
-          <FlatList
+        <SearchBox />
+
+        <TouchableOpacity 
+          style={[styles.button, { backgroundColor: theme['background-basic-color-3'] }]}
+          onPress={() => navigation.navigate("FriendRequests")}
+        >
+          { friendingPossibilitiesError && <Text>Noe gikk galt</Text>}
+          { friendingPossibilitiesLoading && <Text>Henter potensielle venner</Text>}
+          { friendingPossibilitiesData && renderFriendingPossibilitiesText()}
+        </TouchableOpacity>
+
+        <LargeHeading>Nylig lagt til</LargeHeading>
+        <HorizontalScrollFeed
+          data={INTERESTING_USERS}
+          renderItem={({ item }) => (
+            <View style={{ marginRight: 6, flex: 1, alignItems: 'center' }}>
+              <Avatar size={60} noShadow source={item.user_image} />
+              <Text style={{ color: '#d2d2d2' }}>{item.name.split(" ")[0]}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => `item-${item.id}`}
+        />
+
+          <LargeHeading>Dine venner</LargeHeading>
+          { error && <Text>Noe gikk galt</Text>}
+          { loading && <Text>Henter dine venner</Text>}
+          { friends && 
+            <FlatList
+            style={{ marginTop: 15 }}
+            data={friends}
+            renderItem={({ item }) => (
+              <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
+                <UserCard
+                  user={item}
+                  isFriend={item.isViewerFriend}
+                  friendshipStatus={item.friendshipStatus}
+                />
+              </View>
+            )}
+            ListEmptyComponent={ () => (
+              <Button 
+                styling={{ margin: 10 }}
+                onPress={() => navigation.navigate("AddFriends")} 
+                children="Legg til venner"
+              />
+            )}
+            keyExtractor={(item) => `item-${item.uuid}`}
+          />
+          }
+        
+        {/* TODO: users at same uni */}
+        <LargeHeading>Folk du kanskje kjenner</LargeHeading>
+        <FlatList
           style={{ marginTop: 15 }}
-          data={friends}
+          data={INTERESTING_USERS}
           renderItem={({ item }) => (
             <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
               <UserCard
                 user={item}
-                isFriend={item.isViewerFriend}
-                friendshipStatus={item.friendshipStatus}
+                isFriend={false}
               />
             </View>
           )}
-          ListEmptyComponent={ () => (
-            <Button 
-              styling={{ margin: 10 }}
-              onPress={() => navigation.navigate("AddFriends")} 
-              children="Legg til venner"
-            />
-          )}
-          keyExtractor={(item) => `item-${item.uuid}`}
+          keyExtractor={(item) => `item-${item.id}`}
         />
-        }
-      
-      {/* TODO: users at same uni */}
-      <LargeHeading>Folk du kanskje kjenner</LargeHeading>
-      <FlatList
-        style={{ marginTop: 15 }}
-        data={INTERESTING_USERS}
-        renderItem={({ item }) => (
-          <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
-            <UserCard
-              user={item}
-              isFriend={false}
-            />
-          </View>
-        )}
-        keyExtractor={(item) => `item-${item.id}`}
-      />
-      </ScrollView>
-    </Layout>
+        </ScrollView>
+      </Layout>
+    </React.Fragment>
   );
 }
 

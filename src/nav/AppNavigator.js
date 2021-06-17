@@ -63,8 +63,10 @@ const HomeStackScreen = () => (
 
 const FriendsStack = createStackNavigator();
 const FriendsStackScreen = () => (
-  <FriendsStack.Navigator initialRouteName="Friends">
-    <FriendsStack.Screen name="Friends" component={FriendsScreen}/>
+  <FriendsStack.Navigator 
+    initialRouteName="Friends"
+  >
+    <FriendsStack.Screen name="Friends" component={FriendsScreen} options={doNotShowHeaderOption}/>
     <NavigationStack.Screen name="FriendRequests" component={FriendRequestsScreen}/>
   </FriendsStack.Navigator>
 );
