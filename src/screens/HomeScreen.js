@@ -58,34 +58,9 @@ const HomeScreen = ({ route, navigation }) =>  {
   )}
 
   
-  const renderHeaderRightInboxIcon = (props) => {
-    return (
-    invitees.size ? (
-      <View>
-        <InboxIcon {...props} />
-        <View
-          style={{
-            height: 15,
-            width: 15,
-            backgroundColor: '#ff708d',
-            borderRadius: 10,
-            position: "absolute",
-            right: 0,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <Text
-            style={{ color: "#fff",  fontSize: 10 }}
-          >
-            {invitees.size}
-          </Text>
-        </View>
-      </View>
-    ) : (
+  const renderHeaderRightInboxIcon = (props) => (
       <InboxIcon {...props} />
-    )
-  )}
+  );
 
   const onInboxPress = () => navigation.navigate("Inbox");
 

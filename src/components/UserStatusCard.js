@@ -1,10 +1,10 @@
 // @flow
 import React, { useState } from 'react';
-import { ListItem, useTheme } from '@ui-kitten/components';
+import { Text, ListItem, useTheme } from '@ui-kitten/components';
+import { View } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
 
-import { PlusIcon, MinusIcon } from './Icons';
-import Button from './Button';
+import { PlusIcon, MinusIcon, PinIcon } from './Icons';
 import { StyleService } from '@ui-kitten/components';
 import { useStyleSheet } from '@ui-kitten/components';
 import { ThemeContext } from '../theme-context';
@@ -14,11 +14,6 @@ const UserStatusCard = ({ user, currentStatus, onAdd, onRemove }) => {
   const [ isAdded, setIsAdded ] = useState(false);
   const theme = useTheme(ThemeContext);
   const styles = useStyleSheet(themedStyle);
-  const description = currentStatus && `${user.name} is ${currentStatus.verb} at ${currentStatus.created}`
-
-  const renderAddIcon = () => (
-    <PlusIcon size={50} />
-  )
 
   const renderAddToInvitees = (style) => (
         <PlusIcon
@@ -42,10 +37,26 @@ const UserStatusCard = ({ user, currentStatus, onAdd, onRemove }) => {
     />
 );
     
+const renderDescription = () => (
+  <View style={styles.locationContainer}>
+    <PinIcon 
+      fill={theme['text-hint-color']} 
+      width={12}
+      height={12}
+    />
+    <Text
+      appearance='hint'
+      category='c2'
+      >
+      {user.location || "NTNU Gløshaugen"}
+    </Text>
+  </View>
+  );
+
   return (
       <ListItem
         title={user.name}
-        description={description || "Ikke sjekket inn"}
+        description={renderDescription}
         accessoryLeft={() => <Avatar source={user.profilePic} size={42} noShadow />}
         accessoryRight={isAdded ? renderRemoveInvitees : renderAddToInvitees}
       />
@@ -64,7 +75,15 @@ const themedStyle = StyleService.create({
         fontSize: 16,
         fontWeight: '300',
         flex: 1,
-    }, 
+    },
+    locationContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: 6
+    },
+    location: {
+      marginVertical: 8,
+    },
 });
 
 export default UserStatusCard;

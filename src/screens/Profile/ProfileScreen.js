@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useCallback } from 'react';
 import { LogBox, ScrollView, View, Alert } from 'react-native';
-import { List, StyleService, Text, useStyleSheet, TopNavigationAction  } from '@ui-kitten/components';
+import { List, StyleService, Text, useStyleSheet, TopNavigationAction, useTheme  } from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Avatar } from 'expo-activity-feed';
 
@@ -14,12 +14,14 @@ import BreakHistoryList from './components/BreakHistoryList';
 import { useUser } from '../../hooks/User';
 import { useBreakHistory } from '../../hooks/Breaks';
 import { Spinner } from '@ui-kitten/components';
+import { ThemeContext } from '../../theme-context';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews']);
 
 const ProfileScreen = ({ route, navigation }) => {
   const { userId } = route.params;
   const styles = useStyleSheet(themedStyle);
+  const theme = useTheme(ThemeContext);
   const bottomSheetModalRef = useRef(null);
   const { data: user, loading, error } = useUser(userId);
   const { data: breakHistoryData, loading: breakHistoryLoading, error: breakHistoryError } = useBreakHistory(); 
@@ -124,7 +126,11 @@ const ProfileScreen = ({ route, navigation }) => {
             {profile.name}
           </Text>
           <View style={styles.locationContainer}>
-            <PinIcon/>
+            <PinIcon 
+              fill={theme['text-basic-color']} 
+              width={16}
+              height={16}
+              />
             <Text
               style={styles.location}>
               {profile.location || "NTNU"}

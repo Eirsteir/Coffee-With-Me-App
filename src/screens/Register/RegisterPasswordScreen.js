@@ -24,7 +24,7 @@ const RegisterPasswordScreen = ({ route, navigation }) => {
     if (passwordError)
       return;
 
-      navigation.navigate('RegisterUsername', { email, name, password });
+      navigation.navigate('RegisterUniversity', { email, name, password });
   };
 
   const onPasswordIconPress = () => {

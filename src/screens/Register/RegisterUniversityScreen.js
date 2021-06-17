@@ -6,56 +6,58 @@ import { KeyboardAvoidingView } from '../../components/extra/3rd-party';
 
 import RegisterOrSignupView from './components/RegisterOrSignupView';
 import InputField from '../../components/InputField';
-import TopNavigation from '../../components/TopNavigation';
-import { EmailIcon } from '../../components/extra/icons';
-import validate from '../../validation/validation_wrapper';
+import { PersonIcon } from '../../components/extra/icons';
 
 
-const RegisterEmailScreen = ({ navigation }) => {
-  const [email, setEmail] = useState();
-  const [emailError, setEmailError] = useState();
+const RegisterUniversityScreen = ({ route, navigation }) => {
+  const [university, setUniversity] = useState();
+  const [campus, setCampus] = useState();
   const styles = useStyleSheet(themedStyles);
 
-  const onNextButtonPress = () => {
-    const emailError = validate('email', email);
-    setEmailError(emailError);
-
-    if (emailError)
-      return;
-
-      navigation.navigate('RegisterName', { email: email });
-  };
+    const onNextButtonPress = () => {
+        if (university)
+            navigation.navigate('RegisterUsername', { university, ...route.params });
+    };
 
   return (
-    <React.Fragment>
-
-      <TopNavigation showBackAction/>
-
     <KeyboardAvoidingView style={styles.container}>
         <SafeAreaView>
             <View style={styles.headerContainer}>
                 <Text 
                 style={styles.header}
                 category="h5">
-                    Oppgi e-postadressen din
+                    Legg til studiested
+                </Text>
+                <Text 
+                    appearance='hint' 
+                    category='c2'
+                    style={styles.subHeader}
+                >
+                    Legg til ditt studiested, slik at venner vet hvor de kan finne deg
                 </Text>
             </View>
             <View style={styles.formContainer}>
                 <InputField
-                placeholder='E-postadresse'
-                accessoryRight={EmailIcon}
-                value={email}
-                onChangeText={setEmail}
-                error={emailError}
-                keyboardType='email-address'
-                autoCompleteType='email'
-                autoCapitalize='none'
+                    autoCapitalize='words'
+                    placeholder='Universitet'
+                    accessoryRight={PersonIcon}
+                    value={university}
+                    onChangeText={setUniversity}
                 />
+                {university && (
+                    <InputField
+                        autoCapitalize='words'
+                        placeholder='Universitet'
+                        accessoryRight={PersonIcon}
+                        value={university}
+                        onChangeText={setUniversity}
+                    />
+                )}
             </View>
 
             <Button
                 style={styles.button}
-                disabled={!email}
+                disabled={!university}
                 onPress={onNextButtonPress}>
                 Neste
             </Button>
@@ -67,7 +69,6 @@ const RegisterEmailScreen = ({ navigation }) => {
             onPress={() => navigation.navigate("SignIn")}
         />
     </KeyboardAvoidingView>
-    </React.Fragment>
   );
 };
 
@@ -85,6 +86,9 @@ const themedStyles = StyleService.create({
     marginTop: 40,
     marginBottom: 10
   },
+  subHeader:  {
+    paddingHorizontal: 32,
+  },
   formContainer: {
     paddingHorizontal: 32,
   },
@@ -94,4 +98,4 @@ const themedStyles = StyleService.create({
   },
 });
 
-export default RegisterEmailScreen;
+export default RegisterUniversityScreen;

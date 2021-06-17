@@ -11,7 +11,6 @@ import { PersonIcon } from '../../components/extra/icons';
 
 const RegisterNameScreen = ({ route, navigation }) => {
   const { email } = route.params;
-  console.log(email);
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState();
   const styles = useStyleSheet(themedStyles);

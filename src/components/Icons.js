@@ -1,6 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native';
-import { Icon, useTheme } from '@ui-kitten/components';
+import { Icon } from '@ui-kitten/components';
 import { IconBadge } from 'expo-activity-feed';
 
 export const HomeIcon = (style) => (
@@ -21,17 +20,9 @@ export const NotificationIcon = (style) => (
   </IconBadge>
 );
 
-export const PinIcon = () => {
-  const theme = useTheme();
-  return (
-    <Icon
-      width={16}
-      height={16}
-      fill={theme['text-basic-color']}
-      name='pin'
-    />
-  );
-};
+export const PinIcon = (style) => (
+    <Icon {...style} name='pin' />
+);
 
 export const PersonAddIcon = (style) => (
   <Icon {...style} name='person-add-outline'/>
