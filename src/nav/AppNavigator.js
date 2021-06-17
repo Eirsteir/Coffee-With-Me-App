@@ -82,7 +82,7 @@ const ProfileStackScreen = () => (
 const NotificationsStack = createStackNavigator();
 const NotificationsStackScreen = () =>  (
   <NotificationsStack.Navigator>
-    <NotificationsStack.Screen name="Notifications" component={NotificationsScreen} />
+    <NotificationsStack.Screen name="Notifications" component={NotificationsScreen} options={doNotShowHeaderOption} />
   </NotificationsStack.Navigator>
 );
 

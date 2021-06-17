@@ -11,28 +11,10 @@ import AddFriendsHeader from '../components/AddFriendsHeader';
 
 import CategoriesIcon from '../../images/icons/categories.png';
 import ReplyIcon from '../../images/icons/reply.png';
+import TopNavigation from '../components/TopNavigation';
 
 
 export default function({ navigation }) {
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: 'Aktivitet',
-      headerShown: true,
-      headerLeft: () => (
-        <View style={{ paddingLeft: 15 }}>
-          <Image source={CategoriesIcon} style={{ width: 23, height: 23 }} />
-        </View>
-      ),
-      headerRight: () => (
-        <AddFriendsHeader navigation={navigation} /> 
-      ),
-      headerTitleStyle: {
-        fontWeight: '500',
-        alignSelf: "center"
-      },
-    });
-  }, [navigation]);
 
   const _renderGroup = ({ activityGroup, styles, ...props }: any) => {
     let verb = activityGroup.activities[0].verb;
@@ -67,10 +49,15 @@ export default function({ navigation }) {
   };
 
   return (
-    <NotificationFeed
-      Group={_renderGroup}
-      navigation={navigation}
-      notify
-    />
+    <React.Fragment>
+      <TopNavigation 
+        title='Aktivitet'
+      />
+      <NotificationFeed
+        Group={_renderGroup}
+        navigation={navigation}
+        notify
+      />
+    </React.Fragment>
   );
 }
