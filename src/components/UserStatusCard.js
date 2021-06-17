@@ -1,23 +1,29 @@
 // @flow
 import React, { useState } from 'react';
-import { ListItem } from '@ui-kitten/components';
+import { ListItem, useTheme } from '@ui-kitten/components';
 import { Avatar } from 'expo-activity-feed';
 
 import { PlusIcon, MinusIcon } from './Icons';
 import Button from './Button';
 import { StyleService } from '@ui-kitten/components';
 import { useStyleSheet } from '@ui-kitten/components';
+import { ThemeContext } from '../theme-context';
 
 
 const UserStatusCard = ({ user, currentStatus, onAdd, onRemove }) => {
   const [ isAdded, setIsAdded ] = useState(false);
+  const theme = useTheme(ThemeContext);
   const styles = useStyleSheet(themedStyle);
   const description = currentStatus && `${user.name} is ${currentStatus.verb} at ${currentStatus.created}`
 
-  const renderAddToInvitees = () => (
-        <Button
-          styling={styles.button}
-          accessoryLeft={PlusIcon}
+  const renderAddIcon = () => (
+    <PlusIcon size={50} />
+  )
+
+  const renderAddToInvitees = (style) => (
+        <PlusIcon
+          {...style}
+          fill={theme['color-primary-default']} 
           onPress={() => {
             onAdd();
             setIsAdded(!isAdded);
@@ -25,10 +31,10 @@ const UserStatusCard = ({ user, currentStatus, onAdd, onRemove }) => {
         />
   );
 
-  const renderRemoveInvitees = () => (
-    <Button
-      styling={styles.button}
-      accessoryLeft={MinusIcon}
+  const renderRemoveInvitees = (style) => (
+    <MinusIcon
+      {...style}
+      fill={theme['color-danger-default']} 
       onPress={() => {
         onRemove();
         setIsAdded(!isAdded);
@@ -58,13 +64,7 @@ const themedStyle = StyleService.create({
         fontSize: 16,
         fontWeight: '300',
         flex: 1,
-    },    
-    button: {
-      borderWidth: 1,
-      width: 70,
-      height: 70,
-      borderRadius: 100,
-    }
+    }, 
 });
 
 export default UserStatusCard;

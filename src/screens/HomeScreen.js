@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import { Layout, List, Text, TopNavigationAction } from '@ui-kitten/components';
+import { Layout, List, Spinner, Text, TopNavigationAction } from '@ui-kitten/components';
 
 import TopNavigation from '../components/TopNavigation';
 import UserStatusCard from '../components/UserStatusCard';
@@ -121,6 +121,24 @@ const HomeScreen = ({ route, navigation }) =>  {
     handlePresentModalPress();
   }
 
+  const renderFriendListEmptyComponent = () => {
+    if (loading) {
+      return (
+        <View style={styles.loading}>
+          <Spinner />
+        </View>
+      )
+    }
+
+    return (
+      <Button 
+        styling={styles.button}
+        onPress={() => navigation.navigate("AddFriends")} 
+        children="Legg til venner"
+      />
+    )
+  }
+
   return (
     <React.Fragment>
       <TopNavigation 
@@ -156,13 +174,7 @@ const HomeScreen = ({ route, navigation }) =>  {
               />
           )}
           keyExtractor={(item) => `item-${item.id}`}
-          ListEmptyComponent={ () => (
-            <Button 
-              styling={styles.button}
-              onPress={() => navigation.navigate("AddFriends")} 
-              children="Legg til venner"
-            />
-          )}
+          ListEmptyComponent={renderFriendListEmptyComponent}
         />
       </Layout>
       
@@ -176,6 +188,12 @@ const HomeScreen = ({ route, navigation }) =>  {
 }
 
 const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 150
+  },
   container: {
     flex: 2,
   },
