@@ -67,7 +67,7 @@ const FriendsStackScreen = () => (
     initialRouteName="Friends"
   >
     <FriendsStack.Screen name="Friends" component={FriendsScreen} options={doNotShowHeaderOption}/>
-    <NavigationStack.Screen name="FriendRequests" component={FriendRequestsScreen}/>
+    <FriendsStack.Screen name="FriendRequests" component={FriendRequestsScreen} options={doNotShowHeaderOption}/>
   </FriendsStack.Navigator>
 );
 
@@ -75,7 +75,7 @@ const ProfileStack = createStackNavigator();
 const ProfileStackScreen = () => (
   <ProfileStack.Navigator mode="modal" screenOptions={{ safeAreaInsets: { top: 0 }, ...doNotShowHeaderOption }}>
     <ProfileStack.Screen name="Profile" component={ProfileScreen} initialParams={{ userId: undefined }}/>
-    <NavigationStack.Screen name="EditProfile" component={EditProfileScreen}/>
+    <ProfileStack.Screen name="EditProfile" component={EditProfileScreen}/>
   </ProfileStack.Navigator>
 );
 

@@ -1,5 +1,6 @@
-import React, { useLayoutEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { List, ListItem, Layout, Divider } from '@ui-kitten/components';
 
 import SearchBox from '../components/SearchBox';
 import LargeHeading from '../components/LargeHeading';
@@ -24,11 +25,9 @@ const DATA = [
   },
 ];
 
-function Item({ title, onPress }) {
+function Item(props) {
   return (
-    <TouchableOpacity style={styles.item} onPress={onPress}>
-      <Text style={styles.title}>{title}</Text>
-    </TouchableOpacity>
+    <ListItem {...props} />
   );
 }
 
@@ -40,17 +39,19 @@ export default function({ navigation }) {
         title='Legg til venner'
         showBackAction
       />
-      <View style={styles.container}>
+      <Layout style={styles.container}>
         <SearchBox/>
 
         <LargeHeading>Alternativt</LargeHeading>
-        <FlatList
+        <List
           style={{ marginTop: 5 }}
           data={DATA}
+          ItemSeparatorComponent={Divider}
           renderItem={({ item }) => <Item title={item.title} onPress={item.onPress}/>}
           keyExtractor={(item) => `item-${item.id}`}
+          scrollEnabled={false}
         />      
-      </View>
+      </Layout>
     </React.Fragment>
   );
 }
@@ -59,14 +60,6 @@ export default function({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-  },
-  item: {
-    backgroundColor: '#f5f5f5',
-    padding: 10,
-    borderBottomWidth: .3,
-    borderBottomColor: '#d2d2d2',
-    paddingHorizontal: 20,
   },
   title: {
     fontSize: 15,
