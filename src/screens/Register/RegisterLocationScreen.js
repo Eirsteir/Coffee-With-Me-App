@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Button, StyleService, Text, Layout, useStyleSheet } from '@ui-kitten/components';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import { KeyboardAvoidingView } from '../../components/extra/3rd-party';
 
 import RegisterOrSignupView from './components/RegisterOrSignupView';
-import InputField from '../../components/InputField';
-import { PersonIcon } from '../../components/extra/icons';
+import LocationSelect from './components/LocationSelect';
+import { useLocations } from '../../hooks/Location';
 
 
-const RegisterUniversityScreen = ({ route, navigation }) => {
-  const [university, setUniversity] = useState();
-  const [campus, setCampus] = useState();
+const RegisterLocationScreen = ({ route, navigation }) => {
+  const [location, setLocation] = useState();
+  const [locationSelectError, setLocationError] = useState(''); 
+  const { loading, error, data } = useLocations();
   const styles = useStyleSheet(themedStyles);
+  const locations = useMemo(() => (data !== undefined ? data.locations.edges.map((edge) => edge.node) : []), [data]);
+  console.log(locations)
+  const onNextButtonPress = () => { 
+      if (location)
+          navigation.navigate('RegisterUsername', { location, ...route.params });
+      else {
+        setLocationError("Velg et studiested eller hopp over");
+      }
+  };
 
-    const onNextButtonPress = () => {
-        if (university)
-            navigation.navigate('RegisterUsername', { university, ...route.params });
-    };
+  const onSkipButtonPress = () => {
+    navigation.navigate('RegisterUsername', { location, ...route.params });
+  }
+
+  const onSelectionCompleted = (location) => {
+    setLocation(location);
+  }
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -37,29 +50,26 @@ const RegisterUniversityScreen = ({ route, navigation }) => {
                 </Text>
             </View>
             <View style={styles.formContainer}>
-                <InputField
-                    autoCapitalize='words'
-                    placeholder='Universitet'
-                    accessoryRight={PersonIcon}
-                    value={university}
-                    onChangeText={setUniversity}
+              <LocationSelect 
+                locations={locations} 
+                loading={loading} 
+                error={locationSelectError}
+                onSelectionCompleted={onSelectionCompleted} 
+                style={styles.locationSelect}
                 />
-                {university && (
-                    <InputField
-                        autoCapitalize='words'
-                        placeholder='Universitet'
-                        accessoryRight={PersonIcon}
-                        value={university}
-                        onChangeText={setUniversity}
-                    />
-                )}
             </View>
 
             <Button
                 style={styles.button}
-                disabled={!university}
+                disabled={!location}
                 onPress={onNextButtonPress}>
                 Neste
+            </Button>
+            <Button
+                style={styles.button}
+                appearance='ghost'
+                onPress={onSkipButtonPress}>
+                Hopp over
             </Button>
         </SafeAreaView>
 
@@ -92,10 +102,13 @@ const themedStyles = StyleService.create({
   formContainer: {
     paddingHorizontal: 32,
   },
+  locationSelect: {
+    marginTop: 20
+  },
   button: {
     marginHorizontal: 32,
     marginTop: 20
   },
 });
 
-export default RegisterUniversityScreen;
+export default RegisterLocationScreen;

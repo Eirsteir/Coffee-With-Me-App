@@ -9,7 +9,7 @@ import RegisterNameScreen from '../screens/Register/RegisterNameScreen';
 import RegisterPasswordScreen from '../screens/Register/RegisterPasswordScreen';
 import RegisterUsernameScreen from '../screens/Register/RegisterUsernameScreen';
 import ChangeUsernameScreen from '../screens/Register/ChangeUsernameScreen';
-import RegisterUniversityScreen from '../screens/Register/RegisterUniversityScreen';
+import RegisterLocationScreen from '../screens/Register/RegisterLocationScreen';
 
 const navigationOptions = {
   headerStyle: {
@@ -27,11 +27,6 @@ const RegisterStack = createStackNavigator();
 
 const RegisterStackScreen = () => (
   <RegisterStack.Navigator screenOptions={{headerShown: false}}>
-        <RegisterStack.Screen 
-      name='RegisterUniversity' 
-      component={RegisterUniversityScreen} 
-      initialParams={{ email: undefined, name: undefined, password: undefined, }} 
-      options={disableBackOptions} />
     <RegisterStack.Screen 
       name='RegisterEmail' 
       component={RegisterEmailScreen} />
@@ -44,16 +39,20 @@ const RegisterStackScreen = () => (
       component={RegisterPasswordScreen} 
       initialParams={{ email: undefined, name: undefined }} 
       options={disableBackOptions} />
-
+    <RegisterStack.Screen 
+      name='RegisterLocation' 
+      component={RegisterLocationScreen} 
+      initialParams={{ email: undefined, name: undefined, password: undefined, }} 
+      options={disableBackOptions} />
     <RegisterStack.Screen 
       name='RegisterUsername' 
       component={RegisterUsernameScreen}
-      initialParams={{ email: undefined, name: undefined, password: undefined, username: undefined, university: undefined }} 
+      initialParams={{ email: undefined, name: undefined, password: undefined, username: undefined, location: undefined }} 
       options={disableBackOptions}/>
     <RegisterStack.Screen 
       name='ChangeUsername' 
       component={ChangeUsernameScreen} 
-      initialParams={{ email: undefined, name: undefined, password: undefined, username: undefined, university: undefined }} 
+      initialParams={{ email: undefined, name: undefined, password: undefined, username: undefined, location: undefined }} 
       options={disableBackOptions} />
   </RegisterStack.Navigator>
 );

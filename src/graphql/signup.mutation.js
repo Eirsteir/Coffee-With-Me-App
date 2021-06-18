@@ -4,6 +4,7 @@ const SIGNUP_MUTATION = gql`
     mutation register(
         $name: String!,
         $email: String!,
+        $preferredLocationUuid: UUID,
         $username: String!,
         $password1: String!,
         $password2: String!
@@ -12,6 +13,7 @@ const SIGNUP_MUTATION = gql`
             name: $name,
             email: $email,
             username: $username,
+            preferredLocationUuid: $preferredLocationUuid,
             password1: $password1,
             password2: $password2
         ) {

@@ -11,7 +11,7 @@ import SIGNUP_MUTATION from '../../graphql/signup.mutation';
 
 
 const RegisterUsernameScreen = ({ route, navigation }) => {
-  const { email, name, password, username } = route.params;
+  const { email, name, password, username, location } = route.params;
   const styles = useStyleSheet(themedStyles);
   const { login } = useContext(AuthContext);
   const usernameSuggestion = email !== undefined ? email.split('@')[0] : '';
@@ -21,6 +21,7 @@ const RegisterUsernameScreen = ({ route, navigation }) => {
       name: name, 
       email: email,
       username: username || usernameSuggestion,
+      preferredLocationUuid: location && location.uuid,
       password1: password,
       password2: password // workaround
     },
@@ -31,8 +32,8 @@ const RegisterUsernameScreen = ({ route, navigation }) => {
   const handleSignUpCompleted = (register) => {
     if (register.success) 
       return login({ token: register.token });
-  
-    Alert.alert("Noe gikk galt", register.errors);
+    console.log(register)
+    // Alert.alert("Noe gikk galt", register.errors);
   };
 
   const onChangeUsername = () => {
