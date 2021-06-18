@@ -29,6 +29,16 @@ query user($userId: UUID) {
           }
       }
       friendshipStatus
+      preferredLocation {
+        id
+        uuid
+        title
+      }
+      currentLocation {
+        id
+        uuid
+        title
+      }
     }
   }
 `

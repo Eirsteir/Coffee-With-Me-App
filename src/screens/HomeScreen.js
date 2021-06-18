@@ -13,6 +13,7 @@ import UserStatusCard from '../components/UserStatusCard';
 import LargeHeading from '../components/LargeHeading';
 import Button from '../components/Button';
 import InitiateBreakScreen from './InitiateBreakScreen';
+import EmptyStateActionButton from '../components/EmptyStateActionButton';
 
 import { useCurrentUser } from '../hooks/User';
 import { BreakVisual } from '../images/index';
@@ -106,11 +107,15 @@ const HomeScreen = ({ route, navigation }) =>  {
     }
 
     return (
-      <Button 
-        styling={styles.button}
-        onPress={() => navigation.navigate("AddFriends")} 
-        children="Legg til venner"
-      />
+      <Layout level='4' style={styles.layout}>
+        <EmptyStateActionButton 
+            style={styles.emptyStateActionButton}
+            title='Her var det tomt...'
+            buttonText='Finn venner'
+            hint='Kom i gang og legg til noen venner'
+            onPress={() => navigation.navigate("AddFriends")}
+        />
+      </Layout>
     )
   }
 
@@ -179,6 +184,10 @@ const styles = StyleSheet.create({
     margin: 2,
     marginTop: 15,
     paddingLeft: 15,
+  },
+  layout: {
+    flex:1,
+    paddingVertical: 90,
   },
   visual: {
     alignSelf: 'center',

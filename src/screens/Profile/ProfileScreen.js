@@ -72,7 +72,7 @@ const ProfileScreen = ({ route, navigation }) => {
 
   const renderRightActions = () => (
     <React.Fragment>
-      <TopNavigationAction icon={MenuIcon} onPress={handlePresentModalPress}/>
+      {user.uuid === userId && <TopNavigationAction icon={MenuIcon} onPress={handlePresentModalPress}/>}
     </React.Fragment>
   );
 
@@ -133,7 +133,7 @@ const ProfileScreen = ({ route, navigation }) => {
               />
             <Text
               style={styles.location}>
-              {profile.location || "NTNU"}
+              {profile.preferredLocation && profile.preferredLocation.title || "Ikke oppgitt"}
             </Text>
           </View>
           { user.uuid !== userId && renderFriendActionButton()}
@@ -172,14 +172,17 @@ const ProfileScreen = ({ route, navigation }) => {
           data={friends}
           renderItem={renderFriendItem}
         />
-        <Text
-          style={styles.sectionLabel}
-          category='s1'>
-          Historie
-        </Text>
-        
-        <BreakHistoryList data={breakHistory} loading={breakHistoryLoading} error={breakHistoryError} style={styles.breakHistoryList} /> 
-      
+        {user.uuid === userId && (
+          <>
+            <Text
+              style={styles.sectionLabel}
+              category='s1'>
+              Historie
+            </Text>
+            
+            <BreakHistoryList data={breakHistory} loading={breakHistoryLoading} error={breakHistoryError} style={styles.breakHistoryList} /> 
+          </>
+        )}
       </ScrollView>
       <SettingsBottomModal bottomSheetModalRef={bottomSheetModalRef} />
     </React.Fragment>

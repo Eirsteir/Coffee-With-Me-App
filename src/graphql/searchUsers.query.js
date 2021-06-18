@@ -18,6 +18,16 @@ query search($query: String!, $first: Int) {
           friends {
             count
           }
+          preferredLocation {
+            id
+            uuid
+            title
+          }
+          currentLocation {
+            id
+            uuid
+            title
+          }
         }
       }
       pageInfo {
