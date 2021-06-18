@@ -1,5 +1,5 @@
 // @flow
-import React, { useLayoutEffect, useMemo, useRef, useCallback, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useRef, useCallback, useState, useEffect } from 'react';
 import { 
   TouchableOpacity,
   Image, 
@@ -8,16 +8,17 @@ import {
 } from 'react-native';
 import { Layout, List, Spinner, Text, TopNavigationAction } from '@ui-kitten/components';
 
-import TopNavigation from '../components/TopNavigation';
-import UserStatusCard from '../components/UserStatusCard';
-import LargeHeading from '../components/LargeHeading';
-import Button from '../components/Button';
-import InitiateBreakScreen from './InitiateBreakScreen';
-import EmptyStateActionButton from '../components/EmptyStateActionButton';
+import TopNavigation from '../../components/TopNavigation';
+import UserStatusCard from '../../components/UserStatusCard';
+import LargeHeading from '../../components/LargeHeading';
+import Button from '../../components/Button';
+import InitiateBreakBottomSheet from './components/InitiateBreakBottomSheet';
+import EmptyStateActionButton from '../../components/EmptyStateActionButton';
+import FriendsOverview from './components/FriendsOverview';
 
-import { useCurrentUser } from '../hooks/User';
-import { BreakVisual } from '../images/index';
-import { InboxIcon, PlusIcon } from '../components/Icons';
+import { useCurrentUser } from '../../hooks/User';
+import { BreakVisual } from '../../images/index';
+import { InboxIcon, PlusIcon } from '../../components/Icons';
 import { View } from 'react-native';
 
 const win = Dimensions.get('window');
@@ -28,6 +29,22 @@ const HomeScreen = ({ route, navigation }) =>  {
   const { loading, error, data: user } = useCurrentUser();
   const friends = useMemo(() => (user !== undefined ? user.me.friends.edges.map((edge) => edge.node) : []), [user]);
   const [ invitees, setInvitees ] = useState(new Set());
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, [bottomSheetModalRef]);
+
+  const addInvitee = useCallback((user) => {
+    setInvitees((invitees) => new Set(invitees).add(user));
+  }, [invitees]);
+
+  const removeInvitee = useCallback((user) => {
+    setInvitees((invitees) => {
+      const next = new Set(invitees);
+      next.delete(user);
+      return next;
+    });
+  }, [invitees]);
 
   const renderHeaderRightInviteIcon = (props) => {
     return (
@@ -75,23 +92,6 @@ const HomeScreen = ({ route, navigation }) =>  {
         onPress={handlePresentModalPress}/>
     </React.Fragment>
   );
-
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, [bottomSheetModalRef]);
-
-  const addInvitee = useCallback((user) => {
-    setInvitees((invitees) => new Set(invitees).add(user));
-    console.log(invitees)
-  }, [invitees]);
-
-  const removeInvitee = useCallback((user) => {
-    setInvitees((invitees) => {
-      const next = new Set(invitees);
-      next.delete(user);
-      return next;
-    });
-  }, [invitees]);
 
   if (showBottomSheetModal) {
     handlePresentModalPress();
@@ -143,24 +143,22 @@ const HomeScreen = ({ route, navigation }) =>  {
 
         <LargeHeading>Venneoversikt</LargeHeading>
 
-        <List
-          data={friends}
-          renderItem={({ item }) => (
-              <UserStatusCard 
-                user={item}
-                currentStatus={item.currentStatus}
-                onAdd={() => addInvitee(item)}
-                onRemove={() => removeInvitee(item)}
-              />
-          )}
-          keyExtractor={(item) => `item-${item.id}`}
+        <FriendsOverview 
+          friends={friends}
+          onAdd={addInvitee}
+          onRemove={removeInvitee}
           ListEmptyComponent={renderFriendListEmptyComponent}
         />
       </Layout>
       
-      <InitiateBreakScreen 
+      <InitiateBreakBottomSheet 
           invitees={invitees}
+          location={user?.me.preferredLocation}
           bottomSheetModalRef={bottomSheetModalRef}
+          friends={friends}
+          onAdd={addInvitee}
+          onRemove={removeInvitee}
+          ListEmptyComponent={renderFriendListEmptyComponent}
       />
 
       </React.Fragment>

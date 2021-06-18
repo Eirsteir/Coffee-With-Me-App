@@ -15,7 +15,7 @@ import {
 
 import { ThemeContext } from '../theme-context';
 import { HomeIcon, FriendsIcon, ProfileIcon, NotificationIcon } from '../components/Icons';
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/Home/HomeScreen';
 import FriendsScreen from '../screens/FriendsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';

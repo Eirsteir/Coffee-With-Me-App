@@ -16,9 +16,6 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
   },
-  header: {
-    fontWeight: '300',
-  },
 });
 
 export default LargeHeading;

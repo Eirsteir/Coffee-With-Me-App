@@ -15,7 +15,7 @@ const RegisterLocationScreen = ({ route, navigation }) => {
   const { loading, error, data } = useLocations();
   const styles = useStyleSheet(themedStyles);
   const locations = useMemo(() => (data !== undefined ? data.locations.edges.map((edge) => edge.node) : []), [data]);
-  console.log(locations)
+
   const onNextButtonPress = () => { 
       if (location)
           navigation.navigate('RegisterUsername', { location, ...route.params });

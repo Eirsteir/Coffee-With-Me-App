@@ -21,7 +21,7 @@ export const NotificationIcon = (style) => (
 );
 
 export const PinIcon = (style) => (
-    <Icon {...style} name='pin' />
+    <Icon {...style} name='pin-outline' />
 );
 
 export const PersonAddIcon = (style) => (
@@ -74,4 +74,8 @@ export const CheckMarkCircleIcon = (style) => (
 
 export const CloseIcon = (style) => (
   <Icon {...style} name='close-outline' />
+);
+
+export const ClockIcon = (style) => (
+  <Icon {...style} name='clock-outline' />
 );
