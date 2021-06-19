@@ -154,6 +154,7 @@ const HomeScreen = ({ route, navigation }) =>  {
       <InitiateBreakBottomSheet 
           invitees={invitees}
           location={user?.me.preferredLocation}
+          onCompleted={() => setInvitees(new Set())}
           bottomSheetModalRef={bottomSheetModalRef}
           friends={friends}
           onAdd={addInvitee}

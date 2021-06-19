@@ -26,32 +26,34 @@ import { useLocations } from '../../../hooks/Location';
 
 
 
-const InitiateBreakBottomSheet = ({ invitees, location: initialLocation, bottomSheetModalRef, ...friendsOverViewProps }) => {
+const InitiateBreakBottomSheet = ({ invitees, location: initialLocation, onCompleted, bottomSheetModalRef, ...friendsOverViewProps }) => {
     const now = new Date();
     now.setMinutes(now.getMinutes() + 15);
     const [time, setTime] = useState(now);
 
     const styles = useStyleSheet(themedStyles);
     const navigation = useNavigation();
-    const [location, setLocation] = useState(initialLocation);
+    const [location, setLocation] = useState();
     const { loading: locationsLoading, error: locationsError, data: locationsData } = useLocations();
     const locations = useMemo(() => (locationsData !== undefined ? locationsData.locations.edges.map((edge) => edge.node) : []), [locationsData]);
-  
+
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [showFriendsOverview, setShowFriendsOverview] = useState(false);
     const [showLocationSelect, setShowLocationSelect] = useState(false);
 
     const snapPoints = useMemo(() => ['75%', '100%'], []);
-    const [initiateBreak, { loading, data }] = useIniateBreak({
+    const [initiateBreak, { loading }] = useIniateBreak({
         variables: {
             addressees: [...invitees].map(user => user.uuid),
-            startTime: time
+            startingAt: time,
+            location: location?.uuid || initialLocation?.uuid,
         },
         onCompleted: () => {
             Alert.alert("Vent på svar og gjør deg klar til pause!");
+            onCompleted();
             handleClosePress();
         },
-        onError: err => Alert.alert(err)
+        onError: err => Alert.alert("Noe gikk galt", err)
     });
 
     const handleClosePress = useCallback(() => bottomSheetModalRef.current?.close(), [bottomSheetModalRef]);
@@ -63,17 +65,11 @@ const InitiateBreakBottomSheet = ({ invitees, location: initialLocation, bottomS
     const startingInMinutes = moment().to(time, true);
 
     const renderInvitees = () => {
-        
         if (invitees !== undefined && invitees.size) { 
             const firstInvitee = invitees.values().next().value;
             const firstInviteeName = firstInvitee.name.split(' ')[0];
-            const inviteeLink = () => (
-                <Text onPress={() => navigation.push('Default', { screen: 'Profil', params: { screen: 'Profile', params: { userId: firstInvitee.uuid } } })}>
-                    {firstInviteeName}
-                </Text>
-                );
             return (
-                    `Du inviterer ${inviteeLink()} ${ invitees.size > 1 && ` og ${invitees.size - 1} andre`}.`
+                    `Du inviterer ${firstInviteeName}${ invitees.size > 1 ? ` og ${invitees.size - 1} andre` : ''}`
             );
         } else {
             return (
@@ -93,9 +89,6 @@ const InitiateBreakBottomSheet = ({ invitees, location: initialLocation, bottomS
                 display="inline"
                 onChange={(event, date) => setTime(date)}
                 style={styles.datePicker} />
-            <TouchableOpacity onPress={() => setShowTimePicker(false)}>
-                <Text appearance='hint'>Ferdig</Text>
-            </TouchableOpacity>
         </View>
     );
     
@@ -106,7 +99,9 @@ const InitiateBreakBottomSheet = ({ invitees, location: initialLocation, bottomS
     const renderLocation = () => {
         if (location) {
             return location.title
-        } 
+        } else if (initialLocation) {
+            return initialLocation.title
+        }
         return "Velg sted";
     }
 

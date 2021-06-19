@@ -1,6 +1,8 @@
 import { gql } from '@apollo/client';
+import { LOCATION_CHILD_FIELDS } from './locations.query';
 
 const PENDING_BREAK_INVITATIONS_QUERY = gql`
+${LOCATION_CHILD_FIELDS}
 query pendingBreakInvitations {
   pendingBreakInvitations {
     edges {
@@ -19,6 +21,9 @@ query pendingBreakInvitations {
           id
           uuid
           startingAt
+          location {
+            ...LocationChildFields
+          }
           participants {
             count 
             edges {

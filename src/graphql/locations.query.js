@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-const CHILD_FIELDS = gql`
-fragment ChildFields on Location {
+export const LOCATION_CHILD_FIELDS = gql`
+fragment LocationChildFields on Location {
     id
     uuid
     title
@@ -16,15 +16,15 @@ fragment LocationRecursive on Location {
     children {
       edges {
         node {
-          ...ChildFields
+          ...LocationChildFields
           children {
             edges {
               node {
-                ...ChildFields
+                ...LocationChildFields
                 children {
                   edges {
                     node {
-                      ...ChildFields
+                      ...LocationChildFields
                     }
                   }
                 }
@@ -38,7 +38,7 @@ fragment LocationRecursive on Location {
 `
 
 const LOCATIONS_QUERY = gql`
-  ${CHILD_FIELDS}
+  ${LOCATION_CHILD_FIELDS}
   ${LOCATION_RECURSIVE}
   query locations {
     locations {
@@ -46,7 +46,7 @@ const LOCATIONS_QUERY = gql`
         totalCount
       edges {
         node {
-          ...ChildFields
+          ...LocationChildFields
           ...LocationRecursive
         }
       }

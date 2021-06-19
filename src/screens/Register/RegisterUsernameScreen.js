@@ -32,8 +32,7 @@ const RegisterUsernameScreen = ({ route, navigation }) => {
   const handleSignUpCompleted = (register) => {
     if (register.success) 
       return login({ token: register.token });
-    console.log(register)
-    // Alert.alert("Noe gikk galt", register.errors);
+    Alert.alert("Noe gikk galt", register.errors);
   };
 
   const onChangeUsername = () => {

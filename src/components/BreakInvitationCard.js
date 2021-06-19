@@ -55,11 +55,13 @@ export const BreakInvitationCard = ({ invitation, onPress, ...listItemProps }) =
     ? 'deg'
     : `deg og ${invitation.addresseeCount - 1} ${otherText}`;
 
+    const locationText = `på ${invitation.subject.location?.title}` || '';
+
     const title = () => (
         <Text category='c2'>
             {invitation.sender.name.split(" ")[0]}
             <Text category='c2' appearance='hint'>
-                {` vil ta en pause med ${subHeader} ${moment().to(invitation.subject.startingAt)}`}
+                {` vil ta en pause med ${subHeader} \n${moment().to(invitation.subject.startingAt)} ${locationText}`}
             </Text>
         </Text>
     );

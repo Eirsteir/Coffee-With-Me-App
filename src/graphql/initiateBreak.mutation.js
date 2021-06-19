@@ -1,8 +1,10 @@
 import { gql } from '@apollo/client';
+import { LOCATION_CHILD_FIELDS } from './locations.query';
 
 const INITIATE_BREAK_MUTATION = gql`
-mutation initiateBreak($addressees: [UUID], $startTime: DateTime) {
-  initiateBreak(addressees: $addressees, startTime: $startTime) {
+${LOCATION_CHILD_FIELDS}
+mutation initiateBreak($addressees: [UUID], $startingAt: DateTime, $location: UUID) {
+  initiateBreak(addressees: $addressees, startingAt: $startingAt, location: $location) {
     break_ {
       id
       uuid
@@ -28,6 +30,9 @@ mutation initiateBreak($addressees: [UUID], $startTime: DateTime) {
         }
       }
       startingAt
+      location {
+        ...LocationChildFields
+      }
     }
   success
   errors

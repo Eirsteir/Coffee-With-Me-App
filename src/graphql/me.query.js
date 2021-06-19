@@ -23,6 +23,16 @@ query me {
             verb
             created
           }
+          preferredLocation {
+            id
+            uuid
+            title
+          }
+          currentLocation {
+            id
+            uuid
+            title
+          }
         }
       }
     }

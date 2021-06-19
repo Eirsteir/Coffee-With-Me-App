@@ -10,7 +10,7 @@ import { useStyleSheet } from '@ui-kitten/components';
 import { ThemeContext } from '../theme-context';
 
 
-const UserStatusCard = ({ user, currentStatus, onAdd, onRemove }) => {
+const UserStatusCard = ({ user, onAdd, onRemove }) => {
   const [ isAdded, setIsAdded ] = useState(false);
   const theme = useTheme(ThemeContext);
   const styles = useStyleSheet(themedStyle);
@@ -48,7 +48,7 @@ const renderDescription = () => (
       appearance='hint'
       category='c2'
       >
-      {user.location || "NTNU Gløshaugen"}
+      {user.currentLocation?.title || user.preferredLocation?.title || "Ikke sjekket inn"}
     </Text>
   </View>
   );

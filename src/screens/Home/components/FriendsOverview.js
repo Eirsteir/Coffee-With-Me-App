@@ -4,7 +4,7 @@ import { List, } from '@ui-kitten/components';
 
 import UserStatusCard from '../../../components/UserStatusCard';
 
-const FriendsOverview = ({friends, addInvitee, removeInvitee, ListEmptyComponent}) => {
+const FriendsOverview = ({friends, onAdd, onRemove, ListEmptyComponent}) => {
     return (
       <List
         data={friends}
@@ -12,8 +12,8 @@ const FriendsOverview = ({friends, addInvitee, removeInvitee, ListEmptyComponent
           <UserStatusCard
             user={item}
             currentStatus={item.currentStatus}
-            onAdd={() => addInvitee(item)}
-            onRemove={() => removeInvitee(item)} />
+            onAdd={() => onAdd(item)}
+            onRemove={() => onRemove(item)} />
         )}
         keyExtractor={(item) => `item-${item.id}`}
         ListEmptyComponent={ListEmptyComponent} />
