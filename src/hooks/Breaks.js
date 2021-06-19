@@ -8,7 +8,10 @@ import PENDING_BREAK_INVITATIONS_QUERY from "../graphql/pendingBreakInvitations.
 
 export const useBreakHistory = () => useQuery(BREAK_HISTORY_QUERY);
 
-export const usePendingBreakInvitations = () => useQuery(PENDING_BREAK_INVITATIONS_QUERY);
+export const usePendingBreakInvitations = (options) => useQuery(PENDING_BREAK_INVITATIONS_QUERY, {
+    notifyOnNetworkStatusChange: true,
+    ...options,
+});
 
 export const useIniateBreak = options => useMutation(INITIATE_BREAK_MUTATION, options);
 

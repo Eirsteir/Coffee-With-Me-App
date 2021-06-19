@@ -17,7 +17,7 @@ const TopNavigation = ({title, showBackAction, ...props}) => {
     <SafeAreaView style={styles.container}>
         <Layout level='1'>
         <UiKittenTopNavigation
-            alignment='left'
+            alignment='start'
             title={() => <Text category='h5' style={{paddingLeft: 15}}>{title}</Text>}
             accessoryLeft={showBackAction ? renderBackAction : null}
             {...props}

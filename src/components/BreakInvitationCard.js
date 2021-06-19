@@ -28,15 +28,15 @@ export const BreakInvitationCard = ({ invitation, onPress, ...listItemProps }) =
       <CloseIcon 
         {...style} 
         fill={theme['color-danger-default']} 
-        height={42} 
-        width={42} 
+        height={40} 
+        width={40} 
         onPress={() => declineInvitation()}
         />
       <CheckMarkIcon 
         {...style} 
         fill={theme['color-success-default']} 
-        height={42} 
-        width={42} 
+        height={40} 
+        width={40} 
         onPress={() => acceptInvitation()}/>
     </View>
   );

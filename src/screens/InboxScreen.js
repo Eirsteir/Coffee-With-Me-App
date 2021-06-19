@@ -6,12 +6,18 @@ import { usePendingBreakInvitations } from '../hooks/Breaks';
 import EmptyStateActionButton from '../components/EmptyStateActionButton';
 import TopNavigation from '../components/TopNavigation';
 import BreakInvitationCard from '../components/BreakInvitationCard';
+import { NetworkStatus } from '@apollo/client';
 
 const InboxScreen = ({ navigation }) => {
     const styles = useStyleSheet(themedStyles);
 
-    const { loading, error, data } = usePendingBreakInvitations();
+    const { loading, error, data, fetchMore, refetch, networkStatus } = usePendingBreakInvitations({
+        variables: {
+            first: 10
+        }
+    });
     const invitations = useMemo(() => (data !== undefined ? data.pendingBreakInvitations.edges.map(edge => edge.node) : []), [data]);
+    const refreshing = networkStatus === NetworkStatus.refetch
 
     const onItemPress = () => {
         navigation && navigation.navigate('');
@@ -31,12 +37,45 @@ const InboxScreen = ({ navigation }) => {
         </View>  
     );
 
+    const handleOnEndReached = () => {
+        if (data.pendingBreakInvitations.pageInfo.hasNextPage && !loading)
+          return fetchMore({
+            variables: {
+              after: data.pendingBreakInvitations.pageInfo.endCursor,
+              first: 5,
+            },
+            updateQuery: onUpdate,
+          })
+      }
+
+      const onUpdate = (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult || fetchMoreResult.pendingBreakInvitations.count === 0) 
+            return prev
+
+        const { pageInfo } = fetchMoreResult.pendingBreakInvitations
+        const edges = [
+          ...prev.pendingBreakInvitations.edges,
+          ...fetchMoreResult.pendingBreakInvitations.edges,
+        ]
+        return Object.assign({}, prev, {
+            pendingBreakInvitations: {
+              __typename: prev.pendingBreakInvitations.__typename,
+              pageInfo,
+              edges
+          },
+        })
+      }
+
     const renderInvitationsList = () => (
         <List 
             data={invitations}
             renderItem={renderInvitations}
-            style={styles.list}
             keyExtractor={(item) => `item-${item.id}`}
+            onRefresh={refetch}
+            refreshing={refreshing}
+            onEndReachedThreshold={0.5}
+            onEndReached={handleOnEndReached}
+            contentContainerStyle={{ flexGrow: 1 }}
         />
     );
 
@@ -52,7 +91,7 @@ const InboxScreen = ({ navigation }) => {
     );
 
     const renderContent = () => {
-        if (loading) 
+        if (loading && invitations.length === 0) 
             return renderLoading();
         else if (invitations.length) 
             return renderInvitationsList();
@@ -77,9 +116,6 @@ const themedStyles = StyleService.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    list: {
-      flex: 1,
     },
     item: {
       borderBottomWidth: 1,

@@ -3,8 +3,8 @@ import { LOCATION_CHILD_FIELDS } from './locations.query';
 
 const PENDING_BREAK_INVITATIONS_QUERY = gql`
 ${LOCATION_CHILD_FIELDS}
-query pendingBreakInvitations {
-  pendingBreakInvitations {
+query pendingBreakInvitations($before: String, $after: String, $first: Int, $last: Int) {
+  pendingBreakInvitations(before: $before, after: $after, first: $first, last: $last) {
     edges {
       node {
         id
@@ -25,7 +25,7 @@ query pendingBreakInvitations {
             ...LocationChildFields
           }
           participants {
-            count 
+            count
             edges {
               node {
                 id
@@ -42,6 +42,11 @@ query pendingBreakInvitations {
         __typename
       }
       __typename
+    }
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
     }
     __typename
   }
