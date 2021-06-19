@@ -6,6 +6,7 @@ import GET_FRIENDING_POSSIBILITIES_QUERY from '../graphql/getfriendingPossibilit
 import ACCEPT_FRIEND_REQUEST_MUTATION from '../graphql/acceptFriendRequest.mutation';
 import REJECT_FRIEND_REQUEST_MUTATION from '../graphql/rejectFriendRequest.mutation';
 import CANCEL_FRIEND_REQUEST_MUTATION from '../graphql/cancelFriendRequest.mutation';
+import ME_QUERY from "../graphql/me.query";
 
 export const useFriendsById = userId => {
     return UserService.getFriends(userId);

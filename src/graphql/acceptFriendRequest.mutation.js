@@ -8,6 +8,22 @@ mutation acceptFriendRequest($requester: String!) {
         uuid
         name
         username
+        isViewerFriend
+        currentStatus {
+          statusType
+          verb
+          created
+        }
+        preferredLocation {
+          id
+          uuid
+          title
+        }
+        currentLocation {
+          id
+          uuid
+          title
+        }
       }
       success
       errors

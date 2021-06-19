@@ -20,13 +20,15 @@ import { useCurrentUser } from '../../hooks/User';
 import { BreakVisual } from '../../images/index';
 import { InboxIcon, PlusIcon } from '../../components/Icons';
 import { View } from 'react-native';
+import { NetworkStatus } from '@apollo/client';
 
 const win = Dimensions.get('window');
 
 const HomeScreen = ({ route, navigation }) =>  {
   const { showBottomSheetModal } = route.params; 
   const bottomSheetModalRef = useRef(null);
-  const { loading, error, data: user } = useCurrentUser();
+  const { loading, error, refetch, networkStatus, data: user } = useCurrentUser();
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const friends = useMemo(() => (user !== undefined ? user.me.friends.edges.map((edge) => edge.node) : []), [user]);
   const [ invitees, setInvitees ] = useState(new Set());
 
@@ -147,6 +149,8 @@ const HomeScreen = ({ route, navigation }) =>  {
           friends={friends}
           onAdd={addInvitee}
           onRemove={removeInvitee}
+          onRefresh={refetch}
+          refreshing={networkStatus === NetworkStatus.refetch}
           ListEmptyComponent={renderFriendListEmptyComponent}
         />
       </Layout>

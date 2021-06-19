@@ -8,12 +8,14 @@ import { PlusIcon, MinusIcon, PinIcon } from './Icons';
 import { StyleService } from '@ui-kitten/components';
 import { useStyleSheet } from '@ui-kitten/components';
 import { ThemeContext } from '../theme-context';
+import { useNavigation } from '@react-navigation/native';
 
 
 const UserStatusCard = ({ user, onAdd, onRemove }) => {
   const [ isAdded, setIsAdded ] = useState(false);
   const theme = useTheme(ThemeContext);
   const styles = useStyleSheet(themedStyle);
+  const navigation = useNavigation();
 
   const renderAddToInvitees = (style) => (
         <PlusIcon
@@ -59,6 +61,7 @@ const renderDescription = () => (
         description={renderDescription}
         accessoryLeft={() => <Avatar source={user.profilePic} size={42} noShadow />}
         accessoryRight={isAdded ? renderRemoveInvitees : renderAddToInvitees}
+        onPress={() => navigation.push('Default', { screen: 'Profil', params: { screen: 'Profile', params: { userId: user.uuid } } })}
       />
     );
 }

@@ -8,7 +8,9 @@ import USER_QUERY from '../graphql/user.query';
 
 export const useCurrentUser = () => {
     const isAuthenticated = useIsAuthenticated();
-    return isAuthenticated ? useQuery(ME_QUERY) : undefined;
+    return isAuthenticated ? useQuery(ME_QUERY, {
+        notifyOnNetworkStatusChange: true,
+    }) : undefined;
 }
 
 export const useUser = userId => {
