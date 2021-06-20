@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useContext } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { SearchBar } from 'react-native-elements';
-import { View, FlatList } from 'react-native';
-import { Divider, Text, useTheme } from '@ui-kitten/components';
+import { Text, List, useTheme } from '@ui-kitten/components';
 
 import SEARCH_USERS from '../graphql/searchUsers.query';
 import UserCard from './UserCard';
@@ -20,11 +19,14 @@ const SearchBox = () => {
     setQuery(query);
 
     if (query) {
-      setIsOpen(true);
       searchUsers({
         variables: { query: query, first: 10 },
-        suspend: false
+        suspend: false,
       }); 
+
+      if (!loading) {
+        setIsOpen(true);
+      }
     } else {
       setIsOpen(false);
     }
@@ -40,7 +42,7 @@ const SearchBox = () => {
           onClear={(text) => search('')}
           placeholder="Søk..."
           value={query}
-          inputContainerStyle={{backgroundColor: theme['background-basic-color-3']}}
+          inputContainerStyle={{height: 10, backgroundColor: theme['background-basic-color-3']}}
           leftIconContainerStyle={{backgroundColor: theme['background-basic-color-3']}}
           inputStyle={{backgroundColor: theme['background-basic-color-3']}}
           containerStyle={{
@@ -50,21 +52,17 @@ const SearchBox = () => {
             borderBottomWidth:0,
           }}
         />          
-          {loading && <Text>Loading...</Text>}
           {isOpen && 
-            <FlatList
-            style={{ marginTop: 15 }}
+            <List
             data={results}
-            listEmptyComponent={error?.message || 'Fant ingen brukere'}
-            ItemSeparatorComponent={Divider}
+            ListEmptyComponent={() => !loading && <Text>Fant ingen brukere på dette søket</Text>}
             renderItem={({ item }) => (
-              <View style={{ marginLeft: 15, marginRight: 15}}>
                 <UserCard
                   user={item}
                   isFriend={item.isViewerFriend}
                   friendshipStatus={item.friendshipStatus}
+                  style={{ marginLeft: 5 }}
                 />
-              </View>
             )}
             keyExtractor={(item) => `item-${item.uuid}`}
           />

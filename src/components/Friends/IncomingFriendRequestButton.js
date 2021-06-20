@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Spinner, useStyleSheet, StyleService, ButtonGroup } from "@ui-kitten/components";
 
-import { useAcceptFriendRequest, useRejectFriendRequest } from "../hooks/Friends";
-import Button from "./Button"
+import { useAcceptFriendRequest, useRejectFriendRequest } from "../../hooks/Friends";
+import Button from "../Button"
 import RemoveFriendButton from './RemoveFriendButton';
 import AddFriendButton from './AddFriendButton';
 

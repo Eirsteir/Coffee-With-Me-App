@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
 
-import InviteButton from './InviteButton';
+import InviteButton from '../InviteButton';
 
 export default class FriendCard extends React.Component {
   static defaultProps = {};

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Spinner } from "@ui-kitten/components";
 import { Alert } from "react-native"
-import { useCancelFriendRequest } from "../hooks/Friends";
-import Button from "./Button"
+import { useCancelFriendRequest } from "../../hooks/Friends";
+import Button from "../Button"
 import AddFriendButton from './AddFriendButton';
 
 // TODO: Invalider cache

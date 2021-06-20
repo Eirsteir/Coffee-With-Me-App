@@ -4,14 +4,15 @@ import {
     BottomSheetModalProvider,
     BottomSheetBackdrop
   } from '@gorhom/bottom-sheet';
-import { Menu, MenuItem, Layout, Text, StyleService, Divider } from '@ui-kitten/components';
+import { Menu, MenuItem, Layout, Text, StyleService, Divider, useStyleSheet } from '@ui-kitten/components';
 import { useLogout } from '../../hooks/User';
 import { AuthContext } from "../../App";
 import { useApolloClient } from '@apollo/client';
 import { LockIcon, LogoutIcon, NavigationIcon, PersonAddIcon, SettingsIcon } from '../Icons';
 
 const SettingsBottomModal = ({ bottomSheetModalRef }) => {
-    const snapPoints = useMemo(() => ['35%'], []);
+    const styles = useStyleSheet(themedStyles)
+    const snapPoints = useMemo(() => ['33%'], []);
     const { logout } = useContext(AuthContext);
     const client = useApolloClient();
     const signOutUser = useLogout(client); 
@@ -69,13 +70,13 @@ const SettingsBottomModal = ({ bottomSheetModalRef }) => {
 }
 
 
-const styles = StyleService.create({
+const themedStyles = StyleService.create({
     container: {
       flex: 1,
     },
     menu: {
         flex: 1,
-        // margin: 8,
+        backgroundColor: 'background-basic-color-1',
       },
 });
 

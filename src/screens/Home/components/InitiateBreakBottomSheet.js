@@ -32,7 +32,6 @@ const InitiateBreakBottomSheet = ({ invitees, location: initialLocation, onCompl
     const [time, setTime] = useState(now);
 
     const styles = useStyleSheet(themedStyles);
-    const navigation = useNavigation();
     const [location, setLocation] = useState();
     const { loading: locationsLoading, error: locationsError, data: locationsData } = useLocations();
     const locations = useMemo(() => (locationsData !== undefined ? locationsData.locations.edges.map((edge) => edge.node) : []), [locationsData]);

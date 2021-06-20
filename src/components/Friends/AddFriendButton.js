@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import { Spinner } from '@ui-kitten/components';
 
-import Button from './Button';
-import { PersonAddIcon } from './Icons';
-import { useAddFriend } from '../hooks/Friends';
+import Button from '../Button';
+import { PersonAddIcon } from '../Icons';
+import { useAddFriend } from '../../hooks/Friends';
 import OutGoingFriendRequestButton from './OutgoingFriendRequestButton';
 
 const AddFriendButton = ({ user, style }) => {

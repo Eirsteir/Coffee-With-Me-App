@@ -143,7 +143,7 @@ const HomeScreen = ({ route, navigation }) =>  {
           styling={styles.button} 
         />
 
-        <LargeHeading>Venneoversikt</LargeHeading>
+        <LargeHeading style={{paddingBottom: 10}}>Venneoversikt</LargeHeading>
 
         <FriendsOverview 
           friends={friends}

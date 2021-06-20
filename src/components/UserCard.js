@@ -1,34 +1,21 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Avatar } from 'expo-activity-feed';
+import { ListItem } from '@ui-kitten/components';
 
-import FriendActionButton from './FriendActionButton';
-import { useCurrentUser } from '../hooks/User';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Text } from '@ui-kitten/components';
-
-const UserCard = ({ user, isFriend, friendshipStatus }) => {
-  const { data } = useCurrentUser();
+const UserCard = ({ user, ...listItemProps }) => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
-
-      <TouchableOpacity style={styles.infoContainer} onPress={() => navigation.push('Default', { screen: 'Profil', params: { screen: 'Profile', params: { userId: user.uuid } } })}>
-        <Avatar source={user.profilePic} size={42} noShadow />
-        <Text style={styles.text}>{user.name}</Text>
-      </TouchableOpacity>
-
-      <FriendActionButton
-        user={user}
-        currentUser={data}
-        isFriend={isFriend}
-        friendshipStatus={friendshipStatus}
-        style={{ flex: 1 }}
+    <ListItem 
+      {...listItemProps}
+      title={user.username}
+      description={user.name}
+      accessoryLeft={(style) => <Avatar {...style} style={{marginRight: 100}} source={user.profilePic} size={50} noShadow />}
+      onPress={() => navigation.push('Default', { screen: 'Profil', params: { screen: 'Profile', params: { userId: user.uuid } } })}
       />
-    </View>
   );
 }
 

@@ -7,7 +7,7 @@ import IncomingFriendRequestButton from './IncomingFriendRequestButton';
 import OutgoingFriendRequestButton from './OutgoingFriendRequestButton';
 
 
-const FriendActionButton = ({ currentUser, user, friendshipStatus, isFriend, style }) => {
+const FriendActionButton = ({ currentUser, user, friendshipStatus, isFriend, bottomSheetModalRef, style }) => {
 
     if (user.uuid === currentUser?.uuid) {
       return <Text></Text>;
@@ -16,7 +16,7 @@ const FriendActionButton = ({ currentUser, user, friendshipStatus, isFriend, sty
     } else if (friendshipStatus === "INCOMING_REQUEST") {
       return <IncomingFriendRequestButton user={user} style={style} />
     } else if (isFriend) {
-      return <RemoveFriendButton user={user} style={style} />;
+      return <RemoveFriendButton user={user} bottomSheetModalRef={bottomSheetModalRef} style={style} />;
     }
 
     return <AddFriendButton user={user} style={style} />;    

@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Avatar } from 'expo-activity-feed';
 
 import { ProfileSocial } from '../../components/Profile/ProfileSocial';
-import FriendActionButton from '../../components/FriendActionButton';
+import FriendActionButton from '../../components/Friends/FriendActionButton';
 import SettingsBottomModal from '../../components/Profile/SettingsBottomModal';
 import { PinIcon, MenuIcon } from '../../components/Icons';
 import TopNavigation from '../../components/TopNavigation';
@@ -15,6 +15,8 @@ import { useUser } from '../../hooks/User';
 import { useBreakHistory } from '../../hooks/Breaks';
 import { Spinner } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
+import FriendActionBottomSheet from '../../components/Friends/FriendActionBottomSheet';
+import { useNavigation } from '@react-navigation/native';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews']);
 
@@ -23,6 +25,8 @@ const ProfileScreen = ({ route, navigation }) => {
   const styles = useStyleSheet(themedStyle);
   const theme = useTheme(ThemeContext);
   const bottomSheetModalRef = useRef(null);
+  const friendBottomSheetModalRef = useRef(null);
+
   const { data: user, loading, error } = useUser(userId);
   const { data: breakHistoryData, loading: breakHistoryLoading, error: breakHistoryError } = useBreakHistory(); 
   const profile = useMemo(() => user !== undefined ? user.me || user.user : undefined, [user]);
@@ -33,7 +37,7 @@ const ProfileScreen = ({ route, navigation }) => {
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
-
+    
   const renderFriendItem = (info) => (
     <View style={styles.friendItem}>
       <TouchableOpacity style={styles.friendItem} onPress={() => navigation.push('Default', { screen: 'Profil', params: { screen: 'Profile', params: { userId: info.item.uuid } } })}>
@@ -54,6 +58,7 @@ const ProfileScreen = ({ route, navigation }) => {
         currentUser={user.me}
         isFriend={profile.isViewerFriend}
         friendshipStatus={profile.friendshipStatus}
+        bottomSheetModalRef={friendBottomSheetModalRef}
         style={styles.profileButton}
       />
     </View>
@@ -185,6 +190,7 @@ const ProfileScreen = ({ route, navigation }) => {
         )}
       </ScrollView>
       <SettingsBottomModal bottomSheetModalRef={bottomSheetModalRef} />
+      <FriendActionBottomSheet user={profile} bottomSheetModalRef={friendBottomSheetModalRef} />
     </React.Fragment>
   );
 };

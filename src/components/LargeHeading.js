@@ -2,9 +2,11 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from '@ui-kitten/components';
 
-const LargeHeading = ({ children }) => {
+const LargeHeading = ({ children, ...viewProps }) => {
+  const { style } = viewProps;
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]} {...viewProps}>
       <Text style={styles.header} category='h5'>{children}</Text>
     </View>
   );

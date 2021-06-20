@@ -79,3 +79,11 @@ export const CloseIcon = (style) => (
 export const ClockIcon = (style) => (
   <Icon {...style} name='clock-outline' />
 );
+
+export const ChevronRight = (style) => (
+  <Icon {...style} name='chevron-right-outline'/>
+);
+
+export const ChevronDown = (style) => (
+  <Icon {...style} name='chevron-down-outline'/>
+);

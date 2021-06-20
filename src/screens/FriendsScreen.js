@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useMemo } from 'react';
-import { View, Image, ScrollView, FlatList, StyleSheet } from 'react-native';
+import { View, Image, ScrollView, StyleSheet } from 'react-native';
 import { Avatar } from 'expo-activity-feed';
-import { Layout, Text, useTheme, TopNavigationAction } from '@ui-kitten/components';
+import { Layout, Text, List, useTheme, TopNavigationAction } from '@ui-kitten/components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import AddFriendsHeader from '../components/AddFriendsHeader';
@@ -81,7 +81,7 @@ const FriendsScreen = ({ navigation }) => {
     } else {
       const pluralForm = friendingPossibilitiesCount >= 1 ? 'e' : '';
       return ( 
-        <Text>{`${friendingPossibilitiesCount} kaffedrikker${pluralForm} har lagt deg til! Se mer`}</Text>
+        <Text>{`${friendingPossibilitiesCount} kaffedrikker${pluralForm} har lagt deg til`}</Text>
       )
     }
   }
@@ -98,7 +98,7 @@ const FriendsScreen = ({ navigation }) => {
         <SearchBox />
 
         <TouchableOpacity 
-          style={[styles.button, { backgroundColor: theme['background-basic-color-3'] }]}
+          style={[styles.button, { backgroundColor: theme['background-basic-color-3'], marginTop: 10 }]}
           onPress={() => navigation.navigate("FriendRequests")}
         >
           { friendingPossibilitiesError && <Text>Noe gikk galt</Text>}
@@ -122,17 +122,15 @@ const FriendsScreen = ({ navigation }) => {
           { error && <Text>Noe gikk galt</Text>}
           { loading && <Text>Henter dine venner</Text>}
           { friends && 
-            <FlatList
+            <List
             style={{ marginTop: 15 }}
             data={friends}
             renderItem={({ item }) => (
-              <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                 <UserCard
                   user={item}
                   isFriend={item.isViewerFriend}
                   friendshipStatus={item.friendshipStatus}
                 />
-              </View>
             )}
             ListEmptyComponent={ () => (
               <Button 
@@ -147,7 +145,7 @@ const FriendsScreen = ({ navigation }) => {
         
         {/* TODO: users at same uni */}
         <LargeHeading>Folk du kanskje kjenner</LargeHeading>
-        <FlatList
+        <List
           style={{ marginTop: 15 }}
           data={INTERESTING_USERS}
           renderItem={({ item }) => (
